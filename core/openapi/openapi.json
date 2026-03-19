@@ -1,361 +1,527 @@
 {
   "openapi": "3.0.0",
-  "paths": {
-    "/api/v1": {
-      "get": {
-        "operationId": "AppController_getHello_v1",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": ["App"]
+  "info": {
+    "title": "Quiz Maker API",
+    "version": "1.0.0",
+    "description": "Quiz creation and taking API for React take-home test"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000",
+      "description": "Local development server"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Use 'dev-token' for development"
       }
     },
-    "/api/v1/auth/register": {
-      "post": {
-        "operationId": "AuthController_register_v1",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "properties": {
-                        "success": {
-                          "type": "boolean",
-                          "example": true
-                        },
-                        "timestamp": {
-                          "type": "string",
-                          "example": "2026-01-01T00:00:00.000Z"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/AuthResponseDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "summary": "Register a new user",
-        "tags": ["auth"]
-      }
-    },
-    "/api/v1/auth/login": {
-      "post": {
-        "operationId": "AuthController_login_v1",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "properties": {
-                        "success": {
-                          "type": "boolean",
-                          "example": true
-                        },
-                        "timestamp": {
-                          "type": "string",
-                          "example": "2026-01-01T00:00:00.000Z"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/AuthResponseDto"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
+    "schemas": {
+      "Quiz": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
           },
-          "401": {
-            "description": "Invalid credentials"
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "timeLimitSeconds": {
+            "type": "integer",
+            "nullable": true
+          },
+          "isPublished": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
           }
-        },
-        "summary": "Login with email and password",
-        "tags": ["auth"]
-      }
-    },
-    "/api/v1/auth/refresh": {
-      "post": {
-        "operationId": "AuthController_refresh_v1",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "properties": {
-                        "success": {
-                          "type": "boolean",
-                          "example": true
-                        },
-                        "timestamp": {
-                          "type": "string",
-                          "example": "2026-01-01T00:00:00.000Z"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/AuthResponseDto"
-                        }
-                      }
-                    }
-                  ]
-                }
+        }
+      },
+      "CreateQuizRequest": {
+        "type": "object",
+        "required": ["title", "description"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255
+          },
+          "description": {
+            "type": "string",
+            "minLength": 10
+          },
+          "timeLimitSeconds": {
+            "type": "integer",
+            "minimum": 60,
+            "nullable": true
+          },
+          "isPublished": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "UpdateQuizRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255
+          },
+          "description": {
+            "type": "string",
+            "minLength": 10
+          },
+          "timeLimitSeconds": {
+            "type": "integer",
+            "minimum": 60,
+            "nullable": true
+          },
+          "isPublished": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Question": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "quizId": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["mcq", "short", "code"]
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "correctAnswer": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
               }
-            }
+            ],
+            "nullable": true
           },
-          "401": {
-            "description": "Invalid or expired refresh token"
+          "position": {
+            "type": "integer"
           }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Refresh access token using refresh token",
-        "tags": ["auth"]
-      }
-    },
-    "/api/v1/auth/logout": {
-      "post": {
-        "operationId": "AuthController_logout_v1",
-        "parameters": [],
-        "responses": {
-          "204": {
-            "description": "Logged out successfully"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Logout and revoke refresh token",
-        "tags": ["auth"]
-      }
-    },
-    "/api/v1/auth/me": {
-      "get": {
-        "operationId": "AuthController_me_v1",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Get current user profile",
-        "tags": ["auth"]
-      }
-    },
-    "/api/v1/admin/packages": {
-      "get": {
-        "operationId": "AdminPackagesController_findAll_v1",
-        "parameters": [
-          {
-            "name": "page",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "minimum": 1,
-              "maximum": 9007199254740991,
-              "default": 1,
-              "type": "integer"
-            }
+        }
+      },
+      "QuestionSanitized": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
           },
-          {
-            "name": "limit",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "minimum": 1,
-              "maximum": 100,
-              "default": 10,
-              "type": "integer"
-            }
+          "quizId": {
+            "type": "integer"
           },
-          {
-            "name": "search",
-            "required": false,
-            "in": "query",
-            "schema": {
+          "type": {
+            "type": "string",
+            "enum": ["mcq", "short", "code"]
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "position": {
+            "type": "integer"
+          }
+        }
+      },
+      "CreateQuestionRequest": {
+        "type": "object",
+        "required": ["type", "prompt"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["mcq", "short", "code"]
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 5
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2,
+            "nullable": true
+          },
+          "correctAnswer": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "nullable": true
+          },
+          "position": {
+            "type": "integer",
+            "default": 0
+          }
+        }
+      },
+      "UpdateQuestionRequest": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "minLength": 5
+          },
+          "options": {
+            "type": "array",
+            "items": {
               "type": "string"
             }
           },
+          "correctAnswer": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "position": {
+            "type": "integer"
+          }
+        }
+      },
+      "QuizWithQuestions": {
+        "allOf": [
           {
-            "name": "sortBy",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "default": "createdAt",
-              "type": "string",
-              "enum": ["name", "price", "durationMinutes", "createdAt"]
-            }
+            "$ref": "#/components/schemas/Quiz"
           },
           {
-            "name": "sortOrder",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "default": "desc",
-              "type": "string",
-              "enum": ["asc", "desc"]
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "properties": {
-                        "success": {
-                          "type": "boolean",
-                          "example": true
-                        },
-                        "timestamp": {
-                          "type": "string",
-                          "example": "2026-01-01T00:00:00.000Z"
-                        },
-                        "data": {
-                          "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/components/schemas/PackageResponseDto"
-                              }
-                            },
-                            "meta": {
-                              "properties": {
-                                "total": {
-                                  "type": "number",
-                                  "example": 100
-                                },
-                                "page": {
-                                  "type": "number",
-                                  "example": 1
-                                },
-                                "limit": {
-                                  "type": "number",
-                                  "example": 10
-                                },
-                                "totalPages": {
-                                  "type": "number",
-                                  "example": 10
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
+            "type": "object",
+            "properties": {
+              "questions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Question"
                 }
               }
             }
           }
-        },
-        "security": [
-          {
-            "bearer": []
+        ]
+      },
+      "Attempt": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "quizId": {
+            "type": "integer"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "submittedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "answers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "questionId": {
+                  "type": "integer"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "quiz": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "timeLimitSeconds": {
+                "type": "integer",
+                "nullable": true
+              },
+              "questions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/QuestionSanitized"
+                }
+              }
+            }
           }
-        ],
-        "summary": "List all wellness packages",
-        "tags": ["admin / packages"]
+        }
+      },
+      "StartAttemptRequest": {
+        "type": "object",
+        "required": ["quizId"],
+        "properties": {
+          "quizId": {
+            "type": "integer"
+          }
+        }
+      },
+      "AnswerQuestionRequest": {
+        "type": "object",
+        "required": ["questionId", "value"],
+        "properties": {
+          "questionId": {
+            "type": "integer"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "AnswerResponse": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SubmitResult": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "integer"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "questionId": {
+                  "type": "integer"
+                },
+                "correct": {
+                  "type": "boolean"
+                },
+                "expected": {
+                  "type": "string",
+                  "nullable": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "RecordEventRequest": {
+        "type": "object",
+        "required": ["event"],
+        "properties": {
+          "event": {
+            "type": "string"
+          }
+        }
+      },
+      "RecordEventResponse": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Missing or invalid authorization token",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "BadRequest": {
+        "description": "Invalid request parameters",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Resource not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/quizzes": {
+      "get": {
+        "summary": "List all quizzes",
+        "tags": ["quizzes"],
+        "operationId": "getQuizzes",
+        "responses": {
+          "200": {
+            "description": "List of quizzes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Quiz"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
       },
       "post": {
-        "operationId": "AdminPackagesController_create_v1",
-        "parameters": [],
+        "summary": "Create a new quiz",
+        "tags": ["quizzes"],
+        "operationId": "createQuiz",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreatePackageDto"
+                "$ref": "#/components/schemas/CreateQuizRequest"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "",
+            "description": "Quiz created",
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "properties": {
-                        "success": {
-                          "type": "boolean",
-                          "example": true
-                        },
-                        "timestamp": {
-                          "type": "string",
-                          "example": "2026-01-01T00:00:00.000Z"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/PackageResponseDto"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/Quiz"
                 }
               }
             }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
           }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Create a new wellness package",
-        "tags": ["admin / packages"]
+        }
       }
     },
-    "/api/v1/admin/packages/{id}": {
-      "put": {
-        "operationId": "AdminPackagesController_update_v1",
+    "/quizzes/{id}": {
+      "get": {
+        "summary": "Get quiz with questions (creator view)",
+        "tags": ["quizzes"],
+        "operationId": "getQuizById",
         "parameters": [
           {
+            "in": "path",
             "name": "id",
             "required": true,
-            "in": "path",
             "schema": {
-              "type": "string"
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Quiz with questions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuizWithQuestions"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update quiz metadata",
+        "tags": ["quizzes"],
+        "operationId": "updateQuiz",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
             }
           }
         ],
@@ -364,358 +530,321 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdatePackageDto"
+                "$ref": "#/components/schemas/UpdateQuizRequest"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "",
+            "description": "Quiz updated",
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "properties": {
-                        "success": {
-                          "type": "boolean",
-                          "example": true
-                        },
-                        "timestamp": {
-                          "type": "string",
-                          "example": "2026-01-01T00:00:00.000Z"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/PackageResponseDto"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/Quiz"
                 }
               }
             }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Update a wellness package",
-        "tags": ["admin / packages"]
-      },
-      "delete": {
-        "operationId": "AdminPackagesController_remove_v1",
+        }
+      }
+    },
+    "/quizzes/{id}/questions": {
+      "post": {
+        "summary": "Add question to quiz",
+        "tags": ["questions"],
+        "operationId": "createQuestion",
         "parameters": [
           {
+            "in": "path",
             "name": "id",
             "required": true,
-            "in": "path",
             "schema": {
-              "type": "string"
+              "type": "integer"
             }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "properties": {
-                        "success": {
-                          "type": "boolean",
-                          "example": true
-                        },
-                        "timestamp": {
-                          "type": "string",
-                          "example": "2026-01-01T00:00:00.000Z"
-                        },
-                        "data": {
-                          "$ref": "#/components/schemas/PackageResponseDto"
-                        }
-                      }
-                    }
-                  ]
-                }
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateQuestionRequest"
               }
             }
           }
         },
-        "security": [
-          {
-            "bearer": []
+        "responses": {
+          "201": {
+            "description": "Question created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Question"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           }
-        ],
-        "summary": "Delete a wellness package",
-        "tags": ["admin / packages"]
+        }
       }
     },
-    "/api/v1/mobile/packages": {
-      "get": {
-        "operationId": "MobilePackagesController_findAll_v1",
+    "/questions/{id}": {
+      "patch": {
+        "summary": "Update question",
+        "tags": ["questions"],
+        "operationId": "updateQuestion",
         "parameters": [
           {
-            "name": "page",
-            "required": false,
-            "in": "query",
+            "in": "path",
+            "name": "id",
+            "required": true,
             "schema": {
-              "minimum": 1,
-              "maximum": 9007199254740991,
-              "default": 1,
               "type": "integer"
             }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateQuestionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Question updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Question"
+                }
+              }
+            }
           },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete question",
+        "tags": ["questions"],
+        "operationId": "deleteQuestion",
+        "parameters": [
           {
-            "name": "limit",
-            "required": false,
-            "in": "query",
+            "in": "path",
+            "name": "id",
+            "required": true,
             "schema": {
-              "minimum": 1,
-              "maximum": 100,
-              "default": 10,
               "type": "integer"
             }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Question deleted"
           },
-          {
-            "name": "search",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "type": "string"
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/attempts": {
+      "post": {
+        "summary": "Start a quiz attempt",
+        "tags": ["attempts"],
+        "operationId": "startAttempt",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartAttemptRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Attempt started",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Attempt"
+                }
+              }
             }
           },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/attempts/{id}/answer": {
+      "post": {
+        "summary": "Submit answer for a question",
+        "tags": ["attempts"],
+        "operationId": "answerQuestion",
+        "parameters": [
           {
-            "name": "sortBy",
-            "required": false,
-            "in": "query",
+            "in": "path",
+            "name": "id",
+            "required": true,
             "schema": {
-              "default": "createdAt",
-              "type": "string",
-              "enum": ["name", "price", "durationMinutes", "createdAt"]
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnswerQuestionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Answer recorded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnswerResponse"
+                }
+              }
             }
           },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/attempts/{id}/submit": {
+      "post": {
+        "summary": "Submit attempt for grading",
+        "tags": ["attempts"],
+        "operationId": "submitAttempt",
+        "parameters": [
           {
-            "name": "sortOrder",
-            "required": false,
-            "in": "query",
+            "in": "path",
+            "name": "id",
+            "required": true,
             "schema": {
-              "default": "desc",
-              "type": "string",
-              "enum": ["asc", "desc"]
+              "type": "integer"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "Attempt graded",
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "properties": {
-                        "success": {
-                          "type": "boolean",
-                          "example": true
-                        },
-                        "timestamp": {
-                          "type": "string",
-                          "example": "2026-01-01T00:00:00.000Z"
-                        },
-                        "data": {
-                          "properties": {
-                            "data": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/components/schemas/PackageResponseDto"
-                              }
-                            },
-                            "meta": {
-                              "properties": {
-                                "total": {
-                                  "type": "number",
-                                  "example": 100
-                                },
-                                "page": {
-                                  "type": "number",
-                                  "example": 1
-                                },
-                                "limit": {
-                                  "type": "number",
-                                  "example": 10
-                                },
-                                "totalPages": {
-                                  "type": "number",
-                                  "example": 10
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/SubmitResult"
                 }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/attempts/{id}/events": {
+      "post": {
+        "summary": "Record anti-cheat event",
+        "tags": ["attempts"],
+        "operationId": "recordEvent",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordEventRequest"
               }
             }
           }
         },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "List all available wellness packages",
-        "tags": ["mobile / packages"]
-      }
-    }
-  },
-  "info": {
-    "title": "nestjs-starter",
-    "description": "API Documentation",
-    "version": "1.0",
-    "contact": {}
-  },
-  "tags": [],
-  "servers": [
-    {
-      "url": "http://localhost:4000",
-      "description": "Local"
-    },
-    {
-      "url": "https://api.staging.example.com",
-      "description": "Staging"
-    }
-  ],
-  "components": {
-    "securitySchemes": {
-      "bearer": {
-        "scheme": "bearer",
-        "bearerFormat": "JWT",
-        "type": "http"
-      }
-    },
-    "schemas": {
-      "AuthResponseDto": {
-        "type": "object",
-        "properties": {
-          "accessToken": {
-            "type": "string"
+        "responses": {
+          "201": {
+            "description": "Event recorded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordEventResponse"
+                }
+              }
+            }
           },
-          "refreshToken": {
-            "type": "string"
-          }
-        },
-        "required": ["accessToken", "refreshToken"]
-      },
-      "RegisterDto": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
           },
-          "password": {
-            "type": "string",
-            "minLength": 6
-          }
-        },
-        "required": ["email", "password"]
-      },
-      "PackageResponseDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
-          },
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number"
-          },
-          "durationMinutes": {
-            "type": "number"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "description",
-          "price",
-          "durationMinutes",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "CreatePackageDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 100
-          },
-          "description": {
-            "type": "string",
-            "minLength": 1
-          },
-          "price": {
-            "type": "number",
-            "minimum": 0,
-            "exclusiveMinimum": true
-          },
-          "durationMinutes": {
-            "type": "integer",
-            "minimum": 0,
-            "exclusiveMinimum": true,
-            "maximum": 9007199254740991
-          }
-        },
-        "required": ["name", "description", "price", "durationMinutes"]
-      },
-      "UpdatePackageDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 100
-          },
-          "description": {
-            "type": "string",
-            "minLength": 1
-          },
-          "price": {
-            "type": "number",
-            "minimum": 0,
-            "exclusiveMinimum": true
-          },
-          "durationMinutes": {
-            "type": "integer",
-            "minimum": 0,
-            "exclusiveMinimum": true,
-            "maximum": 9007199254740991
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
           }
         }
       }
