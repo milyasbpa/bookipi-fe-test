@@ -1,0 +1,43 @@
+{
+  "builder": {
+    "title-label": "Quiz Title",
+    "title-placeholder": "Enter quiz title",
+    "description-label": "Description",
+    "description-placeholder": "Describe your quiz",
+    "time-limit-label": "Time Limit (seconds)",
+    "create-quiz": "Create Quiz",
+    "creating": "Creating...",
+    "quiz-created": "Quiz created successfully!",
+    "quiz-create-error": "Failed to create quiz",
+    "question-type": "Question Type",
+    "question-prompt": "Question Prompt",
+    "prompt-placeholder": "What do you want to ask?",
+    "correct-answer": "Correct Answer",
+    "answer-placeholder": "Enter the correct answer",
+    "add-question": "Add Question",
+    "adding": "Adding...",
+    "question-added": "Question added!",
+    "question-add-error": "Failed to add question",
+    "question-updated": "Question updated!",
+    "question-update-error": "Failed to update question",
+    "question-deleted": "Question deleted!",
+    "question-delete-error": "Failed to delete question",
+    "create-quiz-first": "Create a quiz first before adding questions",
+    "no-questions": "No questions yet. Add your first question above.",
+    "questions": "Questions",
+    "delete-confirm": "Are you sure you want to delete this question?"
+  },
+  "player": {
+    "submit": "Submit Quiz",
+    "next": "Next",
+    "previous": "Previous",
+    "question": "Question",
+    "of": "of"
+  },
+  "results": {
+    "title": "Quiz Results",
+    "score": "Score",
+    "correct": "Correct",
+    "incorrect": "Incorrect"
+  }
+}

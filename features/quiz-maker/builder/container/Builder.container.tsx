@@ -1,8 +1,12 @@
 'use client';
 
+import { QuizFormBuilder } from '../sections/quiz-form/QuizForm.builder';
+import { QuestionFormBuilder } from '../sections/question-form/QuestionForm.builder';
+import { QuestionListBuilder } from '../sections/question-list/QuestionList.builder';
+
 /**
  * BuilderContainer - Quiz Builder Feature Container
- * 
+ *
  * Architecture: Container → Sections → Components
  * - NO props, NO state, NO business logic
  * - Only responsible for layout and rendering sections
@@ -13,17 +17,23 @@ export function BuilderContainer() {
     <div className="container mx-auto max-w-4xl space-y-8 p-6">
       <div>
         <h1 className="text-3xl font-bold">Quiz Builder</h1>
-        <p className="text-muted-foreground">
-          Create and manage your quizzes
-        </p>
+        <p className="text-muted-foreground mt-1">Create a new quiz and add questions</p>
       </div>
 
-      <div className="space-y-6">
-        {/* Sections will be added here in Part 3 */}
-        <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">
-          <p>Quiz Builder sections coming soon...</p>
-          <p className="text-sm">Part 3: Quiz Form, Question Form, Question List</p>
+      <div className="grid gap-6 md:grid-cols-2">
+        <div>
+          <h2 className="mb-4 text-xl font-semibold">Step 1: Create Quiz</h2>
+          <QuizFormBuilder />
         </div>
+
+        <div>
+          <h2 className="mb-4 text-xl font-semibold">Step 2: Add Questions</h2>
+          <QuestionFormBuilder />
+        </div>
+      </div>
+
+      <div>
+        <QuestionListBuilder />
       </div>
     </div>
   );
