@@ -26,7 +26,9 @@ export function QuestionListBuilder() {
   if (!currentQuizId) return null;
 
   if (isLoading) {
-    return <div className="text-center text-muted-foreground">Loading questions...</div>;
+    return (
+      <div className="text-center text-muted-foreground">{t('loading-questions')}</div>
+    );
   }
 
   if (questions.length === 0) {
@@ -51,7 +53,7 @@ export function QuestionListBuilder() {
                 {index + 1}. {question.prompt}
               </p>
               <p className="text-sm text-muted-foreground mt-1">
-                Type: {question.type?.toUpperCase() || 'N/A'}
+                {t('type-label')} {question.type?.toUpperCase() || t('type-na')}
               </p>
 
               {question.type === 'mcq' && question.options && (
@@ -74,7 +76,7 @@ export function QuestionListBuilder() {
 
               {question.type === 'short' && (
                 <p className="mt-2 text-sm">
-                  <span className="text-muted-foreground">Answer:</span>{' '}
+                  <span className="text-muted-foreground">{t('answer-label')}</span>{' '}
                   <span className="font-medium">{question.correctAnswer}</span>
                 </p>
               )}

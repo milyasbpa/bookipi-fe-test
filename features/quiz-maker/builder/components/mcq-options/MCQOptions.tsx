@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { Button } from '@/core/components';
 import { Input } from '@/core/components';
@@ -19,6 +20,7 @@ export function MCQOptions({
   onSelectCorrect,
   disabled,
 }: MCQOptionsProps) {
+  const t = useTranslations('quiz-maker.builder');
   const [newOption, setNewOption] = useState('');
 
   const addOption = () => {
@@ -63,7 +65,7 @@ export function MCQOptions({
         <Input
           value={newOption}
           onChange={(e) => setNewOption(e.target.value)}
-          placeholder="Add option..."
+          placeholder={t('add-option-placeholder')}
           disabled={disabled || options.length >= 6}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
@@ -78,12 +80,12 @@ export function MCQOptions({
           disabled={disabled || !newOption.trim() || options.length >= 6}
         >
           <Plus className="size-4" />
-          Add
+          {t('add-option-button')}
         </Button>
       </div>
 
       <p className="text-sm text-muted-foreground">
-        Select the radio button to mark the correct answer
+        {t('select-correct-hint')}
       </p>
     </div>
   );

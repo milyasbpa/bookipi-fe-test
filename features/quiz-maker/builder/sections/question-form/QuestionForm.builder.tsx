@@ -64,9 +64,9 @@ export function QuestionFormBuilder() {
             className="w-full rounded-xl border border-border bg-transparent p-3 text-sm shadow-xs transition-colors outline-none focus-visible:border-ring disabled:opacity-50"
             disabled={isPending}
           >
-            <option value="mcq">Multiple Choice</option>
-            <option value="short">Short Answer</option>
-            <option value="code">Code</option>
+            <option value="mcq">{t('question-type-mcq')}</option>
+            <option value="short">{t('question-type-short')}</option>
+            <option value="code">{t('question-type-code')}</option>
           </select>
         )}
       />
