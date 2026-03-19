@@ -71,6 +71,25 @@
     "title": "Quiz Results",
     "score": "Score",
     "correct": "Correct",
-    "incorrect": "Incorrect"
+    "incorrect": "Incorrect",
+    "loading-score": "Loading your score...",
+    "score-load-error": "Failed to load score. Please try again.",
+    "perfect-score": "🎉 Perfect score! Well done!",
+    "great-job": "Great job! Keep it up!",
+    "keep-practicing": "Keep practicing to improve!",
+    "loading-breakdown": "Loading question breakdown...",
+    "breakdown-load-error": "Failed to load question breakdown.",
+    "no-questions": "No questions found.",
+    "question-breakdown-title": "Question Breakdown",
+    "question-number": "Question {{number}}",
+    "correct-answer-label": "Correct answer:",
+    "loading-events": "Loading activity log...",
+    "no-suspicious-activity": "✓ No suspicious activity detected",
+    "activity-log-title": "Activity Log",
+    "time-unknown": "Time unknown",
+    "event-focus_lost": "Lost focus (tab/window switch)",
+    "event-paste_detected": "Paste detected",
+    "event-tab_switched": "Tab switched",
+    "activity-log-note": "These events were recorded during the quiz attempt. They may indicate suspicious behavior."
   }
 }
