@@ -1,38 +1,31 @@
 'use client';
 
-import { useParams } from 'next/navigation';
 import { Trophy, TrendingUp, Target } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useQuery } from '@tanstack/react-query';
 
-import { axiosInstanceMutator } from '@/core/api/axios';
+import { useResultsStore } from '../../store/results.store';
+import { useGetQuizResults } from '../../react-query';
 
 /**
  * ScoreCardResults - Self-contained section
  * 
  * Responsibilities:
- * - Fetch attempt results via direct API call
- * - Calculate score percentage
+ * - Get submitResult from Zustand (set by Player after submit)
+ * - Fetch quiz data via useGetQuizResults
+ * - Calculate percentage from score/totalQuestions
  * - Display score with appropriate styling (perfect/good/needs improvement)
  * - Handle loading & error states
+ * 
+ * Anti-corruption: Uses proper Orval types (SubmitResult, QuizWithQuestions)
  */
 export function ScoreCardResults() {
   const t = useTranslations('quiz-maker.results');
-  const params = useParams();
-  const attemptId = Number(params?.attemptId);
+  
+  const submitResult = useResultsStore((s) => s.submitResult);
+  const quizId = useResultsStore((s) => s.quizId);
 
-  // Fetch attempt results
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['attempt-results', attemptId],
-    queryFn: async () => {
-      const response = await axiosInstanceMutator<any>({
-        url: `/attempts/${attemptId}`,
-        method: 'GET',
-      });
-      return response;
-    },
-    enabled: !!attemptId && !isNaN(attemptId),
-  });
+  // Fetch quiz data
+  const { data: quiz, isLoading, error } = useGetQuizResults(quizId);
 
   // Loading state
   if (isLoading) {
@@ -44,7 +37,7 @@ export function ScoreCardResults() {
   }
 
   // Error state
-  if (error || !data) {
+  if (error || !quiz || !submitResult) {
     return (
       <div className="rounded-lg border-2 border-destructive bg-destructive/10 p-8 text-center">
         <p className="text-destructive">{t('score-load-error')}</p>
@@ -52,8 +45,8 @@ export function ScoreCardResults() {
     );
   }
 
-  const score = data.score || 0;
-  const totalQuestions = data.quiz?.questions?.length || 0;
+  const score = submitResult.score ?? 0;
+  const totalQuestions = quiz.questions?.length ?? 0;
   const percentage = totalQuestions > 0 ? (score / totalQuestions) * 100 : 0;
 
   const isPerfect = score === totalQuestions && totalQuestions > 0;

@@ -32,7 +32,7 @@ export function NavigationPlayer() {
     enabled: !!quizId && !isNaN(quizId) && !!attemptId,
   });
 
-  const { mutate: submitAttempt, isPending: isSubmitting } = useSubmitAttempt(attemptId || 0);
+  const { mutate: submitAttempt, isPending: isSubmitting } = useSubmitAttempt(attemptId || 0, quizId);
 
   // Don't render until we have quiz data and attemptId
   if (!quiz || !attemptId || !quiz.questions) {

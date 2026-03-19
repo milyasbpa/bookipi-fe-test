@@ -1,38 +1,32 @@
 'use client';
 
-import { useParams } from 'next/navigation';
 import { CheckCircle2, XCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useQuery } from '@tanstack/react-query';
 
-import { axiosInstanceMutator } from '@/core/api/axios';
+import type { Question, SubmitResultDetailsItem } from '@/core/api/generated/quizMakerAPI.schemas';
+import { useResultsStore } from '../../store/results.store';
+import { useGetQuizResults } from '../../react-query';
 
 /**
  * QuestionBreakdownResults - Self-contained section
  * 
  * Responsibilities:
- * - Fetch attempt results with question details
+ * - Get details from Zustand (set by Player after submit)  
+ * - Fetch quiz data via useGetQuizResults
  * - Display each question with correct/incorrect indicator
  * - Show correct answer for incorrect questions
  * - Handle loading & error states
+ * 
+ * Anti-corruption: Uses proper Orval types (Question, SubmitResultDetailsItem, QuizWithQuestions)
  */
 export function QuestionBreakdownResults() {
   const t = useTranslations('quiz-maker.results');
-  const params = useParams();
-  const attemptId = Number(params?.attemptId);
+  
+  const submitResult = useResultsStore((s) => s.submitResult);
+  const quizId = useResultsStore((s) => s.quizId);
 
-  // Fetch attempt results
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['attempt-results', attemptId],
-    queryFn: async () => {
-      const response = await axiosInstanceMutator<any>({
-        url: `/attempts/${attemptId}`,
-        method: 'GET',
-      });
-      return response;
-    },
-    enabled: !!attemptId && !isNaN(attemptId),
-  });
+  // Fetch quiz data
+  const { data: quiz, isLoading, error } = useGetQuizResults(quizId);
 
   // Loading state
   if (isLoading) {
@@ -44,7 +38,7 @@ export function QuestionBreakdownResults() {
   }
 
   // Error state
-  if (error || !data) {
+  if (error || !quiz || !submitResult) {
     return (
       <div className="rounded-lg border-2 border-destructive bg-destructive/10 p-8">
         <p className="text-center text-destructive">{t('breakdown-load-error')}</p>
@@ -52,8 +46,8 @@ export function QuestionBreakdownResults() {
     );
   }
 
-  const questions = data.quiz?.questions || [];
-  const details = data.details || [];
+  const questions = quiz.questions ?? [];
+  const details = submitResult.details ?? [];
 
   if (questions.length === 0) {
     return (
@@ -68,9 +62,9 @@ export function QuestionBreakdownResults() {
       <h2 className="mb-6 text-2xl font-bold text-foreground">{t('question-breakdown-title')}</h2>
 
       <div className="space-y-4">
-        {questions.map((question: any, index: number) => {
-          const detail = details.find((d: any) => d.questionId === question.id);
-          const isCorrect = detail?.correct || false;
+        {questions.map((question: Question, index: number) => {
+          const detail = details.find((d: SubmitResultDetailsItem) => d.questionId === question.id);
+          const isCorrect = detail?.correct ?? false;
 
           return (
             <div
