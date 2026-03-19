@@ -24,7 +24,7 @@ export function QuestionFormBuilder() {
       type: 'mcq',
       prompt: '',
       options: ['', ''],
-      correctAnswer: undefined,
+      correctAnswer: '',
     },
   });
 
@@ -113,7 +113,7 @@ export function QuestionFormBuilder() {
           render={({ field, fieldState }) => (
             <Input
               {...field}
-              value={field.value as string}
+              value={(field.value as string) || ''}
               placeholder={t('answer-placeholder')}
               disabled={isPending}
               aria-invalid={!!fieldState.error}

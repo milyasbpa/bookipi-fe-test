@@ -7,9 +7,10 @@ const intlMiddleware = createMiddleware(routing);
 
 /**
  * Protected paths — checked after stripping any locale prefix.
- * Add routes here as the app grows (e.g. '/settings', '/billing').
+ * Note: Quiz Maker backend doesn't require authentication.
+ * Paths listed here for future auth implementation if needed.
  */
-const PROTECTED_PATHS = ['/dashboard', '/settings', '/packages'];
+const PROTECTED_PATHS: string[] = [];
 
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
