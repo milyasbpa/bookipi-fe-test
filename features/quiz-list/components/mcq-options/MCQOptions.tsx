@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
@@ -7,7 +6,7 @@ import { Input } from '@/core/components';
 
 interface MCQOptionsProps {
   options: string[];
-  onChange: (options: string[]) => void;
+  onChange: (options: string[] | ((prev: string[]) => string[])) => void;
   selectedCorrectIndex?: number;
   onSelectCorrect: (index: number) => void;
   disabled?: boolean;
@@ -21,20 +20,38 @@ export function MCQOptions({
   disabled,
 }: MCQOptionsProps) {
   const t = useTranslations('quiz-maker.builder');
-  const [newOption, setNewOption] = useState('');
+
+  const handleOptionChange = (index: number, value: string) => {
+    onChange((prev) => {
+      const newOptions = [...prev];
+      newOptions[index] = value;
+      return newOptions;
+    });
+  };
 
   const addOption = () => {
-    if (newOption.trim() && options.length < 6) {
-      onChange([...options, newOption.trim()]);
-      setNewOption('');
-    }
+    onChange((prev) => {
+      if (prev.length < 6) {
+        return [...prev, ''];
+      }
+      return prev;
+    });
   };
 
   const removeOption = (index: number) => {
-    onChange(options.filter((_, i) => i !== index));
-    if (selectedCorrectIndex === index) {
-      onSelectCorrect(-1);
-    }
+    onChange((prev) => {
+      if (prev.length > 1) {
+        // Adjust correct answer if we deleted the selected one
+        if (selectedCorrectIndex === index) {
+          onSelectCorrect(0);
+        } else if (selectedCorrectIndex !== undefined && selectedCorrectIndex > index) {
+          // Adjust index if we deleted an option before the selected one
+          onSelectCorrect(selectedCorrectIndex - 1);
+        }
+        return prev.filter((_, i) => i !== index);
+      }
+      return prev;
+    });
   };
 
   return (
@@ -48,41 +65,34 @@ export function MCQOptions({
             disabled={disabled}
             className="shrink-0 size-4 cursor-pointer disabled:cursor-not-allowed"
           />
-          <Input value={option} disabled className="flex-1" readOnly />
+          <Input
+            value={option}
+            onChange={(e) => handleOptionChange(index, e.target.value)}
+            placeholder={t('add-option-placeholder')}
+            disabled={disabled}
+            className="flex-1"
+          />
           <Button
             type="button"
             size="icon"
             variant="ghost"
             onClick={() => removeOption(index)}
-            disabled={disabled || options.length <= 2}
+            disabled={disabled || options.length <= 1}
           >
             <Trash2 className="size-4" />
           </Button>
         </div>
       ))}
 
-      <div className="flex gap-2">
-        <Input
-          value={newOption}
-          onChange={(e) => setNewOption(e.target.value)}
-          placeholder={t('add-option-placeholder')}
-          disabled={disabled || options.length >= 6}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              addOption();
-            }
-          }}
-        />
-        <Button
-          type="button"
-          onClick={addOption}
-          disabled={disabled || !newOption.trim() || options.length >= 6}
-        >
-          <Plus className="size-4" />
-          {t('add-option-button')}
-        </Button>
-      </div>
+      <Button
+        type="button"
+        onClick={addOption}
+        disabled={disabled || options.length >= 6}
+        className="w-full"
+      >
+        <Plus className="size-4" />
+        {t('add-option-button')}
+      </Button>
 
       <p className="text-sm text-muted-foreground">
         {t('select-correct-hint')}
