@@ -1,4 +1,4 @@
-import { BuilderContainer } from '@/features/quiz-maker/builder';
+import { BuilderContainer } from '@/features/quiz-list';
 
 /**
  * Quiz Builder Page

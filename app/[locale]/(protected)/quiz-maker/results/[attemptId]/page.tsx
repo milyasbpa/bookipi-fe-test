@@ -1,4 +1,4 @@
-import { ResultsContainer } from '@/features/quiz-maker/results';
+import { ResultsContainer } from '@/features/quiz-results';
 
 /**
  * Quiz Results Page

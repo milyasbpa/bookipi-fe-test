@@ -1,4 +1,4 @@
-import { PlayerContainer } from '@/features/quiz-maker/player';
+import { PlayerContainer } from '@/features/quiz-player';
 
 /**
  * Quiz Player Page

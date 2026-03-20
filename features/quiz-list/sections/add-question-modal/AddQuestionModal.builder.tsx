@@ -27,7 +27,7 @@ export function AddQuestionModal() {
     <Dialog
       open={isOpen}
       onOpenChange={handleClose}
-      title={t('add-question-modal-title', { quizTitle: selectedQuizTitle })}
+      title={t('add-question-modal-title', { quizTitle: selectedQuizTitle || '' })}
       description={t('add-question-modal-description')}
       size="xl"
     >
