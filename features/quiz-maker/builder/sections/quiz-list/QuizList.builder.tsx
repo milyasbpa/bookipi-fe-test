@@ -1,8 +1,9 @@
 'use client';
 
-import { Plus, Play, Trash2, ListPlus } from 'lucide-react';
+import { Plus, Play, Trash2, ListPlus, Pencil } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 import { Button } from '@/core/components';
 import type { QuizWithQuestions } from '@/core/api/generated/quizMakerAPI.schemas';
@@ -16,6 +17,7 @@ export function QuizListBuilder() {
   const { data, isLoading } = useGetQuizzes();
   const openCreateModal = useBuilderStore((s) => s.openCreateModal);
   const openAddQuestionModal = useBuilderStore((s) => s.openAddQuestionModal);
+  const openEditModal = useBuilderStore((s) => s.openEditModal);
 
   const quizzes = (data || []).filter((quiz) => quiz.id !== undefined);
 
@@ -59,7 +61,6 @@ export function QuizListBuilder() {
         <div className="grid gap-4 md:grid-cols-2">
           {quizzes.map((quiz: QuizWithQuestions) => {
             const questionCount = quiz.questions?.length || 0;
-            const hasQuestions = questionCount > 0;
 
             return (
               <div
@@ -87,6 +88,19 @@ export function QuizListBuilder() {
                 {/* Actions */}
                 <div className="flex gap-2">
                   <Button
+                    onClick={() =>
+                      openEditModal(quiz.id!, {
+                        title: quiz.title!,
+                        description: quiz.description!,
+                        timeLimitSeconds: quiz.timeLimitSeconds ?? undefined,
+                      })
+                    }
+                    variant="outline"
+                    size="sm"
+                  >
+                    <Pencil className="size-4" />
+                  </Button>
+                  <Button
                     onClick={() => openAddQuestionModal(quiz.id!, quiz.title!)}
                     variant="outline"
                     size="sm"
@@ -95,17 +109,20 @@ export function QuizListBuilder() {
                     <ListPlus className="mr-2 size-4" />
                     {t('add-questions')}
                   </Button>
-                  {hasQuestions && (
-                    <Button
-                      onClick={() => router.push(ROUTES.QUIZ_PLAYER(quiz.id!))}
-                      variant="primary"
-                      size="sm"
-                      className="flex-1"
-                    >
-                      <Play className="mr-2 size-4" />
-                      {t('start-quiz')}
-                    </Button>
-                  )}
+                  <Button
+                    onClick={() => {
+                      if (questionCount === 0) {
+                        toast.warning(t('no-questions-warning'));
+                      }
+                      router.push(ROUTES.QUIZ_PLAYER(quiz.id!));
+                    }}
+                    variant="primary"
+                    size="sm"
+                    className="flex-1"
+                  >
+                    <Play className="mr-2 size-4" />
+                    {t('start-quiz')}
+                  </Button>
                 </div>
               </div>
             );

@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { QuizListBuilder } from '../sections/quiz-list';
 import { CreateQuizModal } from '../sections/create-quiz-modal';
 import { AddQuestionModal } from '../sections/add-question-modal';
+import { EditQuizModal } from '../sections/edit-quiz-modal';
 
 /**
  * BuilderContainer - Quiz Builder Feature Container
@@ -35,6 +36,7 @@ export function BuilderContainer() {
 
       {/* Modals */}
       <CreateQuizModal />
+      <EditQuizModal />
       <AddQuestionModal />
     </div>
   );
