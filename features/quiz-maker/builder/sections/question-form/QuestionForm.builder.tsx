@@ -8,15 +8,17 @@ import { Button } from '@/core/components';
 import { FormField } from '@/core/components';
 import { Input } from '@/core/components';
 import { MCQOptions } from '../../components/mcq-options/MCQOptions';
-import { useBuilderStore } from '../../store/builder.store';
 import { useCreateQuestion } from '../../react-query/use-create-question';
 
 import { questionSchema, type QuestionFormValues } from './question-form.builder.schema';
 
-export function QuestionFormBuilder() {
+interface QuestionFormBuilderProps {
+  quizId: number;
+}
+
+export function QuestionFormBuilder({ quizId }: QuestionFormBuilderProps) {
   const t = useTranslations('quiz-maker.builder');
-  const currentQuizId = useBuilderStore((s) => s.currentQuizId);
-  const { mutate, isPending } = useCreateQuestion(currentQuizId || 0);
+  const { mutate, isPending } = useCreateQuestion(quizId);
 
   const { control, handleSubmit, watch, reset, setValue } = useForm<QuestionFormValues>({
     resolver: zodResolver(questionSchema),
@@ -32,10 +34,8 @@ export function QuestionFormBuilder() {
   const currentOptions = watch('options');
 
   const onSubmit = (values: QuestionFormValues) => {
-    if (!currentQuizId) return;
-
     mutate(
-      { id: currentQuizId, data: values },
+      { id: quizId, data: values },
       {
         onSuccess: () => {
           reset();
@@ -44,16 +44,8 @@ export function QuestionFormBuilder() {
     );
   };
 
-  if (!currentQuizId) {
-    return (
-      <div className="rounded-lg border border-dashed p-6 text-center text-muted-foreground">
-        {t('create-quiz-first')}
-      </div>
-    );
-  }
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 rounded-lg border p-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <FormField
         name="type"
         control={control}

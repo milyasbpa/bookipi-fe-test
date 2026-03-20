@@ -1,3 +1,4 @@
+export { useGetQuizzes } from './use-get-quizzes';
 export { useCreateQuiz } from './use-create-quiz';
 export { useCreateQuestion } from './use-create-question';
 export { useGetQuiz } from './use-get-quiz';
