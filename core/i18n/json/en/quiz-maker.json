@@ -73,7 +73,21 @@
     "type-na": "N/A",
     "add-option-placeholder": "Add option...",
     "add-option-button": "Add",
-    "select-correct-hint": "Select the radio button to mark the correct answer"
+    "select-correct-hint": "Select the radio button to mark the correct answer",
+    "back-to-list": "Back to Quiz List",
+    "quiz-not-found": "Quiz not found",
+    "questions-count": "{count} question{count, plural, =1 {} other {s}}",
+    "time-limit-minutes": "{minutes} minute{minutes, plural, =1 {} other {s}}",
+    "no-time-limit": "No time limit",
+    "play-quiz": "Play Quiz",
+    "edit-question-modal-title": "Edit Question",
+    "edit-question-modal-description": "Update the question details",
+    "update-question": "Update Question",
+    "delete-question-title": "Delete Question",
+    "add-first-question": "Add First Question",
+    "cancel": "Cancel",
+    "type": "Type",
+    "questions-list": "Questions"
   },
   "player": {
     "attempt-started": "Quiz started! Good luck!",

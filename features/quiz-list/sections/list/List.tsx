@@ -1,6 +1,6 @@
 'use client';
 
-import { Plus, Play, Pencil, ListPlus } from 'lucide-react';
+import { Plus, Play, Pencil, ListPlus, Settings } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
@@ -75,6 +75,14 @@ export function List() {
 
           return (
             <div className="flex gap-2">
+              <Button
+                onClick={() => router.push(ROUTES.QUIZ_DETAIL(quiz.id!))}
+                variant="outline"
+                size="sm"
+                title={t('manage-questions')}
+              >
+                <Settings className="size-4" />
+              </Button>
               <Button
                 onClick={() =>
                   openEditModal(quiz.id!, {

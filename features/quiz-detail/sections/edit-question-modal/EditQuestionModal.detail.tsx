@@ -1,0 +1,199 @@
+'use client';
+
+import { useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, Controller } from 'react-hook-form';
+import { useEffect } from 'react';
+
+import { Button, Dialog, FormField, Input } from '@/core/components';
+import { MCQOptions } from '@/features/quiz-list/components/mcq-options/MCQOptions';
+import { useUpdateQuestion } from '../../react-query';
+import { questionSchema, type QuestionFormValues } from '@/features/quiz-list/components/question-form/question-form.builder.schema';
+import { useQuizDetailStore } from '../../store/quiz-detail.store';
+
+/**
+ * EditQuestionModal Section
+ * Modal for editing an existing question
+ * All logic in one file (no nested components)
+ */
+export function EditQuestionModal() {
+  const params = useParams();
+  const t = useTranslations('quiz-maker.builder');
+  const quizId = Number(params.id);
+
+  const isOpen = useQuizDetailStore((s) => s.isEditQuestionModalOpen);
+  const editingQuestion = useQuizDetailStore((s) => s.editingQuestion);
+  const closeModal = useQuizDetailStore((s) => s.closeEditQuestionModal);
+
+  const { mutate, isPending } = useUpdateQuestion(quizId);
+
+  // Prepare default values based on question type
+  const getDefaultValues = (): QuestionFormValues | undefined => {
+    if (!editingQuestion) return undefined;
+
+    const base = {
+      type: editingQuestion.type as 'mcq' | 'short' | 'code',
+      prompt: editingQuestion.prompt || '',
+      position: editingQuestion.position,
+    };
+
+    if (editingQuestion.type === 'mcq') {
+      return {
+        ...base,
+        type: 'mcq',
+        options: editingQuestion.options || ['', ''],
+        correctAnswer: editingQuestion.correctAnswer || 0,
+      };
+    } else if (editingQuestion.type === 'short') {
+      return {
+        ...base,
+        type: 'short',
+        correctAnswer: (editingQuestion.correctAnswer as string) || '',
+      };
+    } else {
+      return {
+        ...base,
+        type: 'code',
+        correctAnswer: (editingQuestion.correctAnswer as string) || '',
+      };
+    }
+  };
+
+  const { control, handleSubmit, watch, reset, setValue } = useForm<QuestionFormValues>({
+    resolver: zodResolver(questionSchema),
+    defaultValues: getDefaultValues(),
+  });
+
+  // Reset form when question changes
+  useEffect(() => {
+    if (editingQuestion) {
+      reset(getDefaultValues());
+    }
+  }, [editingQuestion]);
+
+  const questionType = watch('type');
+
+  const onSubmit = (values: QuestionFormValues) => {
+    if (!editingQuestion) return;
+
+    mutate(
+      {
+        id: editingQuestion.id!,
+        data: {
+          prompt: values.prompt,
+          options: values.type === 'mcq' ? values.options : undefined,
+          correctAnswer: values.correctAnswer,
+          position: values.position,
+        },
+      },
+      {
+        onSuccess: () => {
+          closeModal();
+        },
+      },
+    );
+  };
+
+  if (!editingQuestion) return null;
+
+  return (
+    <Dialog
+      open={isOpen}
+      onOpenChange={closeModal}
+      title={t('edit-question-modal-title')}
+      description={t('edit-question-modal-description')}
+      size="lg"
+    >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          name="type"
+          control={control}
+          label={t('question-type')}
+          render={({ field }) => (
+            <select
+              {...field}
+              className="w-full rounded-xl border border-border bg-transparent p-3 text-sm shadow-xs transition-colors outline-none focus-visible:border-ring disabled:opacity-50"
+              disabled={true} // Type cannot be changed when editing
+            >
+              <option value="mcq">{t('question-type-mcq')}</option>
+              <option value="short">{t('question-type-short')}</option>
+              <option value="code">{t('question-type-code')}</option>
+            </select>
+          )}
+        />
+
+        <FormField
+          name="prompt"
+          control={control}
+          label={t('question-prompt')}
+          render={({ field, fieldState }) => (
+            <textarea
+              {...field}
+              placeholder={t('prompt-placeholder')}
+              className="w-full rounded-xl border border-border bg-transparent p-4 text-sm shadow-xs transition-colors outline-none focus-visible:border-ring disabled:opacity-50"
+              rows={2}
+              disabled={isPending}
+              aria-invalid={!!fieldState.error}
+            />
+          )}
+        />
+
+        {questionType === 'mcq' && (
+          <Controller
+            name="options"
+            control={control}
+            render={({ field }) => (
+              <MCQOptions
+                options={field.value || []}
+                onChange={field.onChange}
+                selectedCorrectIndex={watch('correctAnswer') as number}
+                onSelectCorrect={(index) => {
+                  setValue('correctAnswer', index);
+                }}
+                disabled={isPending}
+              />
+            )}
+          />
+        )}
+
+        {questionType === 'short' && (
+          <FormField
+            name="correctAnswer"
+            control={control}
+            label={t('correct-answer')}
+            render={({ field, fieldState }) => (
+              <Input
+                {...field}
+                value={(field.value as string) || ''}
+                placeholder={t('answer-placeholder')}
+                disabled={isPending}
+                aria-invalid={!!fieldState.error}
+              />
+            )}
+          />
+        )}
+
+        <div className="flex gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={closeModal}
+            disabled={isPending}
+            className="flex-1"
+          >
+            {t('cancel')}
+          </Button>
+          <Button
+            type="submit"
+            variant="primary"
+            disabled={isPending}
+            className="flex-1"
+          >
+            {isPending ? t('updating') : t('update-question')}
+          </Button>
+        </div>
+      </form>
+    </Dialog>
+  );
+}
