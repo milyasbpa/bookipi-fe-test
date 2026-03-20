@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
+import { useCreateWizardStore } from './create-wizard.store';
 
 interface BuilderStore {
   // Current quiz being edited
@@ -51,8 +52,14 @@ export const useBuilderStore = create<BuilderStore>()(
       setCurrentQuizId: (id) => set({ currentQuizId: id }),
       setQuestionCount: (count) => set({ questionCount: count }),
 
-      openCreateModal: () => set({ isCreateModalOpen: true }),
-      closeCreateModal: () => set({ isCreateModalOpen: false }),
+      openCreateModal: () => {
+        set({ isCreateModalOpen: true });
+        useCreateWizardStore.getState().openWizard();
+      },
+      closeCreateModal: () => {
+        set({ isCreateModalOpen: false });
+        useCreateWizardStore.getState().closeWizard();
+      },
 
       openAddQuestionModal: (quizId, quizTitle) =>
         set({

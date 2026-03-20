@@ -1,15 +1,25 @@
 'use client';
 
-import { Plus, Play, Trash2, ListPlus, Pencil } from 'lucide-react';
+import { Plus, Play, ListPlus, Pencil } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import {
+  useReactTable,
+  getCoreRowModel,
+  flexRender,
+  createColumnHelper,
+  type ColumnDef,
+} from '@tanstack/react-table';
+import { useMemo } from 'react';
 
 import { Button } from '@/core/components';
 import type { QuizWithQuestions } from '@/core/api/generated/quizMakerAPI.schemas';
 import { ROUTES } from '@/core/lib/routes';
 import { useGetQuizzes } from '../../react-query/use-get-quizzes';
 import { useBuilderStore } from '../../store/builder.store';
+
+const columnHelper = createColumnHelper<QuizWithQuestions>();
 
 export function QuizListBuilder() {
   const t = useTranslations('quiz-maker.builder');
@@ -20,6 +30,101 @@ export function QuizListBuilder() {
   const openEditModal = useBuilderStore((s) => s.openEditModal);
 
   const quizzes = (data || []).filter((quiz) => quiz.id !== undefined);
+
+  const columns = useMemo<ColumnDef<QuizWithQuestions, any>[]>(
+    () => [
+      columnHelper.accessor('title', {
+        header: t('quiz-title'),
+        cell: (info) => (
+          <div className="min-w-[200px]">
+            <div className="font-semibold">{info.getValue()}</div>
+            <div className="text-muted-foreground mt-1 text-sm line-clamp-2">
+              {info.row.original.description}
+            </div>
+          </div>
+        ),
+      }),
+      columnHelper.accessor('questions', {
+        header: t('questions'),
+        cell: (info) => {
+          const count = info.getValue()?.length || 0;
+          return (
+            <span className="text-sm">
+              {count} {count === 1 ? t('question') : t('questions')}
+            </span>
+          );
+        },
+      }),
+      columnHelper.accessor('timeLimitSeconds', {
+        header: t('time-limit'),
+        cell: (info) => {
+          const seconds = info.getValue();
+          if (!seconds) return <span className="text-muted-foreground text-sm">-</span>;
+          return (
+            <span className="text-sm">
+              {Math.floor(seconds / 60)} {t('minutes')}
+            </span>
+          );
+        },
+      }),
+      columnHelper.display({
+        id: 'actions',
+        header: t('actions'),
+        cell: (info) => {
+          const quiz = info.row.original;
+          const questionCount = quiz.questions?.length || 0;
+
+          return (
+            <div className="flex gap-2">
+              <Button
+                onClick={() =>
+                  openEditModal(quiz.id!, {
+                    title: quiz.title!,
+                    description: quiz.description!,
+                    timeLimitSeconds: quiz.timeLimitSeconds ?? undefined,
+                  })
+                }
+                variant="outline"
+                size="sm"
+                title={t('edit')}
+              >
+                <Pencil className="size-4" />
+              </Button>
+              <Button
+                onClick={() => openAddQuestionModal(quiz.id!, quiz.title!)}
+                variant="outline"
+                size="sm"
+                title={t('add-questions')}
+              >
+                <ListPlus className="size-4" />
+              </Button>
+              <Button
+                onClick={() => {
+                  if (questionCount === 0) {
+                    toast.warning(t('no-questions-warning'));
+                    return;
+                  }
+                  router.push(ROUTES.QUIZ_PLAYER(quiz.id!));
+                }}
+                variant="primary"
+                size="sm"
+                title={t('start-quiz')}
+              >
+                <Play className="size-4" />
+              </Button>
+            </div>
+          );
+        },
+      }),
+    ],
+    [t, openEditModal, openAddQuestionModal, router],
+  );
+
+  const table = useReactTable({
+    data: quizzes,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   if (isLoading) {
     return (
@@ -56,77 +161,38 @@ export function QuizListBuilder() {
         </div>
       )}
 
-      {/* Quiz List */}
+      {/* Quiz Table */}
       {quizzes.length > 0 && (
-        <div className="grid gap-4 md:grid-cols-2">
-          {quizzes.map((quiz: QuizWithQuestions) => {
-            const questionCount = quiz.questions?.length || 0;
-
-            return (
-              <div
-                key={quiz.id}
-                className="flex flex-col rounded-xl border bg-card p-6 shadow-sm transition-shadow hover:shadow-md"
-              >
-                {/* Quiz Info */}
-                <div className="mb-4 flex-1">
-                  <h3 className="mb-2 text-lg font-semibold">{quiz.title}</h3>
-                  <p className="text-muted-foreground mb-3 line-clamp-2 text-sm">
-                    {quiz.description}
-                  </p>
-                  <div className="text-muted-foreground flex items-center gap-4 text-sm">
-                    <span>
-                      {questionCount} {questionCount === 1 ? t('question') : t('questions')}
-                    </span>
-                    {quiz.timeLimitSeconds && (
-                      <span>
-                        {Math.floor(quiz.timeLimitSeconds / 60)} {t('minutes')}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Actions */}
-                <div className="flex gap-2">
-                  <Button
-                    onClick={() =>
-                      openEditModal(quiz.id!, {
-                        title: quiz.title!,
-                        description: quiz.description!,
-                        timeLimitSeconds: quiz.timeLimitSeconds ?? undefined,
-                      })
-                    }
-                    variant="outline"
-                    size="sm"
-                  >
-                    <Pencil className="size-4" />
-                  </Button>
-                  <Button
-                    onClick={() => openAddQuestionModal(quiz.id!, quiz.title!)}
-                    variant="outline"
-                    size="sm"
-                    className="flex-1"
-                  >
-                    <ListPlus className="mr-2 size-4" />
-                    {t('add-questions')}
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      if (questionCount === 0) {
-                        toast.warning(t('no-questions-warning'));
-                      }
-                      router.push(ROUTES.QUIZ_PLAYER(quiz.id!));
-                    }}
-                    variant="primary"
-                    size="sm"
-                    className="flex-1"
-                  >
-                    <Play className="mr-2 size-4" />
-                    {t('start-quiz')}
-                  </Button>
-                </div>
-              </div>
-            );
-          })}
+        <div className="rounded-lg border bg-card">
+          <table className="w-full">
+            <thead className="border-b bg-muted/50">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      className="px-6 py-3 text-left text-sm font-semibold"
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(header.column.columnDef.header, header.getContext())}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map((row) => (
+                <tr key={row.id} className="border-b last:border-0 hover:bg-muted/30">
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className="px-6 py-4">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>

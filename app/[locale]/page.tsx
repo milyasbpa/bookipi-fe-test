@@ -1,6 +1,11 @@
-import { redirect } from 'next/navigation';
+import { BuilderContainer } from '@/features/quiz-list';
 
+/**
+ * Root Page
+ * 
+ * Route: /
+ * Purpose: Quiz list (main page)
+ */
 export default function RootPage() {
-  // Redirect to quiz maker builder
-  redirect('/quiz-maker/builder');
+  return <BuilderContainer />;
 }

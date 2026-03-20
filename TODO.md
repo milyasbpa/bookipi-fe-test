@@ -72,13 +72,13 @@ features/
 **Steps:**
 
 **0.1: Rename Folders**
-- [ ] Rename `features/quiz-maker/builder/` → `features/quiz-list/`
-- [ ] Rename `features/quiz-maker/player/` → `features/quiz-player/`
-- [ ] Rename `features/quiz-maker/results/` → `features/quiz-results/`
-- [ ] Delete empty `features/quiz-maker/` folder
+- [x] Rename `features/quiz-maker/builder/` → `features/quiz-list/`
+- [x] Rename `features/quiz-maker/player/` → `features/quiz-player/`
+- [x] Rename `features/quiz-maker/results/` → `features/quiz-results/`
+- [x] Delete empty `features/quiz-maker/` folder
 
 **0.2: Update Import Paths**
-- [ ] Find & Replace in all files:
+- [x] Find & Replace in all files:
   - `@/features/quiz-maker/builder` → `@/features/quiz-list`
   - `@/features/quiz-maker/player` → `@/features/quiz-player`
   - `@/features/quiz-maker/results` → `@/features/quiz-results`
@@ -87,15 +87,18 @@ features/
   - `features/quiz-maker/results` → `features/quiz-results`
 
 **0.3: Update Route Imports**
-- [ ] Update `app/(locale)/page.tsx`:
+- [x] Update `app/(locale)/quiz-maker/builder/page.tsx`:
   - `import { BuilderContainer } from '@/features/quiz-maker/builder'`
-  - `import { QuizListContainer } from '@/features/quiz-list'`
-- [ ] Update `app/(locale)/quiz-maker/player/[id]/page.tsx`:
+  - `import { BuilderContainer } from '@/features/quiz-list'`
+- [x] Update `app/(locale)/quiz-maker/player/[quizId]/page.tsx`:
   - `import { PlayerContainer } from '@/features/quiz-maker/player'`
   - `import { PlayerContainer } from '@/features/quiz-player'`
-- [ ] Update `app/(locale)/quiz-maker/results/[attemptId]/page.tsx`:
+- [x] Update `app/(locale)/quiz-maker/results/[attemptId]/page.tsx`:
   - `import { ResultsContainer } from '@/features/quiz-maker/results'`
   - `import { ResultsContainer } from '@/features/quiz-results'`
+- [x] Update `features/quiz-player/react-query/use-submit-attempt.ts`:
+  - `import ... from '@/features/quiz-maker/results'`
+  - `import ... from '@/features/quiz-results'`
 
 **0.4: Rename Container Components (Optional but Recommended)**
 - [ ] Rename `BuilderContainer` → `QuizListContainer`
@@ -106,14 +109,14 @@ features/
 - [ ] Rename if using component names in translations
 
 **0.6: Verify Build**
-- [ ] Run `npm run build` or `pnpm build`
-- [ ] Fix any broken imports
-- [ ] Verify TypeScript errors cleared
+- [x] Run `npm run build` or `pnpm build`
+- [x] Fix any broken imports (fixed AddQuestionModal null handling)
+- [x] Verify TypeScript errors cleared
 
 **0.7: Git Commit**
-- [ ] Stage changes: `git add .`
-- [ ] Commit: `git commit -m "refactor: restructure features folder (quiz-list, quiz-player, quiz-results)"`
-- [ ] Push: `git push origin main`
+- [x] Stage changes: `git add .`
+- [x] Commit: `git commit -m "refactor: restructure features folder (quiz-list, quiz-player, quiz-results)"`
+- [x] Push: `git push origin main`
 
 **Acceptance Criteria:**
 - ✅ No `features/quiz-maker/` folder exists
