@@ -1,1 +1,1 @@
-export { EditQuiz } from './EditQuiz';
+export { Edit } from './Edit.quiz-list';

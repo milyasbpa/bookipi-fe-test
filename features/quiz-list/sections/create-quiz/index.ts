@@ -1,1 +1,1 @@
-export { CreateQuiz } from './CreateQuiz';
+export { Create } from './Create.quiz-list';

@@ -3,8 +3,8 @@
 import { useTranslations } from 'next-intl';
 
 import { List } from '../sections/list';
-import { CreateQuiz } from '../sections/create-quiz';
-import { EditQuiz } from '../sections/edit-quiz';
+import { Create } from '../sections/create-quiz';
+import { Edit } from '../sections/edit-quiz';
 
 /**
  * QuizListContainer - Quiz List Feature Container
@@ -34,8 +34,8 @@ export function QuizListContainer() {
       <List />
 
       {/* Modals */}
-      <CreateQuiz />
-      <EditQuiz />
+      <Create />
+      <Edit />
     </div>
   );
 }
