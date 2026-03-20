@@ -1,4 +1,4 @@
-import { BuilderContainer } from '@/features/quiz-list';
+import { QuizListContainer } from '@/features/quiz-list';
 
 /**
  * Quiz Builder Page
@@ -7,5 +7,5 @@ import { BuilderContainer } from '@/features/quiz-list';
  * Purpose: Create and edit quizzes
  */
 export default function BuilderPage() {
-  return <BuilderContainer />;
+  return <QuizListContainer />;
 }

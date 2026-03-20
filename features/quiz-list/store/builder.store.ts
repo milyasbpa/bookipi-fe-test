@@ -12,12 +12,7 @@ interface BuilderStore {
 
   // Modal state
   isCreateModalOpen: boolean;
-  isAddQuestionModalOpen: boolean;
   isEditModalOpen: boolean;
-
-  // Selected quiz for adding questions
-  selectedQuizId: number | null;
-  selectedQuizTitle: string | null;
 
   // Selected quiz for editing
   editQuizId: number | null;
@@ -26,9 +21,6 @@ interface BuilderStore {
   // Modal actions
   openCreateModal: () => void;
   closeCreateModal: () => void;
-
-  openAddQuestionModal: (quizId: number, quizTitle: string) => void;
-  closeAddQuestionModal: () => void;
 
   openEditModal: (quizId: number, quizData: { title: string; description: string; timeLimitSeconds?: number }) => void;
   closeEditModal: () => void;
@@ -42,10 +34,7 @@ export const useBuilderStore = create<BuilderStore>()(
       currentQuizId: null,
       questionCount: 0,
       isCreateModalOpen: false,
-      isAddQuestionModalOpen: false,
       isEditModalOpen: false,
-      selectedQuizId: null,
-      selectedQuizTitle: null,
       editQuizId: null,
       editQuizData: null,
 
@@ -60,19 +49,6 @@ export const useBuilderStore = create<BuilderStore>()(
         set({ isCreateModalOpen: false });
         useCreateWizardStore.getState().closeWizard();
       },
-
-      openAddQuestionModal: (quizId, quizTitle) =>
-        set({
-          isAddQuestionModalOpen: true,
-          selectedQuizId: quizId,
-          selectedQuizTitle: quizTitle,
-        }),
-      closeAddQuestionModal: () =>
-        set({
-          isAddQuestionModalOpen: false,
-          selectedQuizId: null,
-          selectedQuizTitle: null,
-        }),
 
       openEditModal: (quizId, quizData) =>
         set({
@@ -92,10 +68,7 @@ export const useBuilderStore = create<BuilderStore>()(
           currentQuizId: null,
           questionCount: 0,
           isCreateModalOpen: false,
-          isAddQuestionModalOpen: false,
           isEditModalOpen: false,
-          selectedQuizId: null,
-          selectedQuizTitle: null,
           editQuizId: null,
           editQuizData: null,
         }),

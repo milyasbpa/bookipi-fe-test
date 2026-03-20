@@ -9,8 +9,8 @@ import { Button } from '@/core/components/button';
 import { useCreateWizardStore } from '../../../store/create-wizard.store';
 import { useCreateQuiz } from '../../../react-query/use-create-quiz';
 import { useCreateQuestion } from '../../../react-query/use-create-question';
-import { QuestionForm } from './QuestionForm';
-import { QuestionsList } from './QuestionsList';
+import { QuestionForm } from '../../../components/question-form';
+import { QuestionsList } from '../../../components/questions-list';
 import { ROUTES } from '@/core/lib/routes';
 
 export function AddQuestionsStep() {

@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 
 import { Button } from '@/core/components/button';
 import { Input } from '@/core/components/input';
-import { MCQOptions } from '../../../components/mcq-options/MCQOptions';
+import { MCQOptions } from '../mcq-options/MCQOptions';
 
 interface QuestionFormProps {
   onAdd: (question: any) => void;

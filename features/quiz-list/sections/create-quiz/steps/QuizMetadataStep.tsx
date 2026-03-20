@@ -10,7 +10,7 @@ import { useCreateWizardStore } from '../../../store/create-wizard.store';
 import {
   quizSchema,
   type QuizFormValues,
-} from '../../quiz-form/quiz-form.builder.schema';
+} from '../../../components/quiz-form/quiz-form.builder.schema';
 
 export function QuizMetadataStep() {
   const t = useTranslations('quiz-maker.builder');

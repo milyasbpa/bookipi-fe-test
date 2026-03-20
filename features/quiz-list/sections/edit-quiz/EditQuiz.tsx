@@ -4,9 +4,9 @@ import { useTranslations } from 'next-intl';
 
 import { Dialog } from '../../components/dialog';
 import { useBuilderStore } from '../../store/builder.store';
-import { EditQuizForm } from './EditQuizForm.builder';
+import { EditQuizForm } from './EditQuizForm';
 
-export function EditQuizModal() {
+export function EditQuiz() {
   const t = useTranslations('quiz-maker.builder');
   const isOpen = useBuilderStore((s) => s.isEditModalOpen);
   const closeModal = useBuilderStore((s) => s.closeEditModal);

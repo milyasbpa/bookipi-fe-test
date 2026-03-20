@@ -1,6 +1,6 @@
 'use client';
 
-import { Plus, Play, ListPlus, Pencil } from 'lucide-react';
+import { Plus, Play, Pencil, ListPlus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
@@ -21,12 +21,11 @@ import { useBuilderStore } from '../../store/builder.store';
 
 const columnHelper = createColumnHelper<QuizWithQuestions>();
 
-export function QuizListBuilder() {
+export function List() {
   const t = useTranslations('quiz-maker.builder');
   const router = useRouter();
   const { data, isLoading } = useGetQuizzes();
   const openCreateModal = useBuilderStore((s) => s.openCreateModal);
-  const openAddQuestionModal = useBuilderStore((s) => s.openAddQuestionModal);
   const openEditModal = useBuilderStore((s) => s.openEditModal);
 
   const quizzes = (data || []).filter((quiz) => quiz.id !== undefined);
@@ -91,14 +90,6 @@ export function QuizListBuilder() {
                 <Pencil className="size-4" />
               </Button>
               <Button
-                onClick={() => openAddQuestionModal(quiz.id!, quiz.title!)}
-                variant="outline"
-                size="sm"
-                title={t('add-questions')}
-              >
-                <ListPlus className="size-4" />
-              </Button>
-              <Button
                 onClick={() => {
                   if (questionCount === 0) {
                     toast.warning(t('no-questions-warning'));
@@ -117,7 +108,7 @@ export function QuizListBuilder() {
         },
       }),
     ],
-    [t, openEditModal, openAddQuestionModal, router],
+    [t, openEditModal, router],
   );
 
   const table = useReactTable({

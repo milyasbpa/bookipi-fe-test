@@ -11,7 +11,7 @@ import { Input } from '@/core/components';
 import { useUpdateQuiz } from '../../react-query/use-update-quiz';
 import { useBuilderStore } from '../../store/builder.store';
 
-import { quizSchema, type QuizFormValues } from '../quiz-form/quiz-form.builder.schema';
+import { quizSchema, type QuizFormValues } from '../../components/quiz-form/quiz-form.builder.schema';
 
 export function EditQuizForm() {
   const t = useTranslations('quiz-maker.builder');

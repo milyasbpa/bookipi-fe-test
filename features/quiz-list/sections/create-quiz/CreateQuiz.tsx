@@ -6,7 +6,7 @@ import { Dialog } from '../../components/dialog';
 import { useCreateWizardStore } from '../../store/create-wizard.store';
 import { QuizMetadataStep, AddQuestionsStep } from './steps';
 
-export function CreateQuizModal() {
+export function CreateQuiz() {
   const t = useTranslations('quiz-maker.builder');
   const { isOpen, closeWizard, currentStep } = useCreateWizardStore();
 

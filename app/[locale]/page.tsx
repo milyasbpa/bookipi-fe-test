@@ -1,4 +1,4 @@
-import { BuilderContainer } from '@/features/quiz-list';
+import { QuizListContainer } from '@/features/quiz-list';
 
 /**
  * Root Page
@@ -7,5 +7,5 @@ import { BuilderContainer } from '@/features/quiz-list';
  * Purpose: Quiz list (main page)
  */
 export default function RootPage() {
-  return <BuilderContainer />;
+  return <QuizListContainer />;
 }

@@ -4,7 +4,7 @@ import { Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/core/components/button';
-import { useCreateWizardStore } from '../../../store/create-wizard.store';
+import { useCreateWizardStore } from '../../store/create-wizard.store';
 
 export function QuestionsList() {
   const t = useTranslations('quiz-maker.builder');

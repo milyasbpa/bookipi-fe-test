@@ -2,25 +2,24 @@
 
 import { useTranslations } from 'next-intl';
 
-import { QuizListBuilder } from '../sections/quiz-list';
-import { CreateQuizModal } from '../sections/create-quiz-modal';
-import { AddQuestionModal } from '../sections/add-question-modal';
-import { EditQuizModal } from '../sections/edit-quiz-modal';
+import { List } from '../sections/list';
+import { CreateQuiz } from '../sections/create-quiz';
+import { EditQuiz } from '../sections/edit-quiz';
 
 /**
- * BuilderContainer - Quiz Builder Feature Container
+ * QuizListContainer - Quiz List Feature Container
  *
  * Architecture: Container → Sections → Components
  * - NO props, NO state, NO business logic
  * - Only responsible for layout and rendering sections
  * - Sections handle API integration and state management
  * 
- * New Flow (List-First + Modals):
- * 1. QuizListBuilder - Main section showing all quizzes
- * 2. CreateQuizModal - Modal for creating new quiz
- * 3. AddQuestionModal - Modal for adding questions to selected quiz
+ * Flow:
+ * 1. List section - Main section showing all quizzes (stateful)
+ * 2. Create quiz section - Modal for creating new quiz with questions (stateful)
+ * 3. Edit quiz section - Modal for editing quiz (stateful)
  */
-export function BuilderContainer() {
+export function QuizListContainer() {
   const t = useTranslations('quiz-maker.builder');
 
   return (
@@ -32,12 +31,11 @@ export function BuilderContainer() {
       </div>
 
       {/* Main Content: Quiz List */}
-      <QuizListBuilder />
+      <List />
 
       {/* Modals */}
-      <CreateQuizModal />
-      <EditQuizModal />
-      <AddQuestionModal />
+      <CreateQuiz />
+      <EditQuiz />
     </div>
   );
 }
