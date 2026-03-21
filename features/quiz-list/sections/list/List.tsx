@@ -25,7 +25,6 @@ export function List() {
   const t = useTranslations('quiz-maker.builder');
   const router = useRouter();
   const { data, isLoading } = useGetQuizzes();
-  const openCreateModal = useBuilderStore((s) => s.openCreateModal);
   const openEditModal = useBuilderStore((s) => s.openEditModal);
 
   const quizzes = (data || []).filter((quiz) => quiz.id !== undefined);
@@ -141,7 +140,7 @@ export function List() {
           <h2 className="text-2xl font-bold">{t('your-quizzes')}</h2>
           <p className="text-muted-foreground mt-1 text-sm">{t('quiz-list-subtitle')}</p>
         </div>
-        <Button onClick={openCreateModal} variant="primary" size="lg">
+        <Button onClick={() => router.push(ROUTES.QUIZ_CREATE)} variant="primary" size="lg">
           <Plus className="mr-2 size-4" />
           {t('create-quiz')}
         </Button>
@@ -153,7 +152,7 @@ export function List() {
           <ListPlus className="text-muted-foreground/50 mb-4 size-16" />
           <h3 className="mb-2 text-lg font-semibold">{t('no-quizzes-yet')}</h3>
           <p className="text-muted-foreground mb-4 text-sm">{t('no-quizzes-description')}</p>
-          <Button onClick={openCreateModal} variant="primary">
+          <Button onClick={() => router.push(ROUTES.QUIZ_CREATE)} variant="primary">
             <Plus className="mr-2 size-4" />
             {t('create-first-quiz')}
           </Button>

@@ -3,7 +3,6 @@
 import { useTranslations } from 'next-intl';
 
 import { List } from '../sections/list';
-import { Create } from '../sections/create-quiz';
 import { Edit } from '../sections/edit-quiz';
 
 /**
@@ -16,8 +15,8 @@ import { Edit } from '../sections/edit-quiz';
  * 
  * Flow:
  * 1. List section - Main section showing all quizzes (stateful)
- * 2. Create quiz section - Modal for creating new quiz with questions (stateful)
- * 3. Edit quiz section - Modal for editing quiz (stateful)
+ * 2. Edit quiz section - Modal for editing quiz (stateful)
+ * 3. Create quiz - Dedicated page at /quiz-maker/create
  */
 export function QuizListContainer() {
   const t = useTranslations('quiz-maker.builder');
@@ -34,7 +33,6 @@ export function QuizListContainer() {
       <List />
 
       {/* Modals */}
-      <Create />
       <Edit />
     </div>
   );
