@@ -3,29 +3,31 @@
 import { Trophy, TrendingUp, Target } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-import { useResultsStore } from '../../store/results.store';
-import { useGetQuizResults } from '../../react-query';
+import { usePlayerStore } from '../../store/player.store';
+import { useGetQuizPlayer } from '../../react-query';
 
 /**
- * ScoreCardResults - Self-contained section
+ * ScoreCardPlayer - Results score card section
  * 
  * Responsibilities:
- * - Get submitResult from Zustand (set by Player after submit)
- * - Fetch quiz data via useGetQuizResults
+ * - Get submitResult from player store
+ * - Fetch quiz data via useGetQuizPlayer
  * - Calculate percentage from score/totalQuestions
  * - Display score with appropriate styling (perfect/good/needs improvement)
  * - Handle loading & error states
  * 
- * Anti-corruption: Uses proper Orval types (SubmitResult, QuizWithQuestions)
+ * Shown when phase = 'completed'
  */
-export function ScoreCardResults() {
+export function ScoreCardPlayer() {
   const t = useTranslations('quiz-maker.results');
   
-  const submitResult = useResultsStore((s) => s.submitResult);
-  const quizId = useResultsStore((s) => s.quizId);
+  const submitResult = usePlayerStore((s) => s.submitResult);
+  const quizId = usePlayerStore((s) => s.quizId);
 
   // Fetch quiz data
-  const { data: quiz, isLoading, error } = useGetQuizResults(quizId);
+  const { data: quiz, isLoading, error } = useGetQuizPlayer(quizId!, {
+    enabled: !!quizId,
+  });
 
   // Loading state
   if (isLoading) {

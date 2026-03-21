@@ -27,12 +27,20 @@ export function QuizHeaderPlayer() {
 
   const attemptId = usePlayerStore((s) => s.attemptId);
   const currentQuestionIndex = usePlayerStore((s) => s.currentQuestionIndex);
+  const setQuizId = usePlayerStore((s) => s.setQuizId);
   const resetPlayer = usePlayerStore((s) => s.resetPlayer);
 
   // Fetch quiz data
   const { data: quiz, isLoading, error } = useGetQuizPlayer(quizId, {
     enabled: !!quizId && !isNaN(quizId),
   });
+
+  // Store quizId when quiz is loaded
+  useEffect(() => {
+    if (quiz && quizId) {
+      setQuizId(quizId);
+    }
+  }, [quiz, quizId, setQuizId]);
 
   // Start attempt on mount
   const { mutate: startAttempt, isPending: isStartingAttempt } = useStartAttempt();

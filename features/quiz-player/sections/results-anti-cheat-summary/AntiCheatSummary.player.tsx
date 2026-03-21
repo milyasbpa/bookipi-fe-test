@@ -4,7 +4,7 @@ import { ShieldCheck } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 /**
- * AntiCheatSummaryResults - Self-contained section (Bonus Feature)
+ * AntiCheatSummaryPlayer - Results anti-cheat summary section
  * 
  * Responsibilities:
  * - Display anti-cheat summary
@@ -12,9 +12,9 @@ import { useTranslations } from 'next-intl';
  * - For now, shows "no suspicious activity" message
  * - If GET endpoint is added later, can be updated to fetch and display events
  * 
- * Anti-corruption: Ready to use Orval types when endpoint becomes available
+ * Shown when phase = 'completed'
  */
-export function AntiCheatSummaryResults() {
+export function AntiCheatSummaryPlayer() {
   const t = useTranslations('quiz-maker.results');
 
   // Backend does not have GET /attempts/:id/events endpoint yet

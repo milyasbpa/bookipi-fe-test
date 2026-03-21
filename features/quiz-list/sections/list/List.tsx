@@ -3,7 +3,6 @@
 import { Plus, Play, Pencil, ListPlus, Settings } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
 import {
   useReactTable,
   getCoreRowModel,
@@ -70,7 +69,6 @@ export function List() {
         header: t('actions'),
         cell: (info) => {
           const quiz = info.row.original;
-          const questionCount = quiz.questions?.length || 0;
 
           return (
             <div className="flex gap-2">
@@ -97,13 +95,7 @@ export function List() {
                 <Pencil className="size-4" />
               </Button>
               <Button
-                onClick={() => {
-                  if (questionCount === 0) {
-                    toast.warning(t('no-questions-warning'));
-                    return;
-                  }
-                  router.push(ROUTES.QUIZ_PLAYER(quiz.id!));
-                }}
+                onClick={() => router.push(ROUTES.QUIZ_PLAYER(quiz.id!))}
                 variant="primary"
                 size="sm"
                 title={t('start-quiz')}
