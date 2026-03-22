@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { useTranslations } from 'next-intl';
 
 import { Button } from '@/core/components/button';
 import { Input } from '@/core/components/input';
@@ -10,10 +9,45 @@ import { MCQOptions } from '@/core/components';
 
 interface QuestionFormProps {
   onAdd: (question: any) => void;
+  
+  // Labels for stateless component
+  addQuestionTitle: string;
+  questionTypeLabel: string;
+  multipleChoiceLabel: string;
+  shortAnswerLabel: string;
+  questionPromptLabel: string;
+  enterQuestionPlaceholder: string;
+  optionsLabel: string;
+  correctAnswerLabel: string;
+  correctAnswerPlaceholder: string;
+  addOptionButton: string;
+  optionPlaceholder: string;
+  selectCorrectHint: string;
+  addQuestionButton: string;
 }
 
-export function QuestionForm({ onAdd }: QuestionFormProps) {
-  const t = useTranslations('quiz-maker.builder');
+/**
+ * QuestionForm Component (Stateless)
+ * 
+ * Pure presentational component - accepts all data via props
+ * NO translations, NO API calls
+ */
+export function QuestionForm({
+  onAdd,
+  addQuestionTitle,
+  questionTypeLabel,
+  multipleChoiceLabel,
+  shortAnswerLabel,
+  questionPromptLabel,
+  enterQuestionPlaceholder,
+  optionsLabel,
+  correctAnswerLabel,
+  correctAnswerPlaceholder,
+  addOptionButton,
+  optionPlaceholder,
+  selectCorrectHint,
+  addQuestionButton,
+}: QuestionFormProps) {
   const [questionType, setQuestionType] = useState<'mcq' | 'short'>('mcq');
   const [prompt, setPrompt] = useState('');
   const [options, setOptions] = useState<string[]>(['', '']);
@@ -59,28 +93,28 @@ export function QuestionForm({ onAdd }: QuestionFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border p-4">
-      <h3 className="font-semibold">{t('add-question')}</h3>
+      <h3 className="font-semibold">{addQuestionTitle}</h3>
 
       {/* Type select */}
       <div className="space-y-2">
-        <label className="text-sm font-medium">{t('question-type')}</label>
+        <label className="text-sm font-medium">{questionTypeLabel}</label>
         <select
           value={questionType}
           onChange={(e) => setQuestionType(e.target.value as 'mcq' | 'short')}
           className="w-full rounded-xl border p-3"
         >
-          <option value="mcq">{t('multiple-choice')}</option>
-          <option value="short">{t('short-answer')}</option>
+          <option value="mcq">{multipleChoiceLabel}</option>
+          <option value="short">{shortAnswerLabel}</option>
         </select>
       </div>
 
       {/* Prompt */}
       <div className="space-y-2">
-        <label className="text-sm font-medium">{t('question-prompt')}</label>
+        <label className="text-sm font-medium">{questionPromptLabel}</label>
         <textarea
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
-          placeholder={t('enter-your-question')}
+          placeholder={enterQuestionPlaceholder}
           className="w-full rounded-xl border p-3"
           rows={2}
           required
@@ -90,15 +124,15 @@ export function QuestionForm({ onAdd }: QuestionFormProps) {
       {/* Options for MCQ */}
       {questionType === 'mcq' && (
         <div className="space-y-2">
-          <label className="text-sm font-medium">{t('options')}</label>
+          <label className="text-sm font-medium">{optionsLabel}</label>
           <MCQOptions
             options={options}
             onChange={setOptions}
             selectedCorrectIndex={correctIndex}
             onSelectCorrect={setCorrectIndex}
-            addOptionButtonLabel={t('add-option-button')}
-            optionPlaceholder={t('add-option-placeholder')}
-            selectCorrectHint={t('select-correct-hint')}
+            addOptionButtonLabel={addOptionButton}
+            optionPlaceholder={optionPlaceholder}
+            selectCorrectHint={selectCorrectHint}
           />
         </div>
       )}
@@ -106,18 +140,18 @@ export function QuestionForm({ onAdd }: QuestionFormProps) {
       {/* Correct Answer for Short */}
       {questionType === 'short' && (
         <div className="space-y-2">
-          <label className="text-sm font-medium">{t('correct-answer')}</label>
+          <label className="text-sm font-medium">{correctAnswerLabel}</label>
           <Input
             value={shortAnswer}
             onChange={(e) => setShortAnswer(e.target.value)}
-            placeholder={t('correct-answer-text')}
+            placeholder={correctAnswerPlaceholder}
             required
           />
         </div>
       )}
 
       <Button type="submit" variant="outline" className="w-full">
-        + {t('add-question-button')}
+        + {addQuestionButton}
       </Button>
     </form>
   );

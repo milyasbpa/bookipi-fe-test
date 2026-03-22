@@ -7,7 +7,7 @@ import { Button } from '@/core/components';
 import { FormField } from '@/core/components';
 import { Input } from '@/core/components';
 
-import { quizSchema, type QuizFormValues } from '../../schemas/quiz-form.schema';
+import { quizSchema, type QuizFormValues } from '@/core/schemas';
 
 interface QuizFormBuilderProps {
   onSubmit: (values: QuizFormValues) => void;

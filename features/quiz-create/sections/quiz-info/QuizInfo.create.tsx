@@ -6,10 +6,7 @@ import { useTranslations } from 'next-intl';
 
 import { Button, FormField, Input } from '@/core/components';
 import { useQuizCreateStore } from '../../store/quiz-create.store';
-import {
-  quizSchema,
-  type QuizFormValues,
-} from '@/features/quiz-list/schemas/quiz-form.schema';
+import { quizSchema, type QuizFormValues } from '@/core/schemas';
 
 /**
  * QuizInfo Section (Step 1)

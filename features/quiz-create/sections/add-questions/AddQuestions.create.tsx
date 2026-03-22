@@ -9,8 +9,7 @@ import { Trash2 } from 'lucide-react';
 import { Button } from '@/core/components';
 import { QuestionForm } from '../../components/question-form';
 import { useQuizCreateStore } from '../../store/quiz-create.store';
-import { useCreateQuiz } from '../../react-query';
-import { useCreateQuestion } from '@/features/quiz-list/react-query/useCreateQuestion';
+import { useCreateQuiz, useCreateQuestion } from '../../react-query';
 import { ROUTES } from '@/core/lib/routes';
 
 /**
@@ -83,7 +82,22 @@ export function AddQuestions() {
       </div>
 
       {/* Question Form */}
-      <QuestionForm onAdd={handleAddQuestion} />
+      <QuestionForm
+        onAdd={handleAddQuestion}
+        addQuestionTitle={t('add-question')}
+        questionTypeLabel={t('question-type')}
+        multipleChoiceLabel={t('multiple-choice')}
+        shortAnswerLabel={t('short-answer')}
+        questionPromptLabel={t('question-prompt')}
+        enterQuestionPlaceholder={t('enter-your-question')}
+        optionsLabel={t('options')}
+        correctAnswerLabel={t('correct-answer')}
+        correctAnswerPlaceholder={t('correct-answer-text')}
+        addOptionButton={t('add-option-button')}
+        optionPlaceholder={t('add-option-placeholder')}
+        selectCorrectHint={t('select-correct-hint')}
+        addQuestionButton={t('add-question-button')}
+      />
 
       {/* Questions List */}
       <div className="space-y-4">

@@ -1,1 +1,2 @@
-export { useCreateQuiz } from './use-create-quiz';
+export { useCreateQuiz } from './useCreateQuiz';
+export { useCreateQuestion } from './useCreateQuestion';

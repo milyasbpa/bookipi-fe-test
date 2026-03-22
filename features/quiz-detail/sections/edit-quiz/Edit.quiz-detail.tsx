@@ -9,7 +9,7 @@ import { useParams } from 'next/navigation';
 import { Button, Dialog, FormField, Input } from '@/core/components';
 import { useUpdateQuiz } from '../../react-query/useUpdateQuiz';
 import { useQuizDetailStore } from '../../store/quiz-detail.store';
-import { quizSchema, type QuizFormValues } from '@/features/quiz-list/schemas/quiz-form.schema';
+import { quizSchema, type QuizFormValues } from '@/core/schemas';
 
 /**
  * Edit quiz section - manages edit quiz modal with form

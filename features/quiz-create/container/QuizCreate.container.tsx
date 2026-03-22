@@ -3,7 +3,7 @@
 import { useQuizCreateStore } from '../store/quiz-create.store';
 import { QuizInfo } from '../sections/quiz-info';
 import { AddQuestions } from '../sections/add-questions';
-import { StepIndicator } from '@/features/quiz-list/components/step-indicator';
+import { StepIndicator } from '@/core/components';
 
 /**
  * QuizCreate Container

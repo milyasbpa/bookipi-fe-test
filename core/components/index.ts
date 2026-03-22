@@ -10,3 +10,4 @@ export * from './pagination_info';
 // providers have moved to core/providers — do not re-export from here
 export * from './rows_per_page';
 export * from './skeleton';
+export * from './step-indicator';
