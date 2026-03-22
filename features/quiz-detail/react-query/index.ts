@@ -1,4 +1,5 @@
-export { useGetQuizDetail } from './use-get-quiz-detail';
-export { useUpdateQuestion } from './use-update-question';
-export { useDeleteQuestion } from './use-delete-question';
-export { useCreateQuestion } from './use-create-question';
+export { useGetQuizDetail } from './useGetQuizDetail';
+export { useUpdateQuestion } from './useUpdateQuestion';
+export { useDeleteQuestion } from './useDeleteQuestion';
+export { useCreateQuestion } from './useCreateQuestion';
+export { useUpdateQuiz } from './useUpdateQuiz';

@@ -1,25 +1,58 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslations } from 'next-intl';
 import { useForm, Controller } from 'react-hook-form';
 
 import { Button } from '@/core/components';
 import { FormField } from '@/core/components';
 import { Input } from '@/core/components';
 import { MCQOptions } from '@/core/components';
-import { useCreateQuestion } from '@/features/quiz-list/react-query/useCreateQuestion';
 
-import { questionSchema, type QuestionFormValues } from './add-question-form.schema';
+import { questionSchema, type QuestionFormValues } from '../../schemas/add-question-form.schema';
 
 interface AddQuestionFormProps {
-  quizId: number;
+  onSubmit: (values: QuestionFormValues, reset: () => void) => void;
+  isPending?: boolean;
+  
+  // Labels
+  questionTypeLabel: string;
+  questionTypeMcq: string;
+  questionTypeShort: string;
+  questionTypeCode: string;
+  questionPromptLabel: string;
+  promptPlaceholder: string;
+  correctAnswerLabel: string;
+  answerPlaceholder: string;
+  addOptionButton: string;
+  optionPlaceholder: string;
+  selectCorrectHint: string;
+  addButtonLabel: string;
+  addingLabel: string;
 }
 
-export function AddQuestionForm({ quizId }: AddQuestionFormProps) {
-  const t = useTranslations('quiz-maker.builder');
-  const { mutate, isPending } = useCreateQuestion(quizId);
-
+/**
+ * AddQuestionForm Component (Stateless)
+ * 
+ * Pure presentational component - accepts all data via props
+ * NO API calls, NO translations, NO store
+ */
+export function AddQuestionForm({
+  onSubmit,
+  isPending = false,
+  questionTypeLabel,
+  questionTypeMcq,
+  questionTypeShort,
+  questionTypeCode,
+  questionPromptLabel,
+  promptPlaceholder,
+  correctAnswerLabel,
+  answerPlaceholder,
+  addOptionButton,
+  optionPlaceholder,
+  selectCorrectHint,
+  addButtonLabel,
+  addingLabel,
+}: AddQuestionFormProps) {
   const { control, handleSubmit, watch, reset, setValue } = useForm<QuestionFormValues>({
     resolver: zodResolver(questionSchema),
     defaultValues: {
@@ -33,32 +66,25 @@ export function AddQuestionForm({ quizId }: AddQuestionFormProps) {
   const questionType = watch('type');
   const currentOptions = watch('options');
 
-  const onSubmit = (values: QuestionFormValues) => {
-    mutate(
-      { id: quizId, data: values },
-      {
-        onSuccess: () => {
-          reset();
-        },
-      },
-    );
+  const handleFormSubmit = (values: QuestionFormValues) => {
+    onSubmit(values, reset);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
       <FormField
         name="type"
         control={control}
-        label={t('question-type')}
+        label={questionTypeLabel}
         render={({ field }) => (
           <select
             {...field}
             className="w-full rounded-xl border border-border bg-transparent p-3 text-sm shadow-xs transition-colors outline-none focus-visible:border-ring disabled:opacity-50"
             disabled={isPending}
           >
-            <option value="mcq">{t('question-type-mcq')}</option>
-            <option value="short">{t('question-type-short')}</option>
-            <option value="code">{t('question-type-code')}</option>
+            <option value="mcq">{questionTypeMcq}</option>
+            <option value="short">{questionTypeShort}</option>
+            <option value="code">{questionTypeCode}</option>
           </select>
         )}
       />
@@ -66,11 +92,11 @@ export function AddQuestionForm({ quizId }: AddQuestionFormProps) {
       <FormField
         name="prompt"
         control={control}
-        label={t('question-prompt')}
+        label={questionPromptLabel}
         render={({ field, fieldState }) => (
           <textarea
             {...field}
-            placeholder={t('prompt-placeholder')}
+            placeholder={promptPlaceholder}
             className="w-full rounded-xl border border-border bg-transparent p-4 text-sm shadow-xs transition-colors outline-none focus-visible:border-ring disabled:opacity-50"
             rows={2}
             disabled={isPending}
@@ -92,9 +118,9 @@ export function AddQuestionForm({ quizId }: AddQuestionFormProps) {
                 setValue('correctAnswer', index);
               }}
               disabled={isPending}
-              addOptionButtonLabel={t('add-option-button')}
-              optionPlaceholder={t('add-option-placeholder')}
-              selectCorrectHint={t('select-correct-hint')}
+              addOptionButtonLabel={addOptionButton}
+              optionPlaceholder={optionPlaceholder}
+              selectCorrectHint={selectCorrectHint}
             />
           )}
         />
@@ -104,12 +130,12 @@ export function AddQuestionForm({ quizId }: AddQuestionFormProps) {
         <FormField
           name="correctAnswer"
           control={control}
-          label={t('correct-answer')}
+          label={correctAnswerLabel}
           render={({ field, fieldState }) => (
             <Input
               {...field}
               value={(field.value as string) || ''}
-              placeholder={t('answer-placeholder')}
+              placeholder={answerPlaceholder}
               disabled={isPending}
               aria-invalid={!!fieldState.error}
             />
@@ -118,7 +144,7 @@ export function AddQuestionForm({ quizId }: AddQuestionFormProps) {
       )}
 
       <Button type="submit" variant="primary" disabled={isPending} className="w-full">
-        {isPending ? t('adding') : t('add-question')}
+        {isPending ? addingLabel : addButtonLabel}
       </Button>
     </form>
   );

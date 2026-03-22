@@ -4,7 +4,7 @@ import { QuizHeader } from '../sections/quiz-header';
 import { QuestionTable } from '../sections/question-table';
 import { AddQuestionModal } from '../sections/add-question-modal';
 import { EditQuestionModal } from '../sections/edit-question-modal';
-import { Edit } from '@/features/quiz-list/sections/edit-quiz';
+import { Edit } from '../sections/edit-quiz';
 
 /**
  * QuizDetailContainer - Quiz Detail Page Container
