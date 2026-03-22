@@ -43,8 +43,10 @@ export function AddQuestions() {
     setIsSubmitting(true);
 
     try {
-      // Create quiz
-      const quiz = await createQuiz.mutateAsync({ data: quizMetadata! });
+      // Create quiz (always set isPublished: true)
+      const quiz = await createQuiz.mutateAsync({ 
+        data: { ...quizMetadata!, isPublished: true } 
+      });
       const quizId = quiz.id!;
 
       // Add all questions

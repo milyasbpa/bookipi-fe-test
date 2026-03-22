@@ -40,7 +40,6 @@ export function QuizFormBuilder({
       title: '',
       description: '',
       timeLimitSeconds: 300,
-      isPublished: true,
       ...defaultValues,
     },
   });

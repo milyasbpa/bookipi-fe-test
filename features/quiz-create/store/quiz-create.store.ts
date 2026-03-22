@@ -4,7 +4,6 @@ interface QuizMetadata {
   title: string;
   description: string;
   timeLimitSeconds?: number | null;
-  isPublished?: boolean;
 }
 
 interface Question {

@@ -35,7 +35,6 @@ export function Edit() {
       title: '',
       description: '',
       timeLimitSeconds: 300,
-      isPublished: true,
     },
   });
 
@@ -46,14 +45,14 @@ export function Edit() {
         title: editQuizData.title,
         description: editQuizData.description,
         timeLimitSeconds: editQuizData.timeLimitSeconds ?? 300,
-        isPublished: true,
       });
     }
   }, [editQuizData, reset]);
 
   const onSubmit = (values: QuizFormValues) => {
     if (!quizId) return;
-    mutate({ id: quizId, data: values });
+    // Always send isPublished: true to API
+    mutate({ id: quizId, data: { ...values, isPublished: true } });
   };
 
   return (
