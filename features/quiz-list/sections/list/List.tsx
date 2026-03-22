@@ -7,7 +7,7 @@ import { flexRender } from '@tanstack/react-table';
 
 import { Button } from '@/core/components';
 import { ROUTES } from '@/core/lib/routes';
-import { useGetQuizzes } from '../../react-query';
+import { useGetQuizzes } from '../../react-query/hooks';
 import { useQuizListTable } from '../../react-table';
 
 export function List() {

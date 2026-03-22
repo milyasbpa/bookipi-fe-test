@@ -4,24 +4,24 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
-import { useDeleteQuestion as useDeleteQuestionGenerated } from '@/core/api/generated/questions/questions';
-import { useQuizListStore } from '../store';
+import { useCreateQuestion as useCreateQuestionGenerated } from '@/core/api/generated/questions/questions';
+import { useQuizListStore } from '../../store';
 
-export function useDeleteQuestion(quizId: number) {
+export function useCreateQuestion(quizId: number) {
   const t = useTranslations('quiz-maker.builder');
   const queryClient = useQueryClient();
   const setQuestionCount = useQuizListStore((s) => s.setQuestionCount);
   const currentCount = useQuizListStore((s) => s.questionCount);
 
-  const mutation = useDeleteQuestionGenerated({
+  const mutation = useCreateQuestionGenerated({
     mutation: {
       onSuccess: () => {
-        setQuestionCount(Math.max(0, currentCount - 1));
-        toast.success(t('question-deleted'));
+        setQuestionCount(currentCount + 1);
+        toast.success(t('question-added'));
         queryClient.invalidateQueries({ queryKey: [`/quizzes/${quizId}`] });
       },
       onError: () => {
-        toast.error(t('question-delete-error'));
+        toast.error(t('question-add-error'));
       },
     },
   });
