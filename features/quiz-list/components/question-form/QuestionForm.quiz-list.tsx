@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 
 import { Button } from '@/core/components/button';
 import { Input } from '@/core/components/input';
-import { MCQOptions } from '../mcq-options/MCQOptions';
+import { MCQOptions } from '@/core/components';
 
 interface QuestionFormProps {
   onAdd: (question: any) => void;
@@ -96,6 +96,9 @@ export function QuestionForm({ onAdd }: QuestionFormProps) {
             onChange={setOptions}
             selectedCorrectIndex={correctIndex}
             onSelectCorrect={setCorrectIndex}
+            addOptionButtonLabel={t('add-option-button')}
+            optionPlaceholder={t('add-option-placeholder')}
+            selectCorrectHint={t('select-correct-hint')}
           />
         </div>
       )}

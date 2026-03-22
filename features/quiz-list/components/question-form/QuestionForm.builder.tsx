@@ -7,8 +7,8 @@ import { useForm, Controller } from 'react-hook-form';
 import { Button } from '@/core/components';
 import { FormField } from '@/core/components';
 import { Input } from '@/core/components';
-import { MCQOptions } from '../../components/mcq-options/MCQOptions';
-import { useCreateQuestion } from '../../react-query/use-create-question';
+import { MCQOptions } from '@/core/components';
+import { useCreateQuestion } from '../../react-query/useCreateQuestion';
 
 import { questionSchema, type QuestionFormValues } from './question-form.builder.schema';
 
@@ -92,6 +92,9 @@ export function QuestionFormBuilder({ quizId }: QuestionFormBuilderProps) {
                 setValue('correctAnswer', index);
               }}
               disabled={isPending}
+              addOptionButtonLabel={t('add-option-button')}
+              optionPlaceholder={t('add-option-placeholder')}
+              selectCorrectHint={t('select-correct-hint')}
             />
           )}
         />

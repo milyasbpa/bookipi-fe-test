@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@/core/components';
 import { FormField } from '@/core/components';
 import { Input } from '@/core/components';
-import { useCreateQuiz } from '../../react-query/use-create-quiz';
+import { useCreateQuiz } from '../../react-query/useCreateQuiz';
 
 import { quizSchema, type QuizFormValues } from './quiz-form.builder.schema';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useGetQuiz as useGetQuizGenerated } from '@/features/quiz-list/react-query/use-get-quiz';
+import { useGetQuiz as useGetQuizGenerated } from '@/features/quiz-list/react-query/useGetQuiz';
 
 /**
  * Get quiz detail with questions

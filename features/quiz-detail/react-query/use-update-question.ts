@@ -1,6 +1,6 @@
 'use client';
 
-import { useUpdateQuestion as useUpdateQuestionGenerated } from '@/features/quiz-list/react-query/use-update-question';
+import { useUpdateQuestion as useUpdateQuestionGenerated } from '@/features/quiz-list/react-query/useUpdateQuestion';
 
 /**
  * Update question hook

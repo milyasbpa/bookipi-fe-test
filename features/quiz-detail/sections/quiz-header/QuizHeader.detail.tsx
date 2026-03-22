@@ -7,7 +7,7 @@ import { ArrowLeft, Play } from 'lucide-react';
 import { Button } from '@/core/components';
 import { useGetQuizDetail } from '../../react-query';
 import { ROUTES } from '@/core/lib/routes';
-import { useBuilderStore } from '@/features/quiz-list/store/builder.store';
+import { useQuizListStore } from '@/features/quiz-list/store';
 
 /**
  * QuizHeader Section
@@ -20,7 +20,7 @@ export function QuizHeader() {
   const quizId = Number(params.id);
 
   const { data: quiz, isLoading } = useGetQuizDetail(quizId);
-  const openEditModal = useBuilderStore((s) => s.openEditModal);
+  const openEditModal = useQuizListStore((s) => s.openEditModal);
 
   const handleEdit = () => {
     if (!quiz) return;

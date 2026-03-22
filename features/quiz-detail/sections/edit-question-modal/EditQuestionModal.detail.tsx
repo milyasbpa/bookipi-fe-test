@@ -6,8 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller } from 'react-hook-form';
 import { useEffect } from 'react';
 
-import { Button, Dialog, FormField, Input } from '@/core/components';
-import { MCQOptions } from '@/features/quiz-list/components/mcq-options/MCQOptions';
+import { Button, Dialog, FormField, Input, MCQOptions } from '@/core/components';
 import { useUpdateQuestion } from '../../react-query';
 import { questionSchema, type QuestionFormValues } from '@/features/quiz-list/components/question-form/question-form.builder.schema';
 import { useQuizDetailStore } from '../../store/quiz-detail.store';
@@ -152,6 +151,9 @@ export function EditQuestionModal() {
                   setValue('correctAnswer', index);
                 }}
                 disabled={isPending}
+                addOptionButtonLabel={t('add-option-button')}
+                optionPlaceholder={t('add-option-placeholder')}
+                selectCorrectHint={t('select-correct-hint')}
               />
             )}
           />

@@ -1,8 +1,7 @@
 import { Plus, Trash2 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 
-import { Button } from '@/core/components';
-import { Input } from '@/core/components';
+import { Button } from '../button';
+import { Input } from '../input';
 
 interface MCQOptionsProps {
   options: string[];
@@ -10,6 +9,9 @@ interface MCQOptionsProps {
   selectedCorrectIndex?: number;
   onSelectCorrect: (index: number) => void;
   disabled?: boolean;
+  addOptionButtonLabel: string;
+  optionPlaceholder: string;
+  selectCorrectHint: string;
 }
 
 export function MCQOptions({
@@ -18,9 +20,10 @@ export function MCQOptions({
   selectedCorrectIndex,
   onSelectCorrect,
   disabled,
+  addOptionButtonLabel,
+  optionPlaceholder,
+  selectCorrectHint,
 }: MCQOptionsProps) {
-  const t = useTranslations('quiz-maker.builder');
-
   const handleOptionChange = (index: number, value: string) => {
     onChange((prev) => {
       const newOptions = [...prev];
@@ -68,7 +71,7 @@ export function MCQOptions({
           <Input
             value={option}
             onChange={(e) => handleOptionChange(index, e.target.value)}
-            placeholder={t('add-option-placeholder')}
+            placeholder={optionPlaceholder}
             disabled={disabled}
             className="flex-1"
           />
@@ -91,11 +94,11 @@ export function MCQOptions({
         className="w-full"
       >
         <Plus className="size-4" />
-        {t('add-option-button')}
+        {addOptionButtonLabel}
       </Button>
 
       <p className="text-sm text-muted-foreground">
-        {t('select-correct-hint')}
+        {selectCorrectHint}
       </p>
     </div>
   );

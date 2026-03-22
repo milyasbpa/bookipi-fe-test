@@ -1,6 +1,6 @@
 'use client';
 
-import { useCreateQuestion as useCreateQuestionGenerated } from '@/features/quiz-list/react-query/use-create-question';
+import { useCreateQuestion as useCreateQuestionGenerated } from '@/features/quiz-list/react-query/useCreateQuestion';
 
 /**
  * Create question hook

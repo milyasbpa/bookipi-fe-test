@@ -9,15 +9,15 @@ import { Button } from '@/core/components';
 import { FormField } from '@/core/components';
 import { Input } from '@/core/components';
 import { useUpdateQuiz } from '../../react-query';
-import { useBuilderStore } from '../../store/builder.store';
+import { useQuizListStore } from '../../store';
 
 import { quizSchema, type QuizFormValues } from '../../components/quiz-form/quiz-form.builder.schema';
 
 export function EditQuizForm() {
   const t = useTranslations('quiz-maker.builder');
   const { mutate, isPending } = useUpdateQuiz();
-  const editQuizId = useBuilderStore((s) => s.editQuizId);
-  const editQuizData = useBuilderStore((s) => s.editQuizData);
+  const editQuizId = useQuizListStore((s) => s.editQuizId);
+  const editQuizData = useQuizListStore((s) => s.editQuizData);
 
   const { control, handleSubmit, reset } = useForm<QuizFormValues>({
     resolver: zodResolver(quizSchema),

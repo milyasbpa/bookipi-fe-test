@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 
 import { Button, Dialog, FormField, Input } from '@/core/components';
-import { useUpdateQuiz } from '../../react-query/use-update-quiz';
+import { useUpdateQuiz } from '../../react-query/useUpdateQuiz';
 import { useQuizListStore } from '../../store';
 import { quizSchema, type QuizFormValues } from '../../components/quiz-form/quiz-form.builder.schema';
 

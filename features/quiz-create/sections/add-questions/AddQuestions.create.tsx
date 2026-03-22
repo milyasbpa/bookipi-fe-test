@@ -10,7 +10,7 @@ import { Button } from '@/core/components';
 import { QuestionForm } from '@/features/quiz-list/components/question-form';
 import { useQuizCreateStore } from '../../store/quiz-create.store';
 import { useCreateQuiz } from '../../react-query';
-import { useCreateQuestion } from '@/features/quiz-list/react-query/use-create-question';
+import { useCreateQuestion } from '@/features/quiz-list/react-query/useCreateQuestion';
 import { ROUTES } from '@/core/lib/routes';
 
 /**

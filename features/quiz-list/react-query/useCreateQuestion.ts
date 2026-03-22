@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { useCreateQuestion as useCreateQuestionGenerated } from '@/core/api/generated/questions/questions';
-import { useQuizListStore } from '../store';';
+import { useQuizListStore } from '../store';
 
 export function useCreateQuestion(quizId: number) {
   const t = useTranslations('quiz-maker.builder');
