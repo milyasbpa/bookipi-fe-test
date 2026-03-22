@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 
 import { useCreateQuiz as useCreateQuizGenerated } from '@/core/api/generated/quizzes/quizzes';
 import { useQuizListStore } from '../../store';
+import { quizListQueryKeys, quizListMutationKeys } from '../keys';
 
 export function useCreateQuiz() {
   const t = useTranslations('quiz-maker.builder');
@@ -15,12 +16,13 @@ export function useCreateQuiz() {
 
   const mutation = useCreateQuizGenerated({
     mutation: {
+      mutationKey: quizListMutationKeys.createQuiz(),
       onSuccess: (response) => {
         const quizId = response.id;
         if (quizId) {
           setCurrentQuizId(quizId);
           toast.success(t('quiz-created'));
-          queryClient.invalidateQueries({ queryKey: ['/quizzes'] });
+          queryClient.invalidateQueries({ queryKey: quizListQueryKeys.all() });
           closeCreateModal(); // Close modal after success
         }
       },
