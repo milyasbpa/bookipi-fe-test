@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import { Button, Dialog, FormField, Input } from '@/core/components';
 import { useUpdateQuiz } from '../../react-query/useUpdateQuiz';
 import { useQuizListStore } from '../../store';
-import { quizSchema, type QuizFormValues } from '../../components/quiz-form/quiz-form.builder.schema';
+import { quizSchema, type QuizFormValues } from '../../schemas/quiz-form.schema';
 
 /**
  * Edit quiz section - manages edit quiz modal with form

@@ -1,1 +1,1 @@
-export { QuestionListBuilder } from './QuestionList.builder';
+export { QuestionListBuilder } from './QuestionList.quiz-list';

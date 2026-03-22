@@ -1,1 +1,1 @@
-export { QuizFormBuilder } from './QuizForm.builder';
+export { QuizFormBuilder } from './QuizForm.quiz-list';

@@ -1,61 +1,60 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
-import { useEffect } from 'react';
 
 import { Button } from '@/core/components';
 import { FormField } from '@/core/components';
 import { Input } from '@/core/components';
-import { useUpdateQuiz } from '../../react-query';
-import { useQuizListStore } from '../../store';
 
-import { quizSchema, type QuizFormValues } from '../../components/quiz-form/quiz-form.builder.schema';
+import { quizSchema, type QuizFormValues } from '../../schemas/quiz-form.schema';
 
-export function EditQuizForm() {
-  const t = useTranslations('quiz-maker.builder');
-  const { mutate, isPending } = useUpdateQuiz();
-  const editQuizId = useQuizListStore((s) => s.editQuizId);
-  const editQuizData = useQuizListStore((s) => s.editQuizData);
+interface QuizFormBuilderProps {
+  onSubmit: (values: QuizFormValues) => void;
+  isPending?: boolean;
+  defaultValues?: Partial<QuizFormValues>;
+  titleLabel: string;
+  titlePlaceholder: string;
+  descriptionLabel: string;
+  descriptionPlaceholder: string;
+  timeLimitLabel: string;
+  submitLabel: string;
+  submittingLabel: string;
+}
 
-  const { control, handleSubmit, reset } = useForm<QuizFormValues>({
+export function QuizFormBuilder({
+  onSubmit,
+  isPending,
+  defaultValues,
+  titleLabel,
+  titlePlaceholder,
+  descriptionLabel,
+  descriptionPlaceholder,
+  timeLimitLabel,
+  submitLabel,
+  submittingLabel,
+}: QuizFormBuilderProps) {
+  const { control, handleSubmit } = useForm<QuizFormValues>({
     resolver: zodResolver(quizSchema),
     defaultValues: {
       title: '',
       description: '',
       timeLimitSeconds: 300,
       isPublished: true,
+      ...defaultValues,
     },
   });
-
-  // Pre-fill form when modal opens
-  useEffect(() => {
-    if (editQuizData) {
-      reset({
-        title: editQuizData.title,
-        description: editQuizData.description,
-        timeLimitSeconds: editQuizData.timeLimitSeconds ?? 300,
-        isPublished: true,
-      });
-    }
-  }, [editQuizData, reset]);
-
-  const onSubmit = (values: QuizFormValues) => {
-    if (!editQuizId) return;
-    mutate({ id: editQuizId, data: values });
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <FormField
         name="title"
         control={control}
-        label={t('title-label')}
+        label={titleLabel}
         render={({ field, fieldState }) => (
           <Input
             {...field}
-            placeholder={t('title-placeholder')}
+            placeholder={titlePlaceholder}
             disabled={isPending}
             aria-invalid={!!fieldState.error}
           />
@@ -65,11 +64,11 @@ export function EditQuizForm() {
       <FormField
         name="description"
         control={control}
-        label={t('description-label')}
+        label={descriptionLabel}
         render={({ field, fieldState }) => (
           <textarea
             {...field}
-            placeholder={t('description-placeholder')}
+            placeholder={descriptionPlaceholder}
             disabled={isPending}
             className="w-full rounded-xl border border-border bg-transparent p-4 text-sm shadow-xs transition-colors outline-none focus-visible:border-ring disabled:opacity-50"
             rows={3}
@@ -81,7 +80,7 @@ export function EditQuizForm() {
       <FormField
         name="timeLimitSeconds"
         control={control}
-        label={t('time-limit-label')}
+        label={timeLimitLabel}
         render={({ field, fieldState }) => (
           <Input
             {...field}
@@ -103,7 +102,7 @@ export function EditQuizForm() {
         disabled={isPending}
         className="w-full"
       >
-        {isPending ? t('updating') : t('update-quiz')}
+        {isPending ? submittingLabel : submitLabel}
       </Button>
     </form>
   );

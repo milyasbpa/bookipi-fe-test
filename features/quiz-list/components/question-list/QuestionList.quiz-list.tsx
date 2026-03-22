@@ -1,39 +1,39 @@
 'use client';
 
 import { Trash2 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 
 import { Button } from '@/core/components';
 import type { Question } from '@/core/api/generated/quizMakerAPI.schemas';
-import { useQuizListStore } from '../../store';
-import { useGetQuiz, useDeleteQuestion } from '../../react-query';
 
-export function QuestionListBuilder() {
-  const t = useTranslations('quiz-maker.builder');
-  const currentQuizId = useQuizListStore((s) => s.currentQuizId);
+interface QuestionListProps {
+  questions: Question[];
+  onDelete: (questionId: number) => void;
+  isDeleting?: boolean;
+  loadingLabel: string;
+  noQuestionsLabel: string;
+  questionsLabel: string;
+  typeLabel: string;
+  typeNaLabel: string;
+  answerLabel: string;
+  deleteConfirmLabel: string;
+}
 
-  const { data, isLoading } = useGetQuiz(currentQuizId || 0, {
-    enabled: !!currentQuizId,
-  });
-
-  const { mutate: deleteQuestion, isPending: isDeleting } = useDeleteQuestion(
-    currentQuizId || 0,
-  );
-
-  const questions = data?.questions || [];
-
-  if (!currentQuizId) return null;
-
-  if (isLoading) {
-    return (
-      <div className="text-center text-muted-foreground">{t('loading-questions')}</div>
-    );
-  }
-
+export function QuestionListBuilder({
+  questions,
+  onDelete,
+  isDeleting,
+  loadingLabel,
+  noQuestionsLabel,
+  questionsLabel,
+  typeLabel,
+  typeNaLabel,
+  answerLabel,
+  deleteConfirmLabel,
+}: QuestionListProps) {
   if (questions.length === 0) {
     return (
       <div className="rounded-lg border border-dashed p-6 text-center text-muted-foreground">
-        {t('no-questions')}
+        {noQuestionsLabel}
       </div>
     );
   }
@@ -41,7 +41,7 @@ export function QuestionListBuilder() {
   return (
     <div className="space-y-3">
       <h3 className="text-lg font-semibold">
-        {t('questions')} ({questions.length})
+        {questionsLabel} ({questions.length})
       </h3>
 
       {questions.map((question: Question, index: number) => (
@@ -52,7 +52,7 @@ export function QuestionListBuilder() {
                 {index + 1}. {question.prompt}
               </p>
               <p className="text-sm text-muted-foreground mt-1">
-                {t('type-label')} {question.type?.toUpperCase() || t('type-na')}
+                {typeLabel} {question.type?.toUpperCase() || typeNaLabel}
               </p>
 
               {question.type === 'mcq' && question.options && (
@@ -75,7 +75,7 @@ export function QuestionListBuilder() {
 
               {question.type === 'short' && (
                 <p className="mt-2 text-sm">
-                  <span className="text-muted-foreground">{t('answer-label')}</span>{' '}
+                  <span className="text-muted-foreground">{answerLabel}</span>{' '}
                   <span className="font-medium">{question.correctAnswer}</span>
                 </p>
               )}
@@ -86,8 +86,8 @@ export function QuestionListBuilder() {
               size="icon"
               variant="ghost"
               onClick={() => {
-                if (question.id && confirm(t('delete-confirm'))) {
-                  deleteQuestion({ id: question.id });
+                if (question.id && confirm(deleteConfirmLabel)) {
+                  onDelete(question.id);
                 }
               }}
               disabled={isDeleting}

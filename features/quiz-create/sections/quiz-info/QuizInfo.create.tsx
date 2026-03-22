@@ -9,7 +9,7 @@ import { useQuizCreateStore } from '../../store/quiz-create.store';
 import {
   quizSchema,
   type QuizFormValues,
-} from '@/features/quiz-list/components/quiz-form/quiz-form.builder.schema';
+} from '@/features/quiz-list/schemas/quiz-form.schema';
 
 /**
  * QuizInfo Section (Step 1)

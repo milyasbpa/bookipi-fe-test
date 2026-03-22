@@ -1,21 +1,29 @@
 'use client';
 
 import { Trash2 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 
 import { Button } from '@/core/components/button';
-import { useCreateWizardStore } from '../../store/create-wizard.store';
 
-export function QuestionsList() {
-  const t = useTranslations('quiz-maker.builder');
-  const { questions, removeQuestion } = useCreateWizardStore();
+interface Question {
+  type: 'mcq' | 'short' | 'code';
+  prompt: string;
+  options?: string[];
+  correctAnswer: string | number;
+}
 
+interface QuestionsListProps {
+  questions: Question[];
+  onRemove: (index: number) => void;
+  titleLabel: string;
+}
+
+export function QuestionsList({ questions, onRemove, titleLabel }: QuestionsListProps) {
   if (questions.length === 0) return null;
 
   return (
     <div className="space-y-2">
       <h3 className="font-semibold">
-        {t('questions')} ({questions.length})
+        {titleLabel} ({questions.length})
       </h3>
       {questions.map((q, index) => (
         <div
@@ -34,7 +42,7 @@ export function QuestionsList() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => removeQuestion(index)}
+            onClick={() => onRemove(index)}
           >
             <Trash2 className="size-4 text-destructive" />
           </Button>
