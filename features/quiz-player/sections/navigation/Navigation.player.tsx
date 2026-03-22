@@ -45,7 +45,7 @@ export function NavigationPlayer() {
 
   const handleSubmit = () => {
     if (confirm(t('submit-confirm'))) {
-      submitAttempt({ id: attemptId });
+      submitAttempt();
     }
   };
 

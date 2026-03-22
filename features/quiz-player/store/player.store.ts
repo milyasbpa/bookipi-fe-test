@@ -16,6 +16,9 @@ interface PlayerStore {
   phase: PlayerPhase;
   submitResult: SubmitResult | null;
 
+  // Timer state
+  remainingSeconds: number | null;
+
   // Actions
   setAttemptId: (id: number | null) => void;
   setQuizId: (id: number | null) => void;
@@ -29,6 +32,9 @@ interface PlayerStore {
   setPhaseCompleted: (result: SubmitResult) => void;
   setPhasePlayin: () => void;
 
+  // Timer actions
+  setRemainingSeconds: (seconds: number | null) => void;
+
   resetPlayer: () => void;
 }
 
@@ -41,6 +47,7 @@ export const usePlayerStore = create<PlayerStore>()(
       answers: {},
       phase: 'playing',
       submitResult: null,
+      remainingSeconds: null,
 
       setAttemptId: (id) => set({ attemptId: id }),
       setQuizId: (id) => set({ quizId: id }),
@@ -65,6 +72,8 @@ export const usePlayerStore = create<PlayerStore>()(
 
       setPhasePlayin: () => set({ phase: 'playing', submitResult: null }),
 
+      setRemainingSeconds: (seconds) => set({ remainingSeconds: seconds }),
+
       resetPlayer: () =>
         set({
           attemptId: null,
@@ -73,6 +82,7 @@ export const usePlayerStore = create<PlayerStore>()(
           answers: {},
           phase: 'playing',
           submitResult: null,
+          remainingSeconds: null,
         }),
     }),
     { name: 'QuizPlayerStore' },

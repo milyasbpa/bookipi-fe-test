@@ -2,12 +2,12 @@
 
 import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
-import { Clock } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { usePlayerStore } from '../../store/player.store';
 import { useGetQuizPlayer, useStartAttempt } from '../../react-query';
 import { ProgressBar } from '../../components/progress-bar/ProgressBar';
+import { CountdownTimer } from '../../components/countdown-timer';
 
 /**
  * QuizHeaderPlayer - Self-contained section
@@ -58,12 +58,6 @@ export function QuizHeaderPlayer() {
     };
   }, [resetPlayer]);
 
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const unit = minutes === 1 ? t('minute') : t('minutes');
-    return `${minutes} ${unit}`;
-  };
-
   // Loading state
   if (isLoading || !quiz || !attemptId) {
     return (
@@ -105,10 +99,11 @@ export function QuizHeaderPlayer() {
           {quiz.description || t('no-description')}
         </p>
         {quiz.timeLimitSeconds && (
-          <div className="flex items-center gap-2 mt-4 text-sm text-muted-foreground">
-            <Clock className="size-4" />
-            <span>{t('time-limit')} {formatTime(quiz.timeLimitSeconds)}</span>
-          </div>
+          <CountdownTimer 
+            timeLimitSeconds={quiz.timeLimitSeconds}
+            attemptId={attemptId}
+            quizId={quizId}
+          />
         )}
       </div>
     </div>

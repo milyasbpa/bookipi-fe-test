@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import { MCQAnswer } from '../../components/mcq-answer/MCQAnswer';
 import { ShortAnswer } from '../../components/short-answer/ShortAnswer';
 import { usePlayerStore } from '../../store/player.store';
-import { useAnswerQuestion, useGetQuizPlayer } from '../../react-query';
+import { useGetQuizPlayer } from '../../react-query';
 
 /**
  * QuestionViewPlayer - Self-contained section
@@ -14,8 +14,8 @@ import { useAnswerQuestion, useGetQuizPlayer } from '../../react-query';
  * Responsibilities:
  * - Access current question from quiz data + Zustand currentQuestionIndex
  * - Render appropriate component based on question type (MCQ/Short/Code)
- * - Handle answer changes via Zustand + API
- * - Auto-save answers to backend
+ * - Handle answer changes via Zustand only (no auto-save)
+ * - Answers saved to API only on submit
  */
 export function QuestionViewPlayer() {
   const t = useTranslations('quiz-maker.player');
@@ -31,8 +31,6 @@ export function QuestionViewPlayer() {
   const { data: quiz } = useGetQuizPlayer(quizId, {
     enabled: !!quizId && !isNaN(quizId) && !!attemptId,
   });
-
-  const { mutate: saveAnswer, isPending } = useAnswerQuestion(attemptId || 0);
 
   // Don't render until we have quiz data and attemptId
   if (!quiz || !attemptId || !quiz.questions || quiz.questions.length === 0) {
@@ -51,16 +49,9 @@ export function QuestionViewPlayer() {
   const handleAnswerChange = (value: string) => {
     if (!currentQuestion.id) return;
 
+    // Only update local Zustand state
+    // No API call - answers will be saved on submit
     setAnswer(currentQuestion.id, value);
-
-    // Auto-save answer to backend
-    saveAnswer({
-      id: attemptId,
-      data: {
-        questionId: currentQuestion.id,
-        value,
-      },
-    });
   };
 
   return (
@@ -84,7 +75,6 @@ export function QuestionViewPlayer() {
             options={currentQuestion.options}
             selectedValue={currentAnswer}
             onChange={handleAnswerChange}
-            disabled={isPending}
           />
         )}
 
@@ -93,7 +83,6 @@ export function QuestionViewPlayer() {
             value={currentAnswer}
             onChange={handleAnswerChange}
             placeholder={t('answer-placeholder')}
-            disabled={isPending}
           />
         )}
 
@@ -102,7 +91,6 @@ export function QuestionViewPlayer() {
             value={currentAnswer}
             onChange={handleAnswerChange}
             placeholder={t('code-placeholder')}
-            disabled={isPending}
           />
         )}
       </div>
