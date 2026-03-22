@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-import { useUpdateQuizById } from '@/core/api/generated/quizzes/quizzes';
+import { useUpdateQuiz as useUpdateQuizGenerated } from '@/core/api/generated/quizzes/quizzes';
 import { useQuizDetailStore } from '../store/quiz-detail.store';
 import { ROUTES } from '@/core/lib/routes';
 
@@ -17,7 +17,7 @@ export function useUpdateQuiz() {
   const t = useTranslations('quiz-maker.builder');
   const closeEditModal = useQuizDetailStore((s) => s.closeEditQuizModal);
 
-  const mutation = useUpdateQuizById({
+  const mutation = useUpdateQuizGenerated({
     mutation: {
       onSuccess: () => {
         toast.success(t('quiz-updated'));
