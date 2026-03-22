@@ -8,15 +8,15 @@ import { Button } from '@/core/components';
 import { FormField } from '@/core/components';
 import { Input } from '@/core/components';
 import { MCQOptions } from '@/core/components';
-import { useCreateQuestion } from '../../react-query/useCreateQuestion';
+import { useCreateQuestion } from '@/features/quiz-list/react-query/useCreateQuestion';
 
-import { questionSchema, type QuestionFormValues } from './question-form.builder.schema';
+import { questionSchema, type QuestionFormValues } from './add-question-form.schema';
 
-interface QuestionFormBuilderProps {
+interface AddQuestionFormProps {
   quizId: number;
 }
 
-export function QuestionFormBuilder({ quizId }: QuestionFormBuilderProps) {
+export function AddQuestionForm({ quizId }: AddQuestionFormProps) {
   const t = useTranslations('quiz-maker.builder');
   const { mutate, isPending } = useCreateQuestion(quizId);
 

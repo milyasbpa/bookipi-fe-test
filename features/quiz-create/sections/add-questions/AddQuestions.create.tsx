@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { Trash2 } from 'lucide-react';
 
 import { Button } from '@/core/components';
-import { QuestionForm } from '@/features/quiz-list/components/question-form';
+import { QuestionForm } from '../../components/question-form';
 import { useQuizCreateStore } from '../../store/quiz-create.store';
 import { useCreateQuiz } from '../../react-query';
 import { useCreateQuestion } from '@/features/quiz-list/react-query/useCreateQuestion';

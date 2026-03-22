@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import { Dialog } from '@/core/components';
-import { QuestionFormBuilder } from '@/features/quiz-list/components/question-form';
+import { AddQuestionForm } from '../../components/add-question-form';
 import { useQuizDetailStore } from '../../store/quiz-detail.store';
 
 /**
@@ -27,7 +27,7 @@ export function AddQuestionModal() {
       description={t('add-question-modal-description')}
       size="lg"
     >
-      <QuestionFormBuilder quizId={quizId} />
+      <AddQuestionForm quizId={quizId} />
     </Dialog>
   );
 }

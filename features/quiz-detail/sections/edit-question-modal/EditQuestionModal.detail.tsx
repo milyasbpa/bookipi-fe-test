@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 
 import { Button, Dialog, FormField, Input, MCQOptions } from '@/core/components';
 import { useUpdateQuestion } from '../../react-query';
-import { questionSchema, type QuestionFormValues } from '@/features/quiz-list/components/question-form/question-form.builder.schema';
+import { questionSchema, type QuestionFormValues } from '../../components/add-question-form/add-question-form.schema';
 import { useQuizDetailStore } from '../../store/quiz-detail.store';
 
 /**
