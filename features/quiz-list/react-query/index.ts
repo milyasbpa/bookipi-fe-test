@@ -1,7 +1,7 @@
-export { useGetQuizzes } from './use-get-quizzes';
-export { useCreateQuiz } from './use-create-quiz';
-export { useUpdateQuiz } from './use-update-quiz';
-export { useCreateQuestion } from './use-create-question';
-export { useGetQuiz } from './use-get-quiz';
-export { useUpdateQuestion } from './use-update-question';
-export { useDeleteQuestion } from './use-delete-question';
+export { useGetQuizzes } from './useGetQuizzes';
+export { useCreateQuiz } from './useCreateQuiz';
+export { useUpdateQuiz } from './useUpdateQuiz';
+export { useCreateQuestion } from './useCreateQuestion';
+export { useGetQuiz } from './useGetQuiz';
+export { useUpdateQuestion } from './useUpdateQuestion';
+export { useDeleteQuestion } from './useDeleteQuestion';

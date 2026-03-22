@@ -1,1 +1,1 @@
-export { useBuilderStore } from './builder.store';
+export { useQuizListStore } from './quiz-list.store';

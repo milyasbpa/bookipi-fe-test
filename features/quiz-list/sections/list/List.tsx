@@ -1,120 +1,22 @@
 'use client';
 
-import { Plus, Play, Pencil, ListPlus, Settings } from 'lucide-react';
+import { Plus, ListPlus } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import {
-  useReactTable,
-  getCoreRowModel,
-  flexRender,
-  createColumnHelper,
-  type ColumnDef,
-} from '@tanstack/react-table';
-import { useMemo } from 'react';
+import { flexRender } from '@tanstack/react-table';
 
 import { Button } from '@/core/components';
-import type { QuizWithQuestions } from '@/core/api/generated/quizMakerAPI.schemas';
 import { ROUTES } from '@/core/lib/routes';
-import { useGetQuizzes } from '../../react-query/use-get-quizzes';
-import { useBuilderStore } from '../../store/builder.store';
-
-const columnHelper = createColumnHelper<QuizWithQuestions>();
+import { useGetQuizzes } from '../../react-query';
+import { useQuizListTable } from '../../react-table';
 
 export function List() {
   const t = useTranslations('quiz-maker.builder');
   const router = useRouter();
   const { data, isLoading } = useGetQuizzes();
-  const openEditModal = useBuilderStore((s) => s.openEditModal);
 
   const quizzes = (data || []).filter((quiz) => quiz.id !== undefined);
-
-  const columns = useMemo<ColumnDef<QuizWithQuestions, any>[]>(
-    () => [
-      columnHelper.accessor('title', {
-        header: t('quiz-title'),
-        cell: (info) => (
-          <div className="min-w-[200px]">
-            <div className="font-semibold">{info.getValue()}</div>
-            <div className="text-muted-foreground mt-1 text-sm line-clamp-2">
-              {info.row.original.description}
-            </div>
-          </div>
-        ),
-      }),
-      columnHelper.accessor('questions', {
-        header: t('questions'),
-        cell: (info) => {
-          const count = info.getValue()?.length || 0;
-          return (
-            <span className="text-sm">
-              {count} {count === 1 ? t('question') : t('questions')}
-            </span>
-          );
-        },
-      }),
-      columnHelper.accessor('timeLimitSeconds', {
-        header: t('time-limit'),
-        cell: (info) => {
-          const seconds = info.getValue();
-          if (!seconds) return <span className="text-muted-foreground text-sm">-</span>;
-          return (
-            <span className="text-sm">
-              {Math.floor(seconds / 60)} {t('minutes')}
-            </span>
-          );
-        },
-      }),
-      columnHelper.display({
-        id: 'actions',
-        header: t('actions'),
-        cell: (info) => {
-          const quiz = info.row.original;
-
-          return (
-            <div className="flex gap-2">
-              <Button
-                onClick={() => router.push(ROUTES.QUIZ_DETAIL(quiz.id!))}
-                variant="outline"
-                size="sm"
-                title={t('manage-questions')}
-              >
-                <Settings className="size-4" />
-              </Button>
-              <Button
-                onClick={() =>
-                  openEditModal(quiz.id!, {
-                    title: quiz.title!,
-                    description: quiz.description!,
-                    timeLimitSeconds: quiz.timeLimitSeconds ?? undefined,
-                  })
-                }
-                variant="outline"
-                size="sm"
-                title={t('edit')}
-              >
-                <Pencil className="size-4" />
-              </Button>
-              <Button
-                onClick={() => router.push(ROUTES.QUIZ_PLAYER(quiz.id!))}
-                variant="primary"
-                size="sm"
-                title={t('start-quiz')}
-              >
-                <Play className="size-4" />
-              </Button>
-            </div>
-          );
-        },
-      }),
-    ],
-    [t, openEditModal, router],
-  );
-
-  const table = useReactTable({
-    data: quizzes,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
+  const table = useQuizListTable(quizzes);
 
   if (isLoading) {
     return (

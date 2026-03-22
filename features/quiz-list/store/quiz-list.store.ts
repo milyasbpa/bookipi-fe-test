@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { useCreateWizardStore } from './create-wizard.store';
 
-interface BuilderStore {
+interface QuizListStore {
   // Current quiz being edited
   currentQuizId: number | null;
   setCurrentQuizId: (id: number | null) => void;
@@ -28,7 +28,7 @@ interface BuilderStore {
   resetBuilder: () => void;
 }
 
-export const useBuilderStore = create<BuilderStore>()(
+export const useQuizListStore = create<QuizListStore>()(
   devtools(
     (set) => ({
       currentQuizId: null,

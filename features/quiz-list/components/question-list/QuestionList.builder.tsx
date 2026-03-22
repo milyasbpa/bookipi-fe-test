@@ -5,13 +5,12 @@ import { useTranslations } from 'next-intl';
 
 import { Button } from '@/core/components';
 import type { Question } from '@/core/api/generated/quizMakerAPI.schemas';
-import { useBuilderStore } from '../../store/builder.store';
-import { useGetQuiz } from '../../react-query/use-get-quiz';
-import { useDeleteQuestion } from '../../react-query/use-delete-question';
+import { useQuizListStore } from '../../store';
+import { useGetQuiz, useDeleteQuestion } from '../../react-query';
 
 export function QuestionListBuilder() {
   const t = useTranslations('quiz-maker.builder');
-  const currentQuizId = useBuilderStore((s) => s.currentQuizId);
+  const currentQuizId = useQuizListStore((s) => s.currentQuizId);
 
   const { data, isLoading } = useGetQuiz(currentQuizId || 0, {
     enabled: !!currentQuizId,

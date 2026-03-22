@@ -5,12 +5,12 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { useUpdateQuiz as useUpdateQuizGenerated } from '@/core/api/generated/quizzes/quizzes';
-import { useBuilderStore } from '../store/builder.store';
+import { useQuizListStore } from '../store';';
 
 export function useUpdateQuiz() {
   const t = useTranslations('quiz-maker.builder');
   const queryClient = useQueryClient();
-  const closeEditModal = useBuilderStore((s) => s.closeEditModal);
+  const closeEditModal = useQuizListStore((s) => s.closeEditModal);
 
   const mutation = useUpdateQuizGenerated({
     mutation: {

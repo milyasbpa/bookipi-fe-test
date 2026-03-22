@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 
 import { Button, Dialog, FormField, Input } from '@/core/components';
 import { useUpdateQuiz } from '../../react-query/use-update-quiz';
-import { useBuilderStore } from '../../store/builder.store';
+import { useQuizListStore } from '../../store';
 import { quizSchema, type QuizFormValues } from '../../components/quiz-form/quiz-form.builder.schema';
 
 /**
@@ -18,10 +18,10 @@ export function Edit() {
   const t = useTranslations('quiz-maker.builder');
   
   // Store integration
-  const isOpen = useBuilderStore((s) => s.isEditModalOpen);
-  const closeModal = useBuilderStore((s) => s.closeEditModal);
-  const editQuizId = useBuilderStore((s) => s.editQuizId);
-  const editQuizData = useBuilderStore((s) => s.editQuizData);
+  const isOpen = useQuizListStore((s) => s.isEditModalOpen);
+  const closeModal = useQuizListStore((s) => s.closeEditModal);
+  const editQuizId = useQuizListStore((s) => s.editQuizId);
+  const editQuizData = useQuizListStore((s) => s.editQuizData);
 
   // API integration
   const { mutate, isPending } = useUpdateQuiz();

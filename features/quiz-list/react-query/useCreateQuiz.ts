@@ -5,13 +5,13 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { useCreateQuiz as useCreateQuizGenerated } from '@/core/api/generated/quizzes/quizzes';
-import { useBuilderStore } from '../store/builder.store';
+import { useQuizListStore } from '../store';';
 
 export function useCreateQuiz() {
   const t = useTranslations('quiz-maker.builder');
   const queryClient = useQueryClient();
-  const setCurrentQuizId = useBuilderStore((s) => s.setCurrentQuizId);
-  const closeCreateModal = useBuilderStore((s) => s.closeCreateModal);
+  const setCurrentQuizId = useQuizListStore((s) => s.setCurrentQuizId);
+  const closeCreateModal = useQuizListStore((s) => s.closeCreateModal);
 
   const mutation = useCreateQuizGenerated({
     mutation: {

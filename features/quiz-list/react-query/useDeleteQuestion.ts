@@ -5,13 +5,13 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { useDeleteQuestion as useDeleteQuestionGenerated } from '@/core/api/generated/questions/questions';
-import { useBuilderStore } from '../store/builder.store';
+import { useQuizListStore } from '../store';';
 
 export function useDeleteQuestion(quizId: number) {
   const t = useTranslations('quiz-maker.builder');
   const queryClient = useQueryClient();
-  const setQuestionCount = useBuilderStore((s) => s.setQuestionCount);
-  const currentCount = useBuilderStore((s) => s.questionCount);
+  const setQuestionCount = useQuizListStore((s) => s.setQuestionCount);
+  const currentCount = useQuizListStore((s) => s.questionCount);
 
   const mutation = useDeleteQuestionGenerated({
     mutation: {
