@@ -29,6 +29,12 @@ export function PlayerContainer() {
   const router = useRouter();
   const t = useTranslations('quiz-maker.results');
   const phase = usePlayerStore((s) => s.phase);
+  const resetPlayer = usePlayerStore((s) => s.resetPlayer);
+
+  const handleBackToQuizList = () => {
+    resetPlayer();
+    router.push(ROUTES.QUIZ_LIST);
+  };
 
   // Playing phase: Quiz taking interface
   if (phase === 'playing') {
@@ -51,7 +57,7 @@ export function PlayerContainer() {
       {/* Back to Quiz List */}
       <div className="flex justify-center">
         <Button
-          onClick={() => router.push(ROUTES.QUIZ_LIST)}
+          onClick={handleBackToQuizList}
           variant="outline"
           size="lg"
         >

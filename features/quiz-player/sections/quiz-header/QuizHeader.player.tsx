@@ -16,9 +16,8 @@ import { CountdownTimer } from '../../components/countdown-timer';
  * - Fetch quiz data via useGetQuizPlayer
  * - Start attempt via useStartAttempt on mount
  * - Display quiz metadata (title, description, time limit)
- * - Show progress bar
+ * - Show progress bar with countdown timer
  * - Handle loading & error states
- * - Reset player state on unmount
  */
 export function QuizHeaderPlayer() {
   const t = useTranslations('quiz-maker.player');
@@ -28,7 +27,6 @@ export function QuizHeaderPlayer() {
   const attemptId = usePlayerStore((s) => s.attemptId);
   const currentQuestionIndex = usePlayerStore((s) => s.currentQuestionIndex);
   const setQuizId = usePlayerStore((s) => s.setQuizId);
-  const resetPlayer = usePlayerStore((s) => s.resetPlayer);
 
   // Fetch quiz data
   const { data: quiz, isLoading, error } = useGetQuizPlayer(quizId, {
@@ -50,13 +48,6 @@ export function QuizHeaderPlayer() {
       startAttempt({ data: { quizId } });
     }
   }, [quiz, attemptId, quizId, startAttempt, isStartingAttempt]);
-
-  // Reset player state when unmounting
-  useEffect(() => {
-    return () => {
-      resetPlayer();
-    };
-  }, [resetPlayer]);
 
   // Loading state
   if (isLoading || !quiz || !attemptId) {
