@@ -1,1 +1,1 @@
-export { MCQAnswer } from './MCQAnswer';
+export { MCQAnswer } from './MCQAnswer.player';

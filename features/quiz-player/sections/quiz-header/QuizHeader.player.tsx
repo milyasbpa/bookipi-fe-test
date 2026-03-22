@@ -3,10 +3,11 @@
 import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 
 import { usePlayerStore } from '../../store/player.store';
-import { useGetQuizPlayer, useStartAttempt } from '../../react-query';
-import { ProgressBar } from '../../components/progress-bar/ProgressBar';
+import { useGetQuizPlayer, useStartAttempt, useSubmitAttempt } from '../../react-query';
+import { ProgressBar } from '../../components/progress-bar';
 import { CountdownTimer } from '../../components/countdown-timer';
 
 /**
@@ -27,6 +28,12 @@ export function QuizHeaderPlayer() {
   const attemptId = usePlayerStore((s) => s.attemptId);
   const currentQuestionIndex = usePlayerStore((s) => s.currentQuestionIndex);
   const setQuizId = usePlayerStore((s) => s.setQuizId);
+  const remainingSeconds = usePlayerStore((s) => s.remainingSeconds);
+  const setRemainingSeconds = usePlayerStore((s) => s.setRemainingSeconds);
+  const phase = usePlayerStore((s) => s.phase);
+
+  // Submit attempt mutation
+  const { mutate: submitAttempt } = useSubmitAttempt(attemptId!, quizId);
 
   // Fetch quiz data
   const { data: quiz, isLoading, error } = useGetQuizPlayer(quizId, {
@@ -48,6 +55,24 @@ export function QuizHeaderPlayer() {
       startAttempt({ data: { quizId } });
     }
   }, [quiz, attemptId, quizId, startAttempt, isStartingAttempt]);
+
+  // Initialize timer when quiz loads
+  useEffect(() => {
+    if (phase === 'playing' && remainingSeconds === null && quiz?.timeLimitSeconds) {
+      setRemainingSeconds(quiz.timeLimitSeconds);
+    }
+  }, [quiz, remainingSeconds, setRemainingSeconds, phase]);
+
+  // Handle time up
+  const handleTimeUp = () => {
+    toast.info(t('time-up'));
+    submitAttempt();
+  };
+
+  // Handle tick
+  const handleTick = (newSeconds: number) => {
+    setRemainingSeconds(newSeconds);
+  };
 
   // Loading state
   if (isLoading || !quiz || !attemptId) {
@@ -80,7 +105,12 @@ export function QuizHeaderPlayer() {
 
   return (
     <div className="space-y-6">
-      <ProgressBar current={currentQuestionIndex} total={totalQuestions} />
+      <ProgressBar
+        current={currentQuestionIndex}
+        total={totalQuestions}
+        progressLabel={t('progress-question')}
+        ofLabel={t('of')}
+      />
 
       <div>
         <h1 className="text-3xl font-bold text-foreground">
@@ -90,10 +120,11 @@ export function QuizHeaderPlayer() {
           {quiz.description || t('no-description')}
         </p>
         {quiz.timeLimitSeconds && (
-          <CountdownTimer 
-            timeLimitSeconds={quiz.timeLimitSeconds}
-            attemptId={attemptId}
-            quizId={quizId}
+          <CountdownTimer
+            remainingSeconds={remainingSeconds}
+            onTick={handleTick}
+            onTimeUp={handleTimeUp}
+            timeRemainingLabel={t('time-remaining')}
           />
         )}
       </div>

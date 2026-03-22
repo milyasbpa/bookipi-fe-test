@@ -1,1 +1,1 @@
-export { ShortAnswer } from './ShortAnswer';
+export { ShortAnswer } from './ShortAnswer.player';

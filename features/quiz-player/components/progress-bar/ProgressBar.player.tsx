@@ -1,19 +1,24 @@
-import { useTranslations } from 'next-intl';
-
 interface ProgressBarProps {
   current: number;
   total: number;
+  progressLabel: string;
+  ofLabel: string;
 }
 
-export function ProgressBar({ current, total }: ProgressBarProps) {
-  const t = useTranslations('quiz-maker.player');
+/**
+ * ProgressBar Component (Stateless)
+ * 
+ * Pure presentational component - displays progress
+ * NO translations, all labels via props
+ */
+export function ProgressBar({ current, total, progressLabel, ofLabel }: ProgressBarProps) {
   const percentage = ((current + 1) / total) * 100;
 
   return (
     <div className="space-y-2">
       <div className="flex justify-between text-sm">
         <span className="text-muted-foreground">
-          {t('progress-question')} {current + 1} {t('of')} {total}
+          {progressLabel} {current + 1} {ofLabel} {total}
         </span>
         <span className="font-medium text-foreground">{Math.round(percentage)}%</span>
       </div>

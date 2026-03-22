@@ -3,8 +3,8 @@
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-import { MCQAnswer } from '../../components/mcq-answer/MCQAnswer';
-import { ShortAnswer } from '../../components/short-answer/ShortAnswer';
+import { MCQAnswer } from '../../components/mcq-answer';
+import { ShortAnswer } from '../../components/short-answer';
 import { usePlayerStore } from '../../store/player.store';
 import { useGetQuizPlayer } from '../../react-query';
 

@@ -2,66 +2,49 @@
 
 import { useEffect } from 'react';
 import { Clock } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { toast } from 'sonner';
-
-import { usePlayerStore } from '../../store/player.store';
-import { useSubmitAttempt } from '../../react-query';
 
 interface CountdownTimerProps {
-  timeLimitSeconds: number;
-  attemptId: number;
-  quizId: number;
+  remainingSeconds: number | null;
+  onTick: (newSeconds: number) => void;
+  onTimeUp: () => void;
+  timeRemainingLabel: string;
 }
 
 /**
- * CountdownTimer - Real-time countdown timer
+ * CountdownTimer Component (Stateless)
  * 
- * Responsibilities:
- * - Initialize timer from timeLimitSeconds
- * - Countdown every second
- * - Auto-submit when time reaches 0
- * - Display in MM:SS format
+ * Pure presentational component - handles countdown display and timing logic
+ * NO store, NO API, NO translations
+ * All actions via callbacks
  */
-export function CountdownTimer({ timeLimitSeconds, attemptId, quizId }: CountdownTimerProps) {
-  const t = useTranslations('quiz-maker.player');
-  const remainingSeconds = usePlayerStore((s) => s.remainingSeconds);
-  const setRemainingSeconds = usePlayerStore((s) => s.setRemainingSeconds);
-  const phase = usePlayerStore((s) => s.phase);
-
-  const { mutate: submitAttempt } = useSubmitAttempt(attemptId, quizId);
-
-  // Initialize timer when component mounts
-  useEffect(() => {
-    if (phase === 'playing' && remainingSeconds === null) {
-      setRemainingSeconds(timeLimitSeconds);
-    }
-  }, [timeLimitSeconds, remainingSeconds, setRemainingSeconds, phase]);
-
+export function CountdownTimer({
+  remainingSeconds,
+  onTick,
+  onTimeUp,
+  timeRemainingLabel,
+}: CountdownTimerProps) {
   // Countdown logic
   useEffect(() => {
-    // Only run countdown during playing phase
-    if (phase !== 'playing' || remainingSeconds === null) {
+    if (remainingSeconds === null || remainingSeconds < 0) {
       return;
     }
 
     // Auto-submit when time's up
     if (remainingSeconds === 0) {
-      toast.info(t('time-up'));
-      submitAttempt();
+      onTimeUp();
       return;
     }
 
     // Countdown every second
     const interval = setInterval(() => {
-      setRemainingSeconds(Math.max(0, remainingSeconds - 1));
+      onTick(Math.max(0, remainingSeconds - 1));
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [remainingSeconds, phase, submitAttempt, setRemainingSeconds, t]);
+  }, [remainingSeconds, onTick, onTimeUp]);
 
   // Don't render if no time remaining data
-  if (remainingSeconds === null) {
+  if (remainingSeconds === null || remainingSeconds < 0) {
     return null;
   }
 
@@ -76,7 +59,7 @@ export function CountdownTimer({ timeLimitSeconds, attemptId, quizId }: Countdow
     <div className="flex items-center gap-2 mt-4 text-sm">
       <Clock className="size-4" />
       <span>
-        {t('time-remaining')}: <strong>{formatTime(remainingSeconds)}</strong>
+        {timeRemainingLabel}: <strong>{formatTime(remainingSeconds)}</strong>
       </span>
     </div>
   );

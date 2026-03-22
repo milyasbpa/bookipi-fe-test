@@ -1,5 +1,5 @@
-export { useStartAttempt } from './use-start-attempt';
-export { useAnswerQuestion } from './use-answer-question';
-export { useSubmitAttempt } from './use-submit-attempt';
-export { useRecordEvent } from './use-record-event';
-export { useGetQuizPlayer } from './use-get-quiz-player';
+export { useStartAttempt } from './useStartAttempt';
+export { useAnswerQuestion } from './useAnswerQuestion';
+export { useSubmitAttempt } from './useSubmitAttempt';
+export { useRecordEvent } from './useRecordEvent';
+export { useGetQuizPlayer } from './useGetQuizPlayer';
