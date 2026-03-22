@@ -101,8 +101,6 @@
     "questions-list": "Questions"
   },
   "player": {
-    "attempt-started": "Quiz started! Good luck!",
-    "attempt-start-error": "Failed to start quiz. Redirecting...",
     "answer-save-error": "Failed to save your answer. Please try again.",
     "quiz-submitted": "Quiz submitted successfully!",
     "submit-error": "Failed to submit quiz. Please try again.",
@@ -144,7 +142,6 @@
     "breakdown-load-error": "Failed to load question breakdown.",
     "no-questions": "No questions found.",
     "question-breakdown-title": "Question Breakdown",
-    "question-number": "Question {{number}}",
     "correct-answer-label": "Correct answer:",
     "loading-events": "Loading activity log...",
     "no-suspicious-activity": "✓ No suspicious activity detected",

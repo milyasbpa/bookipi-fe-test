@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
@@ -12,24 +13,17 @@ export function useSubmitAttempt(attemptId: number, quizId: number) {
   const t = useTranslations('quiz-maker.player');
   const setPhaseCompleted = usePlayerStore((s) => s.setPhaseCompleted);
   const answers = usePlayerStore((s) => s.answers);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const answerMutation = useAnswerQuestion();
-  const submitMutation = useSubmitAttemptGenerated({
-    mutation: {
-      onSuccess: (data: SubmitResult) => {
-        // Save result to player store and switch to completed phase
-        setPhaseCompleted(data);
-        
-        toast.success(t('quiz-submitted'));
-      },
-      onError: () => {
-        toast.error(t('submit-error'));
-      },
-    },
-  });
+  const submitMutation = useSubmitAttemptGenerated();
 
   // Custom mutate function that saves all answers first, then submits
   const mutateWithAnswers = async () => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    
     try {
       // Save all answers first
       const answerEntries = Object.entries(answers);
@@ -52,16 +46,23 @@ export function useSubmitAttempt(attemptId: number, quizId: number) {
       }
 
       // Then submit the attempt
-      submitMutation.mutate({ id: attemptId });
+      const result = await submitMutation.mutateAsync({ id: attemptId });
+      
+      // Update phase to completed
+      setPhaseCompleted(result);
+      toast.success(t('quiz-submitted'));
+      
     } catch (error) {
       toast.dismiss('saving-answers');
-      toast.error(t('answer-save-error'));
+      toast.error(t('submit-error'));
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return {
-    ...submitMutation,
     mutate: mutateWithAnswers,
     mutateAsync: mutateWithAnswers,
+    isPending: isSubmitting,
   };
 }

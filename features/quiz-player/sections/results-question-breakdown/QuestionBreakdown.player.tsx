@@ -90,7 +90,7 @@ export function QuestionBreakdownPlayer() {
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-semibold text-muted-foreground">
-                      {t('question-number', { number: index + 1 })}
+                      Question {index + 1}
                     </span>
                     <span
                       className={`
