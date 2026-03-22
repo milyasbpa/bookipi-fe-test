@@ -8,15 +8,6 @@ import { Button, FormField, Input } from '@/core/components';
 import { useQuizCreateStore } from '../../store/quiz-create.store';
 import { quizSchema, type QuizFormValues } from '@/core/schemas';
 
-/**
- * QuizInfo Section (Step 1)
- * 
- * Stateful section for entering quiz metadata
- * - Title, description, time limit
- * - Form validation with Zod
- * - Stores data in quiz-create store
- * - Moves to step 2 on submit
- */
 export function QuizInfo() {
   const t = useTranslations('quiz-maker.builder');
   const { quizMetadata, nextStep } = useQuizCreateStore();

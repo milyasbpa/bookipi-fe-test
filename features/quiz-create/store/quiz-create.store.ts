@@ -14,16 +14,12 @@ interface Question {
 }
 
 interface QuizCreateStore {
-  // Current step
   currentStep: 1 | 2;
 
-  // Step 1 data
   quizMetadata: QuizMetadata | null;
 
-  // Step 2 data
   questions: Question[];
 
-  // Actions
   nextStep: (metadata: QuizMetadata) => void;
   prevStep: () => void;
   addQuestion: (question: Question) => void;

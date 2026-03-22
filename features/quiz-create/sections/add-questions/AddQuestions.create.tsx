@@ -12,16 +12,6 @@ import { useQuizCreateStore } from '../../store/quiz-create.store';
 import { useCreateQuiz, useCreateQuestion } from '../../react-query';
 import { ROUTES } from '@/core/lib/routes';
 
-/**
- * AddQuestions Section (Step 2)
- * 
- * Stateful section for adding questions to quiz
- * - Displays question form (reused from quiz-list)
- * - Shows list of added questions
- * - Handles quiz + questions submission
- * - Back button to step 1
- * - Submit button to create quiz with all questions
- */
 export function AddQuestions() {
   const t = useTranslations('quiz-maker.builder');
   const router = useRouter();
@@ -43,13 +33,11 @@ export function AddQuestions() {
     setIsSubmitting(true);
 
     try {
-      // Create quiz (always set isPublished: true)
       const quiz = await createQuiz.mutateAsync({ 
         data: { ...quizMetadata!, isPublished: true } 
       });
       const quizId = quiz.id!;
 
-      // Add all questions
       const createQuestionMutation = useCreateQuestion(quizId);
       await Promise.all(
         questions.map((q) =>
@@ -57,7 +45,6 @@ export function AddQuestions() {
         )
       );
 
-      // Success
       toast.success(
         t('quiz-created-successfully', {
           id: quizId,
@@ -83,7 +70,6 @@ export function AddQuestions() {
         </p>
       </div>
 
-      {/* Question Form */}
       <QuestionForm
         onAdd={handleAddQuestion}
         addQuestionTitle={t('add-question')}
@@ -101,7 +87,6 @@ export function AddQuestions() {
         addQuestionButton={t('add-question-button')}
       />
 
-      {/* Questions List */}
       <div className="space-y-4">
         <h2 className="text-xl font-semibold">
           {t('questions-list')} ({questions.length})
@@ -140,7 +125,6 @@ export function AddQuestions() {
         )}
       </div>
 
-      {/* Actions - Fixed at bottom */}
       <div className="fixed bottom-0 left-0 right-0 border-t bg-background p-4">
         <div className="mx-auto max-w-4xl flex gap-2">
           <Button variant="outline" onClick={prevStep} disabled={isSubmitting}>
@@ -149,7 +133,7 @@ export function AddQuestions() {
           <Button
             variant="primary"
             onClick={handleSubmitQuiz}
-            disabled={isSubmitting || questions.length === 0}
+            disabled={isSubmitting}
             className="flex-1"
           >
             {isSubmitting

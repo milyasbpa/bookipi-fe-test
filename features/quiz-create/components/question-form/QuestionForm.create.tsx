@@ -10,7 +10,6 @@ import { MCQOptions } from '@/core/components';
 interface QuestionFormProps {
   onAdd: (question: any) => void;
   
-  // Labels for stateless component
   addQuestionTitle: string;
   questionTypeLabel: string;
   multipleChoiceLabel: string;
@@ -26,12 +25,6 @@ interface QuestionFormProps {
   addQuestionButton: string;
 }
 
-/**
- * QuestionForm Component (Stateless)
- * 
- * Pure presentational component - accepts all data via props
- * NO translations, NO API calls
- */
 export function QuestionForm({
   onAdd,
   addQuestionTitle,
@@ -84,7 +77,6 @@ export function QuestionForm({
 
     onAdd(question);
 
-    // Reset form
     setPrompt('');
     setOptions(['', '']);
     setCorrectIndex(-1);
@@ -95,7 +87,6 @@ export function QuestionForm({
     <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border p-4">
       <h3 className="font-semibold">{addQuestionTitle}</h3>
 
-      {/* Type select */}
       <div className="space-y-2">
         <label className="text-sm font-medium">{questionTypeLabel}</label>
         <select
@@ -108,7 +99,6 @@ export function QuestionForm({
         </select>
       </div>
 
-      {/* Prompt */}
       <div className="space-y-2">
         <label className="text-sm font-medium">{questionPromptLabel}</label>
         <textarea
@@ -121,7 +111,6 @@ export function QuestionForm({
         />
       </div>
 
-      {/* Options for MCQ */}
       {questionType === 'mcq' && (
         <div className="space-y-2">
           <label className="text-sm font-medium">{optionsLabel}</label>
@@ -137,7 +126,6 @@ export function QuestionForm({
         </div>
       )}
 
-      {/* Correct Answer for Short */}
       {questionType === 'short' && (
         <div className="space-y-2">
           <label className="text-sm font-medium">{correctAnswerLabel}</label>

@@ -6,27 +6,22 @@ import { toast } from 'sonner';
 
 import { useCreateQuestion as useCreateQuestionGenerated } from '@/core/api/generated/questions/questions';
 
-/**
- * useCreateQuestion Hook
- * 
- * Hook for creating questions in quiz-create feature
- * Wraps generated API hook with success/error handling
- */
+import { quizCreateMutationKeys, quizCreateQueryKeys } from '../keys';
+
 export function useCreateQuestion(quizId: number) {
   const t = useTranslations('quiz-maker.builder');
   const queryClient = useQueryClient();
 
-  const mutation = useCreateQuestionGenerated({
+  return useCreateQuestionGenerated({
     mutation: {
+      mutationKey: quizCreateMutationKeys.createQuestion(quizId),
       onSuccess: () => {
         toast.success(t('question-added'));
-        queryClient.invalidateQueries({ queryKey: [`/quizzes/${quizId}`] });
+        queryClient.invalidateQueries({ queryKey: quizCreateQueryKeys.detail(quizId) });
       },
       onError: () => {
         toast.error(t('question-add-error'));
       },
     },
   });
-
-  return mutation;
 }
