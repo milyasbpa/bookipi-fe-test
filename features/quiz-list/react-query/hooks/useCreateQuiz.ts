@@ -12,7 +12,6 @@ export function useCreateQuiz() {
   const t = useTranslations('quiz-maker.builder');
   const queryClient = useQueryClient();
   const setCurrentQuizId = useQuizListStore((s) => s.setCurrentQuizId);
-  const closeCreateModal = useQuizListStore((s) => s.closeCreateModal);
 
   const mutation = useCreateQuizGenerated({
     mutation: {
@@ -23,7 +22,6 @@ export function useCreateQuiz() {
           setCurrentQuizId(quizId);
           toast.success(t('quiz-created'));
           queryClient.invalidateQueries({ queryKey: quizListQueryKeys.all() });
-          closeCreateModal(); // Close modal after success
         }
       },
       onError: () => {
