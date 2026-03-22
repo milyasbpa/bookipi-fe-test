@@ -1,4 +1,4 @@
-import { QuizListContainer } from '@/features/quiz-list';
+import { QuizListContainer } from '@/features/quiz-list/container';
 
 /**
  * Root Page
