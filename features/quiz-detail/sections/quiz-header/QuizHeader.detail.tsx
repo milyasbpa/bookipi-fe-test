@@ -9,10 +9,6 @@ import { useGetQuizDetail } from '../../react-query';
 import { ROUTES } from '@/core/lib/routes';
 import { useQuizDetailStore } from '../../store/quiz-detail.store';
 
-/**
- * QuizHeader Section
- * Displays quiz title, description, and navigation/action buttons
- */
 export function QuizHeader() {
   const params = useParams();
   const router = useRouter();

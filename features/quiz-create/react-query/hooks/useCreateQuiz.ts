@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { useCreateQuiz as useCreateQuizGenerated } from '@/core/api/generated/quizzes/quizzes';
-import { ROUTES } from '@/core/lib/constants';
+import { ROUTES } from '@/core/lib/routes';
 
 import { quizCreateMutationKeys, quizCreateQueryKeys } from '../keys';
 import { useQuizCreateStore } from '../../store';

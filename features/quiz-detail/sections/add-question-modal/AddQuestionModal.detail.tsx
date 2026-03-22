@@ -9,11 +9,6 @@ import { useQuizDetailStore } from '../../store/quiz-detail.store';
 import { useCreateQuestion } from '../../react-query';
 import type { QuestionFormValues } from '../../schemas/add-question-form.schema';
 
-/**
- * AddQuestionModal Section
- * Modal for adding a new question to the quiz
- * Handles API integration and passes data to stateless component
- */
 export function AddQuestionModal() {
   const params = useParams();
   const t = useTranslations('quiz-maker.builder');

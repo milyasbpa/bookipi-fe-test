@@ -11,11 +11,6 @@ import { useUpdateQuestion } from '../../react-query';
 import { questionSchema, type QuestionFormValues } from '../../schemas/add-question-form.schema';
 import { useQuizDetailStore } from '../../store/quiz-detail.store';
 
-/**
- * EditQuestionModal Section
- * Modal for editing an existing question
- * All logic in one file (no nested components)
- */
 export function EditQuestionModal() {
   const params = useParams();
   const t = useTranslations('quiz-maker.builder');

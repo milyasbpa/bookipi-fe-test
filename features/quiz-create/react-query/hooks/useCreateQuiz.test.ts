@@ -25,7 +25,7 @@ vi.mock('next/navigation', () => ({
 
 vi.mock('@/core/lib/constants', () => ({
   ROUTES: {
-    QUIZ_LIST: '/quiz-list',
+    QUIZ_LIST: '/',
   },
 }));
 
@@ -122,7 +122,7 @@ describe('useCreateQuiz', () => {
 
     await waitFor(() => {
       expect(mockReset).toHaveBeenCalled();
-      expect(mockPush).toHaveBeenCalledWith('/quiz-list');
+      expect(mockPush).toHaveBeenCalledWith('/');
     });
   });
 

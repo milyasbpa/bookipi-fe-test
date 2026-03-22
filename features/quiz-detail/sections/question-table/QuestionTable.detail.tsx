@@ -16,10 +16,6 @@ import { useGetQuizDetail, useDeleteQuestion } from '../../react-query';
 import { useQuizDetailStore } from '../../store/quiz-detail.store';
 import type { Question } from '@/core/api/generated/quizMakerAPI.schemas';
 
-/**
- * QuestionTable Section
- * Displays questions in a table with edit/delete actions
- */
 export function QuestionTable() {
   const params = useParams();
   const t = useTranslations('quiz-maker.builder');

@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 
 import { Button, Dialog, FormField, Input } from '@/core/components';
-import { useUpdateQuiz } from '../../react-query/useUpdateQuiz';
+import { useUpdateQuiz } from '../../react-query';
 import { useQuizDetailStore } from '../../store/quiz-detail.store';
 import { quizSchema, type QuizFormValues } from '@/core/schemas';
 

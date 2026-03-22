@@ -5,22 +5,22 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { useUpdateQuestion as useUpdateQuestionGenerated } from '@/core/api/generated/questions/questions';
+import { quizDetailMutationKeys, quizDetailQueryKeys } from '../keys';
 
 export function useUpdateQuestion(quizId: number) {
   const t = useTranslations('quiz-maker.builder');
   const queryClient = useQueryClient();
 
-  const mutation = useUpdateQuestionGenerated({
+  return useUpdateQuestionGenerated({
     mutation: {
+      mutationKey: quizDetailMutationKeys.updateQuestion(quizId),
       onSuccess: () => {
         toast.success(t('question-updated'));
-        queryClient.invalidateQueries({ queryKey: [`/quizzes/${quizId}`] });
+        queryClient.invalidateQueries({ queryKey: quizDetailQueryKeys.detail(quizId) });
       },
       onError: () => {
         toast.error(t('question-update-error'));
       },
     },
   });
-
-  return mutation;
 }
