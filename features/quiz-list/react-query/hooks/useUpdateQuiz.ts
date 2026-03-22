@@ -18,12 +18,11 @@ export function useUpdateQuiz() {
       mutationKey: quizListMutationKeys.updateQuiz(),
       onSuccess: (response) => {
         toast.success(t('quiz-updated'));
-        // Invalidate both list and detail queries
         queryClient.invalidateQueries({ queryKey: quizListQueryKeys.all() });
         if (response.id) {
           queryClient.invalidateQueries({ queryKey: quizListQueryKeys.detail(response.id) });
         }
-        closeEditModal(); // Close modal after success
+        closeEditModal();
       },
       onError: () => {
         toast.error(t('quiz-update-error'));

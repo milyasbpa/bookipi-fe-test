@@ -24,9 +24,6 @@ const meta: Meta<typeof Edit> = {
 export default meta;
 type Story = StoryObj<typeof Edit>;
 
-/**
- * Edit modal in open state with pre-filled data
- */
 export const Open: Story = {
   parameters: {
     mockData: {
@@ -41,9 +38,6 @@ export const Open: Story = {
   },
 };
 
-/**
- * Edit modal with long content
- */
 export const WithLongContent: Story = {
   parameters: {
     mockData: {
@@ -59,9 +53,6 @@ export const WithLongContent: Story = {
   },
 };
 
-/**
- * Edit modal with minimal content
- */
 export const WithMinimalContent: Story = {
   parameters: {
     mockData: {
@@ -76,9 +67,6 @@ export const WithMinimalContent: Story = {
   },
 };
 
-/**
- * Edit modal in closed state
- */
 export const Closed: Story = {
   parameters: {
     mockData: {
@@ -89,9 +77,6 @@ export const Closed: Story = {
   },
 };
 
-/**
- * Edit modal in loading/saving state
- */
 export const Saving: Story = {
   parameters: {
     mockData: {

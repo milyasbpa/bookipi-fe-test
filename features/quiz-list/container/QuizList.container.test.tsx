@@ -3,7 +3,6 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { QuizListContainer } from './QuizList.container';
 
-// Mock the sections
 vi.mock('../sections/list', () => ({
   List: () => <div data-testid="list-section">List Section</div>,
 }));
@@ -12,7 +11,6 @@ vi.mock('../sections/edit-quiz', () => ({
   Edit: () => <div data-testid="edit-section">Edit Section</div>,
 }));
 
-// Mock next-intl
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
 }));

@@ -10,23 +10,16 @@ import { useUpdateQuiz } from '../../react-query/hooks/useUpdateQuiz';
 import { useQuizListStore } from '../../store';
 import { quizSchema, type QuizFormValues } from '@/core/schemas';
 
-/**
- * Edit quiz section - manages edit quiz modal with form
- * Handles API integration and store state for editing quiz metadata
- */
 export function Edit() {
   const t = useTranslations('quiz-maker.builder');
   
-  // Store integration
   const isOpen = useQuizListStore((s) => s.isEditModalOpen);
   const closeModal = useQuizListStore((s) => s.closeEditModal);
   const editQuizId = useQuizListStore((s) => s.editQuizId);
   const editQuizData = useQuizListStore((s) => s.editQuizData);
 
-  // API integration
   const { mutate, isPending } = useUpdateQuiz();
 
-  // Form state
   const { control, handleSubmit, reset } = useForm<QuizFormValues>({
     resolver: zodResolver(quizSchema),
     defaultValues: {

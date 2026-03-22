@@ -17,14 +17,8 @@ const meta: Meta<typeof QuizListContainer> = {
 export default meta;
 type Story = StoryObj<typeof QuizListContainer>;
 
-/**
- * Default container view with quiz list and edit modal
- */
 export const Default: Story = {};
 
-/**
- * Container with empty quiz list
- */
 export const EmptyState: Story = {
   parameters: {
     docs: {
@@ -35,9 +29,6 @@ export const EmptyState: Story = {
   },
 };
 
-/**
- * Container with loading state
- */
 export const Loading: Story = {
   parameters: {
     docs: {

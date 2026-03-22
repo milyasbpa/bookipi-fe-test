@@ -6,7 +6,6 @@ import React from 'react';
 
 import { useCreateQuestion } from './useCreateQuestion';
 
-// Mock dependencies
 vi.mock('sonner', () => ({
   toast: {
     success: vi.fn(),
@@ -135,7 +134,6 @@ describe('useCreateQuestion', () => {
       isPending: false,
     } as any);
 
-    // Mock implementation for this specific test only
     vi.mocked(useCreateQuestionGenerated.useCreateQuestion).mockImplementationOnce((options: any) => ({
       mutate: vi.fn((data) => {
         options?.mutation?.onError?.(new Error('Creation failed') as any);

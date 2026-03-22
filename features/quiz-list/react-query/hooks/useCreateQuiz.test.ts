@@ -6,7 +6,6 @@ import React from 'react';
 
 import { useCreateQuiz } from './useCreateQuiz';
 
-// Mock dependencies
 vi.mock('sonner', () => ({
   toast: {
     success: vi.fn(),
@@ -146,7 +145,6 @@ describe('useCreateQuiz', () => {
     });
 
     await waitFor(() => {
-      // Should not call setCurrentQuizId if id is undefined
       expect(mockSetCurrentQuizId).not.toHaveBeenCalled();
     });
   });

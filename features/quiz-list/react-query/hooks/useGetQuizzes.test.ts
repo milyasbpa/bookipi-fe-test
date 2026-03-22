@@ -4,8 +4,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 
 import { useGetQuizzes } from './useGetQuizzes';
+import { quizListQueryKeys } from '../keys';
 
-// Mock the generated API
 vi.mock('@/core/api/generated/quizzes/quizzes', () => ({
   useGetQuizzes: vi.fn(() => ({
     data: undefined,
@@ -31,7 +31,6 @@ describe('useGetQuizzes', () => {
       wrapper: createWrapper(),
     });
 
-    // The hook should be called with the centralized query key
     expect(result.current).toBeDefined();
   });
 

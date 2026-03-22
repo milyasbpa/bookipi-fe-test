@@ -6,7 +6,6 @@ import React from 'react';
 
 import { useUpdateQuiz } from './useUpdateQuiz';
 
-// Mock dependencies
 vi.mock('sonner', () => ({
   toast: {
     success: vi.fn(),

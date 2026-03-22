@@ -4,8 +4,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 
 import { useGetQuiz } from './useGetQuiz';
+import { quizListQueryKeys } from '../keys';
 
-// Mock the generated API
 vi.mock('@/core/api/generated/quizzes/quizzes', () => ({
   useGetQuizById: vi.fn(() => ({
     data: undefined,
@@ -67,7 +67,6 @@ describe('useGetQuiz', () => {
       wrapper: createWrapper(),
     });
 
-    // Both hooks should be independent
     expect(result1.current).toBeDefined();
     expect(result2.current).toBeDefined();
   });

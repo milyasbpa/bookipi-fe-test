@@ -5,34 +5,18 @@ import { useTranslations } from 'next-intl';
 import { List } from '../sections/list';
 import { Edit } from '../sections/edit-quiz';
 
-/**
- * QuizListContainer - Quiz List Feature Container
- *
- * Architecture: Container → Sections → Components
- * - NO props, NO state, NO business logic
- * - Only responsible for layout and rendering sections
- * - Sections handle API integration and state management
- * 
- * Flow:
- * 1. List section - Main section showing all quizzes (stateful)
- * 2. Edit quiz section - Modal for editing quiz (stateful)
- * 3. Create quiz - Dedicated page at /quiz-maker/create
- */
 export function QuizListContainer() {
   const t = useTranslations('quiz-maker.builder');
 
   return (
     <div className="container mx-auto max-w-6xl space-y-6 p-6">
-      {/* Header */}
       <div>
         <h1 className="text-3xl font-bold">{t('page-title')}</h1>
         <p className="text-muted-foreground mt-1">{t('page-subtitle')}</p>
       </div>
 
-      {/* Main Content: Quiz List */}
       <List />
 
-      {/* Modals */}
       <Edit />
     </div>
   );

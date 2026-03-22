@@ -4,14 +4,12 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 import { Edit } from './Edit.quiz-list';
 
-// Mock data
 const mockQuizData = {
   title: 'JavaScript Basics',
   description: 'Test your JS knowledge',
   timeLimitSeconds: 300,
 };
 
-// Mock hooks
 const mockMutate = vi.fn();
 const mockCloseModal = vi.fn();
 

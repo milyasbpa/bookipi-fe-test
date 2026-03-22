@@ -6,7 +6,6 @@ import React from 'react';
 
 import { useDeleteQuestion } from './useDeleteQuestion';
 
-// Mock dependencies
 vi.mock('sonner', () => ({
   toast: {
     success: vi.fn(),
@@ -54,7 +53,7 @@ const createWrapper = () => {
 describe('useDeleteQuestion', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockCurrentCount = 5; // Reset count before each test
+    mockCurrentCount = 5;
   });
 
   it('uses correct mutationKey with quizId', () => {
@@ -144,7 +143,6 @@ describe('useDeleteQuestion', () => {
   });
 
   it('does not decrement below zero', async () => {
-    // Set count to 0 for this test
     mockCurrentCount = 0;
 
     const { result } = renderHook(() => useDeleteQuestion(1), {
@@ -154,7 +152,6 @@ describe('useDeleteQuestion', () => {
     result.current.mutate({ id: 10 });
 
     await waitFor(() => {
-      // Should call Math.max(0, 0 - 1) = 0
       expect(mockSetQuestionCount).toHaveBeenCalledWith(0);
     });
   });

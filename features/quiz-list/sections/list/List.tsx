@@ -24,7 +24,6 @@ export function List() {
 
   return (
     <div className="space-y-6">
-      {/* Header with Create Button */}
       <div className="flex items-center justify-between">
         <Button onClick={() => router.push(ROUTES.QUIZ_CREATE)} variant="primary" size="lg">
           <Plus className="mr-2 size-4" />
@@ -32,7 +31,6 @@ export function List() {
         </Button>
       </div>
 
-      {/* Empty State */}
       {quizzes.length === 0 && (
         <EmptyState
           icon={<ListPlus />}
@@ -48,7 +46,6 @@ export function List() {
         />
       )}
 
-      {/* Quiz Table */}
       {quizzes.length > 0 && (
         <div className="bg-card rounded-lg border">
           <table className="w-full">

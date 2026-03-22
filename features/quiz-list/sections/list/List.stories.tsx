@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { List } from './List';
 
-// Mock data
 const mockQuizzes = [
   {
     id: 1,
@@ -55,9 +54,6 @@ const meta: Meta<typeof List> = {
 export default meta;
 type Story = StoryObj<typeof List>;
 
-/**
- * List with multiple quizzes
- */
 export const WithQuizzes: Story = {
   parameters: {
     mockData: {
@@ -66,9 +62,6 @@ export const WithQuizzes: Story = {
   },
 };
 
-/**
- * Empty state when no quizzes exist
- */
 export const Empty: Story = {
   parameters: {
     mockData: {
@@ -77,9 +70,6 @@ export const Empty: Story = {
   },
 };
 
-/**
- * Loading state while fetching quizzes
- */
 export const Loading: Story = {
   parameters: {
     mockData: {
@@ -88,9 +78,6 @@ export const Loading: Story = {
   },
 };
 
-/**
- * List with single quiz
- */
 export const SingleQuiz: Story = {
   parameters: {
     mockData: {
@@ -99,9 +86,6 @@ export const SingleQuiz: Story = {
   },
 };
 
-/**
- * List with many quizzes for testing scrolling
- */
 export const ManyQuizzes: Story = {
   parameters: {
     mockData: {

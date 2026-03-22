@@ -3,7 +3,6 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 import { useQuizListTable } from './useQuizListTable';
 
-// Mock data
 const mockQuizzes = [
   {
     id: 1,
@@ -23,7 +22,6 @@ const mockQuizzes = [
   },
 ];
 
-// Mock hooks
 const mockPush = vi.fn();
 const mockOpenEditModal = vi.fn();
 
@@ -86,12 +84,10 @@ describe('useQuizListTable', () => {
     
     expect(timeLimitColumn).toBeDefined();
     
-    // Test cell rendering
     const row = result.current.getRowModel().rows[0];
     const cell = row.getVisibleCells().find((c) => c.column.id === 'timeLimitSeconds');
     
     expect(cell).toBeDefined();
-    // 300 seconds = 5 minutes
     expect(mockQuizzes[0].timeLimitSeconds).toBe(300);
   });
 

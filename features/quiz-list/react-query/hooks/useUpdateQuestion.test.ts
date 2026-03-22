@@ -6,7 +6,6 @@ import React from 'react';
 
 import { useUpdateQuestion } from './useUpdateQuestion';
 
-// Mock dependencies
 vi.mock('sonner', () => ({
   toast: {
     success: vi.fn(),
@@ -99,7 +98,6 @@ describe('useUpdateQuestion', () => {
   it('shows error toast on failure', async () => {
     const useUpdateQuestionGenerated = await import('@/core/api/generated/questions/questions');
     
-    // Mock implementation for this specific test only
     vi.mocked(useUpdateQuestionGenerated.useUpdateQuestion).mockImplementationOnce((options: any) => ({
       mutate: vi.fn((data) => {
         options?.mutation?.onError?.(new Error('Update failed') as any);
@@ -134,7 +132,7 @@ describe('useUpdateQuestion', () => {
       data: {
         prompt: 'What is 2+2?',
         options: ['2', '3', '4', '5'],
-        correctAnswer: 2, // index of correct answer
+        correctAnswer: 2,
       },
     });
 

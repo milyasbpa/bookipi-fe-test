@@ -6,7 +6,7 @@ import { quizListQueryKeys } from '../keys';
 export function useGetQuiz(quizId: number, options?: { enabled?: boolean }) {
   return useGetQuizById(quizId, {
     query: {
-      queryKey: quizListQueryKeys.detail(quizId), // Use centralized query key
+      queryKey: quizListQueryKeys.detail(quizId),
       enabled: options?.enabled ?? true,
     },
   });

@@ -3,7 +3,6 @@ import { useQuizListStore } from './quiz-list.store';
 
 describe('useQuizListStore', () => {
   beforeEach(() => {
-    // Reset store to initial state before each test
     const store = useQuizListStore.getState();
     store.setCurrentQuizId(null);
     store.setQuestionCount(0);
@@ -80,17 +79,14 @@ describe('useQuizListStore', () => {
   it('closes edit modal and resets all modal-related state', () => {
     const { openEditModal, closeEditModal } = useQuizListStore.getState();
 
-    // First open modal
     openEditModal(1, {
       title: 'Test Quiz',
       description: 'Test Description',
       timeLimitSeconds: 300,
     });
 
-    // Verify modal is open
     expect(useQuizListStore.getState().isEditModalOpen).toBe(true);
 
-    // Close modal
     closeEditModal();
 
     const state = useQuizListStore.getState();
@@ -102,14 +98,12 @@ describe('useQuizListStore', () => {
   it('handles multiple modal open/close operations correctly', () => {
     const { openEditModal, closeEditModal } = useQuizListStore.getState();
 
-    // First modal
     openEditModal(1, { title: 'Quiz 1', description: 'Desc 1', timeLimitSeconds: 300 });
     expect(useQuizListStore.getState().editQuizId).toBe(1);
 
     closeEditModal();
     expect(useQuizListStore.getState().isEditModalOpen).toBe(false);
 
-    // Second modal with different data
     openEditModal(2, { title: 'Quiz 2', description: 'Desc 2' });
     const state = useQuizListStore.getState();
     expect(state.editQuizId).toBe(2);
@@ -121,15 +115,12 @@ describe('useQuizListStore', () => {
     const { setCurrentQuizId, setQuestionCount, openEditModal, closeEditModal } =
       useQuizListStore.getState();
 
-    // Set some state
     setCurrentQuizId(999);
     setQuestionCount(42);
 
-    // Open and close modal
     openEditModal(1, { title: 'Test', description: 'Test Desc' });
     closeEditModal();
 
-    // These should remain unchanged
     const state = useQuizListStore.getState();
     expect(state.currentQuizId).toBe(999);
     expect(state.questionCount).toBe(42);

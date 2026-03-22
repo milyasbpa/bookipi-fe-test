@@ -4,7 +4,6 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 import { List } from './List';
 
-// Mock data
 const mockQuizzes = [
   {
     id: 1,
@@ -26,7 +25,6 @@ const mockQuizzes = [
   },
 ];
 
-// Mock hooks
 const mockPush = vi.fn();
 const mockOpenEditModal = vi.fn();
 
@@ -173,7 +171,6 @@ describe('List', () => {
 
     render(<List />);
 
-    // Check that useQuizListTable was called with filtered quizzes (only those with valid id)
     expect(mockTable).toHaveBeenCalledWith(
       expect.arrayContaining([
         expect.objectContaining({ id: 1 }),
