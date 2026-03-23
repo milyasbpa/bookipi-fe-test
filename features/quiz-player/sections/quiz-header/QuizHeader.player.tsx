@@ -48,7 +48,7 @@ export function QuizHeaderPlayer() {
   }, [quiz, quizId, setQuizId]);
 
   // Start attempt on mount
-  const { mutate: startAttempt, isPending: isStartingAttempt } = useStartAttempt();
+  const { mutate: startAttempt, isPending: isStartingAttempt } = useStartAttempt(quizId);
 
   useEffect(() => {
     if (quiz && !attemptId && !isStartingAttempt) {

@@ -5,9 +5,10 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { useSubmitAttempt as useSubmitAttemptGenerated } from '@/core/api/generated/attempts/attempts';
-import { useAnswerQuestion } from '@/core/api/generated/attempts/attempts';
+import { useAnswerQuestion as useAnswerQuestionGenerated } from '@/core/api/generated/attempts/attempts';
 import type { SubmitResult } from '@/core/api/generated/quizMakerAPI.schemas';
-import { usePlayerStore } from '../store/player.store';
+import { usePlayerStore } from '../../store/player.store';
+import { quizPlayerMutationKeys } from '../keys';
 
 export function useSubmitAttempt(attemptId: number, quizId: number) {
   const t = useTranslations('quiz-maker.player');
@@ -15,8 +16,12 @@ export function useSubmitAttempt(attemptId: number, quizId: number) {
   const answers = usePlayerStore((s) => s.answers);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const answerMutation = useAnswerQuestion();
-  const submitMutation = useSubmitAttemptGenerated();
+  const answerMutation = useAnswerQuestionGenerated();
+  const submitMutation = useSubmitAttemptGenerated({
+    mutation: {
+      mutationKey: quizPlayerMutationKeys.submitAttempt(attemptId),
+    },
+  });
 
   // Custom mutate function that saves all answers first, then submits
   const mutateWithAnswers = async () => {
