@@ -5,12 +5,6 @@ interface ProgressBarProps {
   ofLabel: string;
 }
 
-/**
- * ProgressBar Component (Stateless)
- * 
- * Pure presentational component - displays progress
- * NO translations, all labels via props
- */
 export function ProgressBar({ current, total, progressLabel, ofLabel }: ProgressBarProps) {
   const percentage = ((current + 1) / total) * 100;
 

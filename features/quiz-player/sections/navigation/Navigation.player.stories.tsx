@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { NavigationPlayer } from './Navigation.player';
 
-// This is a demo story - actual rendering requires full app context with Zustand, React Query, etc.
-
 const meta = {
   title: 'Features/Quiz Player/Sections/Navigation',
   component: NavigationPlayer,

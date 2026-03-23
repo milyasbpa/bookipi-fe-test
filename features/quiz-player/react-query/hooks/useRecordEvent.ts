@@ -11,12 +11,8 @@ export function useRecordEvent(attemptId: number) {
   const mutation = useRecordEventGenerated({
     mutation: {
       mutationKey: quizPlayerMutationKeys.recordEvent(attemptId),
-      onSuccess: () => {
-        // Silent - no toast for tracking events
-      },
-      onError: () => {
-        // Silent - don't disrupt user experience
-      },
+      onSuccess: () => {},
+      onError: () => {},
     },
   });
 

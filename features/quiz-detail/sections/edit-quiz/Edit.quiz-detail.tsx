@@ -11,10 +11,6 @@ import { useUpdateQuiz } from '../../react-query';
 import { useQuizDetailStore } from '../../store/quiz-detail.store';
 import { quizSchema, type QuizFormValues } from '@/core/schemas';
 
-/**
- * Edit quiz section - manages edit quiz modal with form
- * Handles API integration and store state for editing quiz metadata
- */
 export function Edit() {
   const params = useParams();
   const quizId = Number(params.id);

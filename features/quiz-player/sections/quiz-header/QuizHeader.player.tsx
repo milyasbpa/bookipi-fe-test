@@ -10,16 +10,6 @@ import { useGetQuizPlayer, useStartAttempt, useSubmitAttempt } from '../../react
 import { ProgressBar } from '../../components/progress-bar';
 import { CountdownTimer } from '../../components/countdown-timer';
 
-/**
- * QuizHeaderPlayer - Self-contained section
- * 
- * Responsibilities:
- * - Fetch quiz data via useGetQuizPlayer
- * - Start attempt via useStartAttempt on mount
- * - Display quiz metadata (title, description, time limit)
- * - Show progress bar with countdown timer
- * - Handle loading & error states
- */
 export function QuizHeaderPlayer() {
   const t = useTranslations('quiz-maker.player');
   const params = useParams();
@@ -32,22 +22,18 @@ export function QuizHeaderPlayer() {
   const setRemainingSeconds = usePlayerStore((s) => s.setRemainingSeconds);
   const phase = usePlayerStore((s) => s.phase);
 
-  // Submit attempt mutation
   const { mutate: submitAttempt } = useSubmitAttempt(attemptId!, quizId);
 
-  // Fetch quiz data
   const { data: quiz, isLoading, error } = useGetQuizPlayer(quizId, {
     enabled: !!quizId && !isNaN(quizId),
   });
 
-  // Store quizId when quiz is loaded
   useEffect(() => {
     if (quiz && quizId) {
       setQuizId(quizId);
     }
   }, [quiz, quizId, setQuizId]);
 
-  // Start attempt on mount
   const { mutate: startAttempt, isPending: isStartingAttempt } = useStartAttempt(quizId);
 
   useEffect(() => {
@@ -56,25 +42,21 @@ export function QuizHeaderPlayer() {
     }
   }, [quiz, attemptId, quizId, startAttempt, isStartingAttempt]);
 
-  // Initialize timer when quiz loads
   useEffect(() => {
     if (phase === 'playing' && remainingSeconds === null && quiz?.timeLimitSeconds) {
       setRemainingSeconds(quiz.timeLimitSeconds);
     }
   }, [quiz, remainingSeconds, setRemainingSeconds, phase]);
 
-  // Handle time up
   const handleTimeUp = () => {
     toast.info(t('time-up'));
     submitAttempt();
   };
 
-  // Handle tick
   const handleTick = (newSeconds: number) => {
     setRemainingSeconds(newSeconds);
   };
 
-  // Loading state
   if (isLoading || !quiz || !attemptId) {
     return (
       <div className="text-center text-muted-foreground">
@@ -83,7 +65,6 @@ export function QuizHeaderPlayer() {
     );
   }
 
-  // Error state
   if (error) {
     return (
       <div className="text-center text-destructive">
@@ -92,7 +73,6 @@ export function QuizHeaderPlayer() {
     );
   }
 
-  // No questions state
   if (!quiz.questions || quiz.questions.length === 0) {
     return (
       <div className="text-center text-muted-foreground">

@@ -12,9 +12,7 @@ export function useAnswerQuestion(attemptId: number) {
   const mutation = useAnswerQuestionGenerated({
     mutation: {
       mutationKey: quizPlayerMutationKeys.answerQuestion(attemptId),
-      onSuccess: () => {
-        // Silent success - no toast for each answer
-      },
+      onSuccess: () => {},
       onError: () => {
         toast.error(t('answer-save-error'));
       },

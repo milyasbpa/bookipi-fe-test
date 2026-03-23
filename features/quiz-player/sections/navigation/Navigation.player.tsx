@@ -8,15 +8,6 @@ import { Button } from '@/core/components';
 import { usePlayerStore } from '../../store/player.store';
 import { useSubmitAttempt, useGetQuizPlayer } from '../../react-query';
 
-/**
- * NavigationPlayer - Self-contained section
- * 
- * Responsibilities:
- * - Access attemptId & currentQuestionIndex from Zustand
- * - Fetch quiz to get totalQuestions count
- * - Handle Previous/Next navigation via Zustand actions
- * - Handle Submit via useSubmitAttempt
- */
 export function NavigationPlayer() {
   const t = useTranslations('quiz-maker.player');
   const params = useParams();
@@ -27,14 +18,12 @@ export function NavigationPlayer() {
   const goToNext = usePlayerStore((s) => s.goToNext);
   const goToPrevious = usePlayerStore((s) => s.goToPrevious);
 
-  // Fetch quiz to get totalQuestions
   const { data: quiz } = useGetQuizPlayer(quizId, {
     enabled: !!quizId && !isNaN(quizId) && !!attemptId,
   });
 
   const { mutate: submitAttempt, isPending: isSubmitting } = useSubmitAttempt(attemptId || 0, quizId);
 
-  // Don't render until we have quiz data and attemptId
   if (!quiz || !attemptId || !quiz.questions) {
     return null;
   }

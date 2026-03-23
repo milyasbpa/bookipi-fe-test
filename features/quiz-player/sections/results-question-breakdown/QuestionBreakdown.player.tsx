@@ -7,30 +7,16 @@ import type { Question, SubmitResultDetailsItem } from '@/core/api/generated/qui
 import { usePlayerStore } from '../../store/player.store';
 import { useGetQuizPlayer } from '../../react-query';
 
-/**
- * QuestionBreakdownPlayer - Results question breakdown section
- * 
- * Responsibilities:
- * - Get details from player store
- * - Fetch quiz data via useGetQuizPlayer
- * - Display each question with correct/incorrect indicator
- * - Show correct answer for incorrect questions
- * - Handle loading & error states
- * 
- * Shown when phase = 'completed'
- */
 export function QuestionBreakdownPlayer() {
   const t = useTranslations('quiz-maker.results');
   
   const submitResult = usePlayerStore((s) => s.submitResult);
   const quizId = usePlayerStore((s) => s.quizId);
 
-  // Fetch quiz data
   const { data: quiz, isLoading, error } = useGetQuizPlayer(quizId!, {
     enabled: !!quizId,
   });
 
-  // Loading state
   if (isLoading) {
     return (
       <div className="rounded-lg border-2 border-border bg-card p-8">
@@ -39,7 +25,6 @@ export function QuestionBreakdownPlayer() {
     );
   }
 
-  // Error state
   if (error || !quiz || !submitResult) {
     return (
       <div className="rounded-lg border-2 border-destructive bg-destructive/10 p-8">

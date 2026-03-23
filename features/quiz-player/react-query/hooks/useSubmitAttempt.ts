@@ -23,20 +23,17 @@ export function useSubmitAttempt(attemptId: number, quizId: number) {
     },
   });
 
-  // Custom mutate function that saves all answers first, then submits
   const mutateWithAnswers = async () => {
     if (isSubmitting) return;
 
     setIsSubmitting(true);
     
     try {
-      // Save all answers first
       const answerEntries = Object.entries(answers);
       
       if (answerEntries.length > 0) {
         toast.loading(t('saving-answers'), { id: 'saving-answers' });
         
-        // Save each answer sequentially
         for (const [questionId, value] of answerEntries) {
           await answerMutation.mutateAsync({
             id: attemptId,
@@ -50,10 +47,8 @@ export function useSubmitAttempt(attemptId: number, quizId: number) {
         toast.dismiss('saving-answers');
       }
 
-      // Then submit the attempt
       const result = await submitMutation.mutateAsync({ id: attemptId });
       
-      // Update phase to completed
       setPhaseCompleted(result);
       toast.success(t('quiz-submitted'));
       

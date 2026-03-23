@@ -10,32 +10,22 @@ interface CountdownTimerProps {
   timeRemainingLabel: string;
 }
 
-/**
- * CountdownTimer Component (Stateless)
- * 
- * Pure presentational component - handles countdown display and timing logic
- * NO store, NO API, NO translations
- * All actions via callbacks
- */
 export function CountdownTimer({
   remainingSeconds,
   onTick,
   onTimeUp,
   timeRemainingLabel,
 }: CountdownTimerProps) {
-  // Countdown logic
   useEffect(() => {
     if (remainingSeconds === null || remainingSeconds < 0) {
       return;
     }
 
-    // Auto-submit when time's up
     if (remainingSeconds === 0) {
       onTimeUp();
       return;
     }
 
-    // Countdown every second
     const interval = setInterval(() => {
       onTick(Math.max(0, remainingSeconds - 1));
     }, 1000);
@@ -43,12 +33,11 @@ export function CountdownTimer({
     return () => clearInterval(interval);
   }, [remainingSeconds, onTick, onTimeUp]);
 
-  // Don't render if no time remaining data
+
   if (remainingSeconds === null || remainingSeconds < 0) {
     return null;
   }
 
-  // Format seconds as MM:SS
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;

@@ -8,15 +8,6 @@ import { ShortAnswer } from '../../components/short-answer';
 import { usePlayerStore } from '../../store/player.store';
 import { useGetQuizPlayer } from '../../react-query';
 
-/**
- * QuestionViewPlayer - Self-contained section
- * 
- * Responsibilities:
- * - Access current question from quiz data + Zustand currentQuestionIndex
- * - Render appropriate component based on question type (MCQ/Short/Code)
- * - Handle answer changes via Zustand only (no auto-save)
- * - Answers saved to API only on submit
- */
 export function QuestionViewPlayer() {
   const t = useTranslations('quiz-maker.player');
   const params = useParams();
@@ -27,12 +18,10 @@ export function QuestionViewPlayer() {
   const answers = usePlayerStore((s) => s.answers);
   const setAnswer = usePlayerStore((s) => s.setAnswer);
 
-  // Fetch quiz to get questions
   const { data: quiz } = useGetQuizPlayer(quizId, {
     enabled: !!quizId && !isNaN(quizId) && !!attemptId,
   });
 
-  // Don't render until we have quiz data and attemptId
   if (!quiz || !attemptId || !quiz.questions || quiz.questions.length === 0) {
     return null;
   }

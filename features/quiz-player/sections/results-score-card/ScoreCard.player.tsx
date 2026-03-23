@@ -6,30 +6,16 @@ import { useTranslations } from 'next-intl';
 import { usePlayerStore } from '../../store/player.store';
 import { useGetQuizPlayer } from '../../react-query';
 
-/**
- * ScoreCardPlayer - Results score card section
- * 
- * Responsibilities:
- * - Get submitResult from player store
- * - Fetch quiz data via useGetQuizPlayer
- * - Calculate percentage from score/totalQuestions
- * - Display score with appropriate styling (perfect/good/needs improvement)
- * - Handle loading & error states
- * 
- * Shown when phase = 'completed'
- */
 export function ScoreCardPlayer() {
   const t = useTranslations('quiz-maker.results');
   
   const submitResult = usePlayerStore((s) => s.submitResult);
   const quizId = usePlayerStore((s) => s.quizId);
 
-  // Fetch quiz data
   const { data: quiz, isLoading, error } = useGetQuizPlayer(quizId!, {
     enabled: !!quizId,
   });
 
-  // Loading state
   if (isLoading) {
     return (
       <div className="rounded-lg border-2 border-border bg-card p-8 text-center">
@@ -38,7 +24,6 @@ export function ScoreCardPlayer() {
     );
   }
 
-  // Error state
   if (error || !quiz || !submitResult) {
     return (
       <div className="rounded-lg border-2 border-destructive bg-destructive/10 p-8 text-center">

@@ -7,11 +7,6 @@ import { Button } from '@/core/components';
 import { ROUTES } from '@/core/lib/routes';
 import { usePlayerStore } from '../../store/player.store';
 
-/**
- * ResultsFooter Section
- * 
- * Handles back navigation after quiz completion
- */
 export function ResultsFooter() {
   const router = useRouter();
   const t = useTranslations('quiz-maker.results');
