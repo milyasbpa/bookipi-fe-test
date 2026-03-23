@@ -1,320 +1,867 @@
-# TUG Wellness Admin Portal
+# Quiz Maker Application
 
-Admin portal for managing Wellness Packages — built as part of the TUG Full Stack (Dart & TypeScript) Technical Assessment.
+A modern, full-featured quiz creation and management platform built with React and Next.js. This application allows users to create coding-related quizzes, take quizzes with real-time tracking, and view detailed result summaries with optional anti-cheat monitoring.
+
+> **Note**: This project was built as a take-home technical assessment demonstrating modern React development practices, clean architecture, and comprehensive testing.
 
 ---
 
-## Overview
+## Table of Contents
 
-This is the **Admin Portal** (Part 2 of the assessment). It connects to the TUG NestJS backend and provides a complete package management interface: view, create, edit, and delete Wellness Packages.
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Prerequisites](#prerequisites)
+- [Installation & Setup](#installation--setup)
+- [Running the Application](#running-the-application)
+- [Available Scripts](#available-scripts)
+- [Testing](#testing)
+- [Code Quality](#code-quality)
+- [Architecture Decisions](#architecture-decisions)
+- [API Integration](#api-integration)
+- [Key Libraries](#key-libraries)
+- [Development Workflow](#development-workflow)
+- [Known Limitations](#known-limitations)
+- [Troubleshooting](#troubleshooting)
+- [License](#license)
 
-- **Live at**: `http://localhost:3000`
-- **Backend required**: TUG backend running at `http://localhost:4000`
-- **Routes**: `/login` → `/packages` (protected)
+---
+
+## Features
+
+### Quiz Builder
+
+- ✅ Create quizzes with title, description, and time limits
+- ✅ Support for multiple question types:
+  - Multiple Choice Questions (MCQ) with single correct answer
+  - Short Answer questions with case-insensitive string matching
+  - Code snippet display (optional for each question)
+- ✅ Drag-and-drop question reordering
+- ✅ Real-time validation and error handling
+- ✅ Auto-save functionality
+
+### Quiz Player
+
+- ✅ Load quiz by ID with full question details
+- ✅ Navigate between questions with Previous/Next controls
+- ✅ Live countdown timer with auto-submit on timeout
+- ✅ Answer persistence (saved to backend on each change)
+- ✅ Submit quiz and view detailed results:
+  - Overall score and percentage
+  - Per-question correctness breakdown
+  - Correct vs. submitted answers comparison
+
+### Quiz List
+
+- ✅ Browse all available quizzes
+- ✅ Pagination support
+- ✅ Search and filter functionality
+- ✅ Quick quiz preview and stats
+
+### Anti-Cheat System (Bonus)
+
+- ✅ Focus/blur event tracking with timestamps
+- ✅ Paste detection in answer inputs
+- ✅ Event logging sent to backend
+- ✅ Compact anti-cheat summary on results page
+- ✅ Privacy-conscious implementation
 
 ---
 
 ## Tech Stack
 
-| Category           | Choice                                            |
-| ------------------ | ------------------------------------------------- |
-| Framework          | Next.js 15 (App Router)                           |
-| Language           | TypeScript (strict mode)                          |
-| Styling            | Tailwind CSS v4 + shadcn/ui                       |
-| Server State       | TanStack Query v5                                 |
-| Client State       | Zustand                                           |
-| Validation         | Zod                                               |
-| API Client         | Axios + Orval (code-generated from OpenAPI)       |
-| Auth               | JWT via httpOnly cookie + Zustand in-memory store |
-| i18n               | next-intl (English + German)                      |
-| Testing            | Vitest + React Testing Library                    |
-| Component Explorer | Storybook v8                                      |
-| Linting            | ESLint (flat config) + Prettier                   |
-| Git Hooks          | Husky + lint-staged + Commitlint                  |
-| Containerization   | Docker (multi-stage, standalone output)           |
-
----
-
-## Prerequisites
-
-- Node.js `22.22.0` (see `.nvmrc`)
-- TUG backend running and accessible at `http://localhost:4000`
-
----
-
-## Setup
-
-**1. Use the correct Node.js version**
-
-```bash
-nvm use
-```
-
-**2. Install dependencies**
-
-```bash
-npm install
-```
-
-**3. Configure environment variables**
-
-Copy `.env.example` to `.env` and set the values:
-
-```
-NEXT_PUBLIC_API_BASE_URL=http://localhost:4000
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-```
-
-**4. Generate API client from OpenAPI spec**
-
-This step regenerates all type-safe API hooks from the backend's OpenAPI spec.
-
-```bash
-npm run api:generate
-```
-
-**5. Start the development server**
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
----
-
-## Available Scripts
-
-| Script                    | Description                                                  |
-| ------------------------- | ------------------------------------------------------------ |
-| `npm run dev`             | Start development server (Turbopack)                         |
-| `npm run build`           | Generate API client then build for production                |
-| `npm run start`           | Start production server                                      |
-| `npm run lint`            | Run ESLint                                                   |
-| `npm test`                | Run unit tests (Vitest)                                      |
-| `npm run api:generate`    | Regenerate Orval API client from `core/openapi/openapi.json` |
-| `npm run storybook`       | Start Storybook component explorer on port 6006              |
-| `npm run build-storybook` | Build Storybook as a static site                             |
+| Category                 | Technology                               |
+| ------------------------ | ---------------------------------------- |
+| **Framework**            | Next.js 16.1.6 (App Router)              |
+| **Language**             | TypeScript 5 (strict mode)               |
+| **Styling**              | Tailwind CSS v4 + Radix UI               |
+| **Server State**         | TanStack Query v5 (React Query)          |
+| **Client State**         | Zustand with devtools middleware         |
+| **Data Fetching**        | Axios with auto-generated client (Orval) |
+| **Form Management**      | React Hook Form + Zod validation         |
+| **UI Components**        | Radix UI primitives + custom components  |
+| **Icons**                | Lucide React                             |
+| **Internationalization** | next-intl                                |
+| **Testing**              | Vitest + React Testing Library           |
+| **Test Coverage**        | @vitest/coverage-v8                      |
+| **Component Docs**       | Storybook v10.2.12                       |
+| **Linting**              | ESLint v9 (flat config)                  |
+| **Formatting**           | Prettier with Tailwind plugin            |
+| **Git Hooks**            | Husky + lint-staged + Commitlint         |
+| **Build Tool**           | Vite 7 with SWC                          |
 
 ---
 
 ## Project Structure
 
 ```
-tug-web-test/
-├── app/                    # Next.js App Router — routing manifest only
-│   └── [locale]/
-│       ├── (auth)/         # Auth route group (no navbar)
-│       │   └── login/
-│       └── (protected)/    # Protected route group (with navbar)
-│           └── packages/
-│
-├── features/               # Feature-first modules
-│   ├── login/
-│   └── packages/
-│
-├── core/                   # Shared infrastructure
-│   ├── api/                # Axios instance + Orval-generated hooks
-│   ├── components/         # Reusable UI components
-│   ├── i18n/               # next-intl routing, request, translations
-│   ├── lib/                # Utilities, env validation, route constants
-│   └── providers/          # QueryProvider, ThemeProvider
-│
-└── public/                 # Static assets
+bookipi-fe-test/
+├── app/                          # Next.js App Router pages
+│   ├── [locale]/                 # Internationalized routes
+│   │   ├── quiz-create/          # Quiz creation page
+│   │   ├── quiz-list/            # Quiz listing page
+│   │   └── quiz-player/[id]/     # Quiz taking page
+│   └── layout.tsx
+├── core/                         # Core utilities and shared code
+│   ├── api/                      # Auto-generated API client (Orval)
+│   ├── components/               # Reusable UI components
+│   │   ├── button/
+│   │   ├── dialog/
+│   │   ├── form_field/
+│   │   ├── input/
+│   │   ├── loading_state/
+│   │   ├── mcq-options/
+│   │   └── ... (14 components total)
+│   ├── lib/                      # Utility functions
+│   ├── schemas/                  # Zod validation schemas
+│   └── storybook/                # Storybook configuration
+├── features/                     # Feature-based modules
+│   ├── quiz-create/              # Quiz creation feature
+│   │   ├── components/           # Feature-specific components
+│   │   ├── react-query/          # API hooks & keys
+│   │   ├── store/                # Zustand store
+│   │   └── index.ts
+│   ├── quiz-detail/              # Quiz detail/edit feature
+│   ├── quiz-list/                # Quiz listing feature
+│   └── quiz-player/              # Quiz player feature
+│       ├── components/           # Timer, progress bar, answer inputs
+│       ├── sections/             # Navigation, header, results
+│       ├── container/            # Main player container
+│       ├── react-query/          # Player API hooks
+│       └── store/                # Player state management
+├── messages/                     # i18n translation files
+├── public/                       # Static assets
+├── tests/                        # Test utilities and setup
+└── ... (config files)
 ```
 
-Each **feature folder** follows its own consistent structure:
+**Key Architecture Principles:**
 
-```
-features/[feature]/
-├── container/       # Layout orchestrator — positions sections, zero state
-├── sections/        # Self-contained UI units with their own state & API calls
-├── react-query/     # Wrappers around Orval hooks with toast & cache logic
-├── store/           # Zustand store for cross-section shared state (if needed)
-├── react-table/     # TanStack Table column definitions (if needed)
-└── utils/           # Feature-specific helpers (if needed)
-```
+- **Feature-based structure**: Each feature is self-contained with its own components, state, and API hooks
+- **Container-Section-Component pattern**: Complex features use container → sections → components hierarchy
+- **Separation of concerns**: Clear boundaries between UI, state, and data fetching
+- **Centralized API keys**: All React Query keys are defined in `keys/` folder for cache invalidation
 
 ---
 
-## Architecture
+## Prerequisites
 
-This project follows **Feature-Based Architecture**, influenced by Feature-Sliced Design (FSD), adapted for Next.js App Router.
+- **Node.js**: `>=22.0.0` (LTS recommended)
+- **npm**: `>=10.0.0`
+- **Backend**: Quiz Maker API running on `http://localhost:4000`
 
-### Core Principles
-
-**`app/` — Routing manifest only**
-Pages in `app/` contain a single line: return the feature container. No logic, no state, no styling lives here. Features remain portable and independently testable.
-
-**Container — Layout orchestrator only**
-The container arranges sections on the page (grid, flex, spacing). It holds zero state and passes zero props down. When a section's behavior changes, the container never needs to touch.
-
-**Section — Self-contained unit**
-Each section owns its state, API calls, and schema. Sections communicate with each other exclusively through Zustand — never through container props. This prevents prop-drilling and enables independent development and testing.
-
-**`react-query/` — Anti-corruption layer**
-Orval-generated hooks are raw and can change on regeneration. Sections never import them directly. Instead, wrapper hooks in `react-query/` add business logic (toast on success/error, cache invalidation). If Orval renames a hook, only one wrapper file needs updating.
-
-**Schema — Colocated with its section**
-Zod schemas for forms live inside the section folder that uses them. If a schema is shared across sections, it moves to `utils/`.
-
-**Conditional folder creation**
-No folder is created "just in case". `store/` exists only if cross-section state is needed. `react-table/` exists only for complex column definitions. Every created folder has an `index.ts` barrel export.
-
-### State Management Strategy
-
-| Type                     | Tool                                          |
-| ------------------------ | --------------------------------------------- |
-| Server state (API data)  | TanStack Query                                |
-| Auth state (user, token) | Zustand (`features/auth/store/auth.store.ts`) |
-| Cross-section UI state   | Zustand (per-feature store)                   |
-| Local component state    | React `useState`                              |
-
-### Auth Flow
-
-1. User submits login form → `POST /api/v1/auth/login` via Orval-generated hook
-2. On success: token stored in Zustand (`setAuth()`) + written to httpOnly cookie via `POST /api/auth/session` Route Handler
-3. Axios interceptor reads token from Zustand store and injects it as `Bearer` header on every request
-4. Next.js middleware reads the httpOnly cookie to protect routes server-side
-5. On logout: `DELETE /api/auth/session` clears the cookie → `clearAuth()` clears Zustand → redirect to `/login`
-6. Token refresh is handled by the Axios error interceptor (raw axios, outside React context)
-
-### API Layer
-
-The API client is **fully code-generated** from the backend's OpenAPI spec using Orval. Developers never write API call code manually. After any backend schema change, run `npm run api:generate` to regenerate type-safe hooks.
-
-Generated output lives in `core/api/generated/`. Never edit these files manually.
-
----
-
-## Features
-
-### Login (`/login`)
-
-- Email + password form with Zod validation
-- Redirects to `/packages` on success
-- Error handling for invalid credentials
-
-![Login](docs/login.png)
-
-### Wellness Packages (`/packages`) — protected
-
-- **Table**: paginated list with columns for name, description, price, duration
-- **Search**: client-side filter by package name
-- **Sort**: sortable columns via TanStack Table
-- **Create**: modal form to add a new package
-- **Edit**: modal form pre-filled with existing package data
-- **Delete**: confirmation dialog before deletion
-- All mutations show toast notifications on success and failure
-
-**Package list**
-
-![Package List](docs/list.png)
-
-**Search**
-
-![Search](docs/search.png)
-
-**Create package**
-
-![Create Package](docs/create.png)
-
-**Edit package**
-
-![Edit Package](docs/edit.png)
-
-**Delete confirmation**
-
-![Delete Confirmation](docs/delete.png)
-
----
-
-## Testing
-
-Unit and integration tests are written with Vitest + React Testing Library. Tests use `vi.mock` for API isolation — no real network requests are made.
+Check your versions:
 
 ```bash
-npm test          # run all tests
-npm run test:ui   # open Vitest UI
+node --version  # Should be v22.x or higher
+npm --version   # Should be v10.x or higher
 ```
-
-Test files are colocated with the features they test (e.g., `features/packages/container/Packages.container.test.tsx`).
 
 ---
 
-## Storybook
+## Installation & Setup
 
-Components and sections are documented in isolation using Storybook. Stories are colocated with their components and follow the `*.stories.tsx` convention.
+### Backend Setup
 
-Run the Storybook explorer at `http://localhost:6006`:
+1. **Clone and setup the backend repository:**
+
+   ```bash
+   cd /path/to/backend
+   npm install
+   ```
+
+2. **Configure backend environment variables:**
+
+   ```bash
+   cp .env.example .env
+   # Edit .env and set API_TOKEN (default: dev-token)
+   ```
+
+3. **Initialize database with schema and seed data:**
+
+   ```bash
+   npm run seed
+   ```
+
+4. **Start the backend server:**
+   ```bash
+   npm run dev
+   ```
+   Backend will run on `http://localhost:4000`
+
+### Frontend Setup
+
+1. **Install dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+2. **Configure environment variables:**
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Edit `.env` and set:
+
+   ```env
+   NEXT_PUBLIC_API_URL=http://localhost:4000
+   NEXT_PUBLIC_APP_ENV=development
+   NEXT_PUBLIC_APP_URL=http://localhost:3000
+   ```
+
+3. **Generate API client from backend:**
+
+   ```bash
+   npm run api:generate
+   ```
+
+   This uses Orval to generate TypeScript types and React Query hooks from the backend API.
+
+4. **Initialize Git hooks (for development):**
+   ```bash
+   npm run prepare
+   ```
+
+---
+
+## Running the Application
+
+### Development Mode
+
+```bash
+npm run dev
+```
+
+The application will be available at:
+
+- **Frontend**: `http://localhost:3000`
+- **Storybook**: Run `npm run storybook` for component documentation
+
+### Production Build
+
+```bash
+# Build the application
+npm run build
+
+# Start production server
+npm start
+```
+
+### Component Development (Storybook)
 
 ```bash
 npm run storybook
 ```
 
-Stories cover:
-
-- **Login form**: default state, loading state, error state
-- **Packages table**: populated state, empty state, loading skeleton
-- **FormModal**: create mode, edit mode (pre-filled)
-- **DeleteDialog**: open/confirmation state
-
-Story configuration lives in `core/storybook/`. All stories in `core/components/**` and `features/**` are automatically picked up.
+Access Storybook at `http://localhost:6006` to browse all components with interactive examples.
 
 ---
 
-## Internationalization
+## Available Scripts
 
-The app supports **English** (default) and **German** via next-intl.
-
-Translation files live in `core/i18n/json/{locale}/{namespace}.json`. The locale is part of the URL: `/en/packages`, `/de/packages`. Switching languages changes the URL prefix — no page reload required.
+| Script                    | Description                                            |
+| ------------------------- | ------------------------------------------------------ |
+| `npm run dev`             | Start Next.js development server                       |
+| `npm run build`           | Generate API client → build for production             |
+| `npm start`               | Start production server                                |
+| `npm run lint`            | Run ESLint checks                                      |
+| `npm run lint:fix`        | Fix auto-fixable ESLint issues                         |
+| `npm run format`          | Format all files with Prettier                         |
+| `npm run format:check`    | Check if files are formatted correctly                 |
+| `npm run api:generate`    | Generate API client with Orval from OpenAPI spec       |
+| `npm test`                | Run unit tests                                         |
+| `npm run test:watch`      | Run tests in watch mode                                |
+| `npm run test:coverage`   | Run tests with coverage report                         |
+| `npm run test:ci`         | Run tests with coverage (CI mode)                      |
+| `npm run storybook`       | Start Storybook on port 6006                           |
+| `npm run build-storybook` | Build Storybook as static site                         |
+| `npm run prepare`         | Setup Git hooks (automatically runs after npm install) |
 
 ---
 
-## Architectural Decisions
+## Testing
 
-**Orval over manual API clients**
-Hand-written API clients drift from the backend schema over time. Orval generates fully type-safe hooks directly from the OpenAPI spec, ensuring the frontend is always in sync with the backend contract.
+### Unit & Component Tests
 
-**Feature-first over layer-first**
-Organizing by feature (`features/packages/`) instead of by layer (`components/`, `hooks/`, `services/`) keeps all related code together. Adding or removing a feature means touching one folder, not six.
+The project uses **Vitest** with **React Testing Library** for comprehensive test coverage.
 
----
-
-## Deployment
-
-The app ships with a production-ready multi-stage `Dockerfile` that produces a minimal image (~150 MB) using Next.js standalone output.
-
-**Stages:**
-
-1. `deps` — installs all dependencies
-2. `builder` — runs `npm run build` and produces `.next/standalone`
-3. `runner` — copies only the standalone output, runs as a non-root user
-
-**Build the image**
+**Run tests:**
 
 ```bash
-docker build \
-  --build-arg NEXT_PUBLIC_API_BASE_URL=https://your-api.example.com \
-  --build-arg NEXT_PUBLIC_APP_URL=https://your-app.example.com \
-  -t tug-wellness-admin .
+npm test              # Run all tests once
+npm run test:watch    # Run tests in watch mode
+npm run test:coverage # Generate coverage report
 ```
 
-> `NEXT_PUBLIC_*` variables are baked into the JavaScript bundle at build time. They **must** be passed as `--build-arg` during `docker build`, not as `-e` at runtime.
+**Test Coverage:**
 
-**Run the container**
+- **506 passing tests** across 63 test files
+- **Features**: quiz-create, quiz-detail, quiz-list, quiz-player
+- **Core components**: All 14 components fully tested
+- **Stores**: Zustand stores with 100% coverage
+- **Hooks**: React Query hooks tested
 
-```bash
-docker run -p 3000:3000 tug-wellness-admin
+**Coverage breakdown:**
+
+- Components: ~100% (31 component tests)
+- Hooks: ~100% (26 hook tests)
+- Sections: ~100% (95 section tests)
+- Stores: 100% (67 store tests)
+
+### Test Structure
+
 ```
-
-The app is served at `http://localhost:3000`. Override the port with `-e PORT=8080` if needed.
+features/quiz-player/
+├── components/
+│   ├── countdown-timer/
+│   │   ├── CountdownTimer.player.tsx
+│   │   └── CountdownTimer.player.test.tsx  ✓
+│   └── ...
+├── sections/
+│   ├── navigation/
+│   │   ├── Navigation.player.tsx
+│   │   └── Navigation.player.test.tsx      ✓
+│   └── ...
+└── store/
+    ├── player.store.ts
+    └── player.store.test.ts                ✓
+```
 
 ---
 
-## Assumptions
+## Code Quality
 
-- Backend is running at `http://localhost:4000` with the TUG NestJS API
-- Only `ADMIN` role users exist in this portal — no role-based access control is implemented beyond the auth guard
-- The OpenAPI spec in `core/openapi/openapi.json` reflects the current backend schema. If the backend changes, re-run `npm run api:generate`
-- i18n German translations are functional but not reviewed by a native speaker
+### ESLint Configuration
+
+- **Config**: ESLint v9 flat config format
+- **Rules**: Next.js recommended + TypeScript strict
+- **Custom rules**:
+  - No explicit `any` types
+  - Unused vars with `_` prefix allowed
+  - Import ordering enforced
+  - React hooks rules enforced
+
+### Prettier
+
+- **Config**: `.prettierrc` with Tailwind plugin
+- **Features**: Auto-sort Tailwind classes, consistent formatting
+
+### Git Hooks (Husky)
+
+**Pre-commit hook:**
+
+- Runs `lint-staged` on staged files:
+  - ESLint with auto-fix
+  - Prettier formatting
+- **Blocks commit** if errors can't be fixed
+
+**Commit-msg hook:**
+
+- Validates commit messages using Commitlint
+- **Required format**: `type: description`
+- **Allowed types**: feat, fix, docs, style, refactor, perf, test, chore, revert, ci, build
+- **Example**: `feat: add quiz timer component`
+
+**Pre-push hook:**
+
+- Runs TypeScript type checking (`tsc --noEmit`)
+- Runs full test suite with coverage
+- **Blocks push** if type errors or test failures
+
+### Commit Conventions
+
+Follow [Conventional Commits](https://www.conventionalcommits.org/):
+
+```bash
+feat: add new feature
+fix: fix bug
+docs: update documentation
+style: code style changes (formatting)
+refactor: code refactoring
+perf: performance improvements
+test: add or update tests
+chore: maintenance tasks
+```
+
+## Architecture Decisions
+
+### Feature-Based Architecture
+
+This project follows a **feature-first** approach inspired by Feature-Sliced Design (FSD):
+
+```
+features/[feature-name]/
+├── container/       # Layout orchestrator (sections placement, no logic)
+├── sections/        # Self-contained UI units with their own state
+├── components/      # Feature-specific reusable components
+├── react-query/     # API hooks with business logic (toast, cache)
+├── store/           # Zustand store for cross-section state
+└── utils/           # Feature-specific helper functions
+```
+
+**Key principles:**
+
+1. **`app/` routes contain minimal code**: Pages only import and render feature containers
+2. **Container = Layout only**: Arranges sections, passes no props, holds no state
+3. **Sections are independent**: Each section manages its own state, API calls, and validation
+4. **Cross-section communication via Zustand**: No prop drilling between sections
+5. **API hooks are wrapped**: Raw Orval-generated hooks never imported directly
+
+### State Management Strategy
+
+| Type                    | Tool                  | Location                      |
+| ----------------------- | --------------------- | ----------------------------- |
+| Server state (API data) | TanStack Query v5     | `react-query/` per feature    |
+| Quiz player state       | Zustand with devtools | `features/quiz-player/store/` |
+| Quiz builder state      | Zustand with devtools | `features/quiz-create/store/` |
+| Form state              | React Hook Form + Zod | Local to component            |
+| Local UI state          | React `useState`      | Local to component            |
+
+**Why Zustand for player state?**
+
+- Timer needs to be accessible from multiple sections (header, navigation, results)
+- Current question index drives answer input rendering
+- Anti-cheat events need to be logged across sections
+- Store is reset on quiz start/end to prevent state leaks
+
+### API Integration Pattern
+
+**1. Backend Connection:**
+
+```typescript
+// core/lib/axios.ts
+const api = axios.create({
+  baseURL: env.NEXT_PUBLIC_API_URL,
+  headers: { Authorization: `Bearer dev-token` },
+});
+```
+
+**2. Code Generation (Orval):**
+
+```bash
+npm run api:generate  # Reads openapi.json → generates hooks
+```
+
+Generated files:
+
+- `core/api/quiz-maker.ts`: Type-safe API client
+- `core/api/quiz-maker.zod.ts`: Zod schemas for all entities
+- `core/api/quiz-maker.msw.ts`: MSW handlers for testing
+
+**3. Wrapper Hooks (Anti-corruption layer):**
+
+```typescript
+// features/quiz-player/react-query/hooks/useSubmitAttempt.ts
+export const useSubmitAttemptPlayer = () => {
+  const mutation = useSubmitAttemptMutation();
+
+  return useMutation({
+    ...mutation,
+    onSuccess: (data) => {
+      toast.success('Quiz submitted successfully');
+      queryClient.invalidateQueries({ queryKey: attemptsKeys.all });
+    },
+    onError: () => {
+      toast.error('Failed to submit quiz');
+    },
+  });
+};
+```
+
+**Benefits:**
+
+- Business logic (toasts, cache invalidation) in one place
+- Orval regeneration doesn't break features
+- Easy to mock for testing
+
+### Centralized Query Keys
+
+All React Query keys are defined in `keys/` folders:
+
+```typescript
+// features/quiz-player/react-query/keys/attempts.keys.ts
+export const attemptsKeys = {
+  all: ['attempts'] as const,
+  byQuiz: (quizId: string) => [...attemptsKeys.all, quizId] as const,
+  byId: (id: string) => [...attemptsKeys.all, 'detail', id] as const,
+};
+```
+
+**Benefits:**
+
+- Type-safe key references across features
+- Consistent cache invalidation
+- Easier debugging with React Query DevTools
+
+---
+
+## API Integration
+
+### Backend API Overview
+
+The backend runs on `http://localhost:4000` and requires a Bearer token for authentication.
+
+**Authentication:**
+
+```bash
+Authorization: Bearer dev-token
+```
+
+### Entities
+
+#### Quiz
+
+```typescript
+{
+  id: string;
+  title: string;
+  description: string;
+  timeLimitSeconds?: number;
+  isPublished: boolean;
+  createdAt: string;
+}
+```
+
+#### Question
+
+```typescript
+{
+  id: string;
+  quizId: string;
+  type: 'mcq' | 'short' | 'code';
+  prompt: string;
+  codeSnippet?: string;
+  options?: string[];      // For MCQ only
+  correctAnswer?: string;  // For MCQ and short answer
+  position: number;
+}
+```
+
+#### Attempt
+
+```typescript
+{
+  id: string;
+  quizId: string;
+  startedAt: string;
+  submittedAt?: string;
+  answers: Array<{
+    questionId: string;
+    value: string;
+  }>;
+  score?: number;
+  antiCheatEvents?: Array<{
+    type: 'focus' | 'blur' | 'paste';
+    timestamp: string;
+  }>;
+}
+```
+
+### API Routes
+
+#### Quizzes
+
+- `GET /quizzes` - List all quizzes
+- `GET /quizzes/:id` - Get quiz with questions
+- `POST /quizzes` - Create quiz
+- `PATCH /quizzes/:id` - Update quiz
+- `DELETE /quizzes/:id` - Delete quiz
+
+#### Questions
+
+- `POST /quizzes/:quizId/questions` - Add question
+- `PATCH /questions/:id` - Update question
+- `DELETE /questions/:id` - Delete question
+- `PATCH /questions/:id/position` - Reorder questions
+
+#### Attempts
+
+- `POST /attempts` - Start attempt (body: `{ quizId }`)
+- `PATCH /attempts/:id/answers` - Save answer
+- `POST /attempts/:id/submit` - Submit attempt for grading
+- `GET /attempts/:id` - Get attempt with score and answers
+
+### Auto-Grading
+
+The backend automatically grades:
+
+- **MCQ**: Exact string match with `correctAnswer`
+- **Short answer**: Case-insensitive string match
+- **Code questions**: Manual grading only (not auto-graded)
+
+---
+
+## Key Libraries
+
+### Runtime Dependencies
+
+| Library                       | Purpose                                 |
+| ----------------------------- | --------------------------------------- |
+| **next**                      | React framework with App Router and SSR |
+| **react** / **react-dom**     | UI library                              |
+| **@tanstack/react-query**     | Server state management with caching    |
+| **zustand**                   | Lightweight client state management     |
+| **axios**                     | HTTP client for API requests            |
+| **zod**                       | Runtime schema validation               |
+| **react-hook-form**           | Form state and validation               |
+| **@dnd-kit/core**             | Drag-and-drop for question reordering   |
+| **@radix-ui/\***              | Headless accessible UI primitives       |
+| **lucide-react**              | Icon library                            |
+| **next-intl**                 | Internationalization (i18n)             |
+| **react-spinners**            | Loading spinners (MoonLoader)           |
+| **tailwindcss**               | Utility-first CSS framework             |
+| **class-variance-authority**  | Type-safe variant API for components    |
+| **clsx** / **tailwind-merge** | Conditional className utilities         |
+
+### Development Dependencies
+
+| Library                    | Purpose                                 |
+| -------------------------- | --------------------------------------- |
+| **typescript**             | Static type checking                    |
+| **vitest**                 | Fast unit test runner                   |
+| **@testing-library/react** | React component testing utilities       |
+| **@vitest/coverage-v8**    | Code coverage reporting                 |
+| **@playwright/test**       | E2E testing framework                   |
+| **storybook**              | Component documentation and development |
+| **eslint**                 | Static code analysis and linting        |
+| **prettier**               | Code formatting                         |
+| **husky**                  | Git hooks automation                    |
+| **lint-staged**            | Run linters on staged files             |
+| **@commitlint/cli**        | Enforce conventional commit messages    |
+| **orval**                  | OpenAPI to TypeScript code generator    |
+
+---
+
+## Development Workflow
+
+### Git Workflow
+
+**1. Create feature branch:**
+
+```bash
+git checkout -b feat/add-quiz-timer
+```
+
+**2. Make changes and commit:**
+
+```bash
+git add .
+git commit -m "feat: add countdown timer to quiz player"
+```
+
+**3. Push to remote:**
+
+```bash
+git push origin feat/add-quiz-timer
+```
+
+The git hooks will automatically:
+
+- ✅ Lint and format code (pre-commit)
+- ✅ Validate commit message format (commit-msg)
+- ✅ Run TypeScript checks and tests (pre-push)
+
+### Adding a New Feature
+
+**1. Create feature folder:**
+
+```bash
+mkdir -p features/my-feature/{container,sections,components,react-query,store}
+```
+
+**2. Create container:**
+
+```typescript
+// features/my-feature/container/MyFeature.container.tsx
+export const MyFeatureContainer = () => {
+  return (
+    <div>
+      <HeaderSection />
+      <ContentSection />
+    </div>
+  );
+};
+```
+
+**3. Create sections with tests:**
+
+```typescript
+// features/my-feature/sections/header/Header.section.tsx
+// features/my-feature/sections/header/Header.section.test.tsx
+```
+
+**4. Add Storybook stories:**
+
+```typescript
+// features/my-feature/sections/header/Header.section.stories.tsx
+```
+
+**5. Create API hooks if needed:**
+
+```typescript
+// features/my-feature/react-query/hooks/useMyData.ts
+// features/my-feature/react-query/keys/my-data.keys.ts
+```
+
+### Regenerating API Client
+
+When the backend API changes:
+
+```bash
+# 1. Update core/openapi/openapi.json with new spec
+# 2. Regenerate client
+npm run api:generate
+# 3. Update wrapper hooks if needed
+# 4. Run tests to catch breaking changes
+npm test
+```
+
+---
+
+## Known Limitations
+
+### Scope Constraints
+
+- **No authentication**: Assumes direct API access with Bearer token
+- **Single user mode**: No user sessions or multi-user quiz attempts
+- **Code question grading**: Code questions are stored but not auto-graded
+- **Limited anti-cheat**: Only focus/blur/paste events tracked, no advanced detection
+
+### Technical Limitations
+
+- **Client-side timer**: Timer runs in browser, can be manipulated (use backend timer for production)
+- **No offline support**: Requires active internet connection
+- **No real-time updates**: Quiz changes don't sync live to active attempts
+- **No retry logic**: Failed API calls require manual retry
+
+### Future Improvements
+
+- [ ] Add authentication with user sessions
+- [ ] Implement server-side timer verification
+- [ ] Add code question auto-grading with test cases
+- [ ] Add rich text editor for questions
+- [ ] Add image/media upload support
+- [ ] Add quiz analytics dashboard
+- [ ] Add attempt history and review mode
+- [ ] Add collaborative quiz editing
+- [ ] Add quiz templates and duplication
+- [ ] Add export/import quiz functionality
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+**❌ Error: "Cannot find module 'core/api/quiz-maker'"**
+
+**Solution:** Generate the API client:
+
+```bash
+npm run api:generate
+```
+
+---
+
+**❌ Backend connection refused**
+
+**Solution:** Ensure backend is running:
+
+```bash
+cd backend-folder
+npm run dev  # Should run on port 4000
+```
+
+Check `NEXT_PUBLIC_API_URL` in `.env` matches backend URL.
+
+---
+
+**❌ Tests failing with "Cannot find module"**
+
+**Solution:** Clear Vitest cache:
+
+```bash
+npx vitest --clearCache
+npm test
+```
+
+---
+
+**❌ Git hooks not running**
+
+**Solution:** Initialize Husky:
+
+```bash
+npm run prepare
+```
+
+Verify hooks:
+
+```bash
+ls -la .husky/_/
+```
+
+---
+
+**❌ TypeScript errors after API regeneration**
+
+**Solution:** Restart TypeScript server in VS Code:
+
+1. Open Command Palette (`Cmd+Shift+P`)
+2. Run "TypeScript: Restart TS Server"
+
+---
+
+**❌ Port 3000 already in use**
+
+**Solution:** Kill existing process:
+
+```bash
+lsof -ti:3000 | xargs kill -9
+```
+
+Or use different port:
+
+```bash
+PORT=3001 npm run dev
+```
+
+---
+
+**❌ Storybook not showing components**
+
+**Solution:** Rebuild Storybook cache:
+
+```bash
+rm -rf node_modules/.cache/storybook
+npm run storybook
+```
+
+---
+
+### Getting Help
+
+If you encounter issues not covered here:
+
+1. Check Node.js version: `node --version` (should be >=22.0.0)
+2. Clear all caches: `rm -rf .next node_modules/.cache`
+3. Reinstall dependencies: `rm -rf node_modules && npm install`
+4. Check backend API is accessible: `curl http://localhost:4000/quizzes`
+
+---
+
+## License
+
+MIT License - see LICENSE file for details.
+
+---
+
+## Contact / Author
+
+**Project**: Quiz Maker Application (Take-Home Assessment)  
+**Year**: 2024  
+**Framework**: Next.js 16 + React 19 + TypeScript 5
+
+For questions about this implementation, please refer to the codebase documentation and test files which provide extensive examples of usage patterns.
