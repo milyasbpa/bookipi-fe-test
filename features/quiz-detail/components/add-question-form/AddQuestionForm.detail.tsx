@@ -13,7 +13,7 @@ import { questionSchema, type QuestionFormValues } from '../../schemas/add-quest
 interface AddQuestionFormProps {
   onSubmit: (values: QuestionFormValues, reset: () => void) => void;
   isPending?: boolean;
-  
+
   // Labels
   questionTypeLabel: string;
   questionTypeMcq: string;
@@ -32,7 +32,7 @@ interface AddQuestionFormProps {
 
 /**
  * AddQuestionForm Component (Stateless)
- * 
+ *
  * Pure presentational component - accepts all data via props
  * NO API calls, NO translations, NO store
  */
@@ -64,7 +64,6 @@ export function AddQuestionForm({
   });
 
   const questionType = watch('type');
-  const currentOptions = watch('options');
 
   const handleFormSubmit = (values: QuestionFormValues) => {
     onSubmit(values, reset);
@@ -79,7 +78,7 @@ export function AddQuestionForm({
         render={({ field }) => (
           <select
             {...field}
-            className="w-full rounded-xl border border-border bg-transparent p-3 text-sm shadow-xs transition-colors outline-none focus-visible:border-ring disabled:opacity-50"
+            className="border-border focus-visible:border-ring w-full rounded-xl border bg-transparent p-3 text-sm shadow-xs transition-colors outline-none disabled:opacity-50"
             disabled={isPending}
           >
             <option value="mcq">{questionTypeMcq}</option>
@@ -97,7 +96,7 @@ export function AddQuestionForm({
           <textarea
             {...field}
             placeholder={promptPlaceholder}
-            className="w-full rounded-xl border border-border bg-transparent p-4 text-sm shadow-xs transition-colors outline-none focus-visible:border-ring disabled:opacity-50"
+            className="border-border focus-visible:border-ring w-full rounded-xl border bg-transparent p-4 text-sm shadow-xs transition-colors outline-none disabled:opacity-50"
             rows={2}
             disabled={isPending}
             aria-invalid={!!fieldState.error}

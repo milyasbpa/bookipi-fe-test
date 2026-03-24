@@ -40,7 +40,7 @@ interface PlayerStore {
 
 export const usePlayerStore = create<PlayerStore>()(
   devtools(
-    (set, get) => ({
+    (set, _get) => ({
       attemptId: null,
       quizId: null,
       currentQuestionIndex: 0,
@@ -67,8 +67,7 @@ export const usePlayerStore = create<PlayerStore>()(
           currentQuestionIndex: Math.max(0, state.currentQuestionIndex - 1),
         })),
 
-      setPhaseCompleted: (result) =>
-        set({ phase: 'completed', submitResult: result }),
+      setPhaseCompleted: (result) => set({ phase: 'completed', submitResult: result }),
 
       setPhasePlayin: () => set({ phase: 'playing', submitResult: null }),
 

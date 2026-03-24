@@ -43,6 +43,9 @@ vi.mock('../../react-query', () => ({
   useCreateQuiz: () => ({
     mutateAsync: mockMutateAsync.mockResolvedValue({ id: 123 }),
   }),
+}));
+
+vi.mock('@/core/api/generated/questions/questions', () => ({
   useCreateQuestion: () => ({
     mutateAsync: vi.fn().mockResolvedValue({}),
   }),
