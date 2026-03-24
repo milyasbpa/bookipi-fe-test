@@ -62,11 +62,14 @@ A modern, full-featured quiz creation and management platform built with React a
 
 ### Anti-Cheat System (Bonus)
 
-- Focus/blur event tracking with timestamps
-- Paste detection in answer inputs
-- Event logging sent to backend
-- Compact anti-cheat summary on results page
-- Privacy-conscious implementation
+- Window blur/focus detection (tracks when user switches tabs/windows)
+- Global paste event detection with timestamps
+- Events automatically logged to backend via API
+- Results page shows color-coded summary:
+  - Green checkmark if no suspicious activity detected
+  - Orange alert with event counts (tab switches, paste events)
+  - Collapsible detailed log showing event types and timestamps
+- Only tracks during active quiz (enabled when phase = 'playing')
 
 ---
 
@@ -606,6 +609,7 @@ Authorization: Bearer dev-token
 
 - `POST /attempts` - Start attempt (body: `{ quizId }`)
 - `PATCH /attempts/:id/answers` - Save answer
+- `POST /attempts/:id/events` - Record anti-cheat event (body: `{ type, timestamp }`)
 - `POST /attempts/:id/submit` - Submit attempt for grading
 - `GET /attempts/:id` - Get attempt with score and answers
 
