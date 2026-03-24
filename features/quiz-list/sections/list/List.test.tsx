@@ -135,6 +135,7 @@ describe('List', () => {
         rows: [
           {
             id: '1',
+            original: mockQuizzes[0],
             getVisibleCells: () => [
               {
                 id: 'cell-1',

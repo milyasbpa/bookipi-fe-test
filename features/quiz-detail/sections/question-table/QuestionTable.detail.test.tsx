@@ -103,8 +103,8 @@ describe('QuestionTable', () => {
 
     render(<QuestionTable />);
     expect(screen.getByText('Questions (2)')).toBeInTheDocument();
-    expect(screen.getByText('What is React?')).toBeInTheDocument();
-    expect(screen.getByText('What is JSX?')).toBeInTheDocument();
+    expect(screen.getAllByText('What is React?')[0]).toBeInTheDocument();
+    expect(screen.getAllByText('What is JSX?')[0]).toBeInTheDocument();
   });
 
   it('displays MCQ correct answer from options', () => {
@@ -126,7 +126,7 @@ describe('QuestionTable', () => {
     } as any);
 
     render(<QuestionTable />);
-    expect(screen.getByText('Library')).toBeInTheDocument();
+    expect(screen.getAllByText('Library')[0]).toBeInTheDocument();
   });
 
   it('displays short answer correct answer directly', () => {
@@ -147,7 +147,7 @@ describe('QuestionTable', () => {
     } as any);
 
     render(<QuestionTable />);
-    expect(screen.getByText('JavaScript XML')).toBeInTheDocument();
+    expect(screen.getAllByText('JavaScript XML')[0]).toBeInTheDocument();
   });
 
   it('opens add question modal when add button clicked', () => {
@@ -181,8 +181,8 @@ describe('QuestionTable', () => {
     } as any);
 
     render(<QuestionTable />);
-    const editButton = screen.getByRole('button', { name: /Edit/i });
-    fireEvent.click(editButton);
+    const editButtons = screen.getAllByRole('button', { name: /Edit/i });
+    fireEvent.click(editButtons[0]);
 
     expect(mockOpenEditModal).toHaveBeenCalledWith(mockQuestion);
   });
@@ -205,8 +205,8 @@ describe('QuestionTable', () => {
     } as any);
 
     render(<QuestionTable />);
-    const deleteButton = screen.getByRole('button', { name: /Delete/i });
-    fireEvent.click(deleteButton);
+    const deleteButtons = screen.getAllByRole('button', { name: /Delete/i });
+    fireEvent.click(deleteButtons[0]);
 
     expect(screen.getByText('Are you sure you want to delete this question?')).toBeInTheDocument();
   });
@@ -230,8 +230,8 @@ describe('QuestionTable', () => {
 
     render(<QuestionTable />);
 
-    const deleteButton = screen.getByRole('button', { name: /Delete/i });
-    fireEvent.click(deleteButton);
+    const deleteButtons = screen.getAllByRole('button', { name: /Delete/i });
+    fireEvent.click(deleteButtons[0]);
 
     // Find and click the confirm button in the dialog
     const confirmButton = screen.getByRole('button', { name: /^Delete$/i });
@@ -275,9 +275,9 @@ describe('QuestionTable', () => {
     } as any);
 
     render(<QuestionTable />);
-    expect(screen.getByText('mcq')).toBeInTheDocument();
-    expect(screen.getByText('short')).toBeInTheDocument();
-    expect(screen.getByText('code')).toBeInTheDocument();
+    expect(screen.getAllByText('mcq')[0]).toBeInTheDocument();
+    expect(screen.getAllByText('short')[0]).toBeInTheDocument();
+    expect(screen.getAllByText('code')[0]).toBeInTheDocument();
   });
 
   it('displays question position numbers', () => {
@@ -345,6 +345,6 @@ describe('QuestionTable', () => {
     } as any);
 
     render(<QuestionTable />);
-    expect(screen.getByText('-')).toBeInTheDocument();
+    expect(screen.getAllByText('-')[0]).toBeInTheDocument();
   });
 });
