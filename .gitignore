@@ -50,9 +50,4 @@ next-env.d.ts
 *storybook.log
 storybook-static
 
-# Internal docs
-ASSESSMENT_TODO_FRONTEND.md
-NEXTJS_STARTER_KIT_TODO.md
-TUG_FS-M_Assessment.txt
-ASSESSMENT_TODO.md
-QUIZ_MAKER_TODO.md
+
