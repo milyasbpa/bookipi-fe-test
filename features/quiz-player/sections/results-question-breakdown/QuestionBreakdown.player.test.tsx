@@ -3,13 +3,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import { QuestionBreakdownPlayer } from './QuestionBreakdown.player';
 
-// Mock state
 let mockStore: any = {};
 let mockQuizData: any = null;
 let mockIsLoading = false;
 let mockError: any = null;
 
-// Mock dependencies
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
 }));
@@ -138,10 +136,9 @@ describe('QuestionBreakdownPlayer', () => {
   it('handles questions without detail', () => {
     mockStore.submitResult = {
       score: 0,
-      details: [], // No details
+      details: [],
     };
     render(<QuestionBreakdownPlayer />);
-    // Should still render questions but mark as incorrect (default)
     expect(screen.getByText('What is 2+2?')).toBeInTheDocument();
   });
 

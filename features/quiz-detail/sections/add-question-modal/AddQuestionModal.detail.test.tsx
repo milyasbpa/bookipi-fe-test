@@ -59,7 +59,6 @@ describe('AddQuestionModal', () => {
       isPending: false,
     } as any);
 
-    // Reset to default state
     mockQuizDetailStoreState = {
       isAddQuestionModalOpen: false,
       closeAddQuestionModal: mockCloseAddModal,
@@ -106,7 +105,6 @@ describe('AddQuestionModal', () => {
 
     render(<AddQuestionModal />);
 
-    // Select short answer type
     const typeSelect = screen.getByRole('combobox');
     fireEvent.change(typeSelect, { target: { value: 'short' } });
 
@@ -146,7 +144,6 @@ describe('AddQuestionModal', () => {
 
     render(<AddQuestionModal />);
 
-    // Select short answer type
     const typeSelect = screen.getByRole('combobox');
     fireEvent.change(typeSelect, { target: { value: 'short' } });
 
@@ -163,7 +160,6 @@ describe('AddQuestionModal', () => {
       expect(mockMutate).toHaveBeenCalled();
     });
 
-    // Form should be reset via the reset callback
     expect(mockMutate).toHaveBeenCalledWith(
       expect.any(Object),
       expect.objectContaining({
@@ -197,8 +193,6 @@ describe('AddQuestionModal', () => {
 
     render(<AddQuestionModal />);
 
-    // Simulate dialog close by calling the onOpenChange handler
-    // This would typically be triggered by clicking outside or pressing ESC
     const dialog = screen.getByRole('dialog', { hidden: true });
     expect(dialog).toBeInTheDocument();
   });

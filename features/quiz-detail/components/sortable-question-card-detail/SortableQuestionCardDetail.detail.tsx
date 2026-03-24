@@ -18,12 +18,6 @@ interface SortableQuestionCardDetailProps {
   };
 }
 
-/**
- * SortableQuestionCard for quiz-detail
- *
- * Wrapper around core QuestionCard that adds drag-and-drop functionality
- * for quiz detail (managing existing questions with IDs).
- */
 export function SortableQuestionCardDetail({
   question,
   onEdit,
@@ -52,7 +46,6 @@ export function SortableQuestionCardDetail({
         <GripVertical className="text-muted-foreground size-5" />
       </button>
 
-      {/* Question Card */}
       <div className="flex-1">
         <QuestionCard
           question={question}

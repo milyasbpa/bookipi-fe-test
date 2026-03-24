@@ -32,7 +32,6 @@ interface PlayerStore {
   setPhaseCompleted: (result: SubmitResult) => void;
   setPhasePlayin: () => void;
 
-  // Timer actions
   setRemainingSeconds: (seconds: number | null) => void;
 
   resetPlayer: () => void;

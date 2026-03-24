@@ -8,12 +8,6 @@ interface QuestionTableProps {
   table: Table<Question>;
 }
 
-/**
- * QuestionTable Component (Desktop View)
- *
- * Renders question list as a table for desktop (≥768px)
- * Uses TanStack Table for state management
- */
 export function QuestionTable({ table }: QuestionTableProps) {
   return (
     <div className="hidden rounded-lg border md:block">

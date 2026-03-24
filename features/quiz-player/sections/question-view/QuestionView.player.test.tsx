@@ -104,7 +104,6 @@ describe('QuestionViewPlayer', () => {
 
   it('renders question header with number and total', () => {
     render(<QuestionViewPlayer />);
-    // The component renders "question 1 of 3" where these are separate text nodes
     const heading = screen.getByRole('heading', { level: 2 });
     expect(heading).toBeInTheDocument();
   });

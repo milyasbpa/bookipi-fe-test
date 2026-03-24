@@ -53,7 +53,6 @@ describe('Edit (Edit Quiz Modal)', () => {
       isPending: false,
     } as any);
 
-    // Reset to default state
     mockQuizDetailStoreState = {
       isEditQuizModalOpen: false,
       closeEditQuizModal: mockCloseEditModal,
@@ -239,7 +238,6 @@ describe('Edit (Edit Quiz Modal)', () => {
   it('resets form when editQuizData changes', () => {
     const { rerender } = render(<Edit />);
 
-    // First render with initial data
     mockQuizDetailStoreState = {
       isEditQuizModalOpen: true,
       closeEditQuizModal: mockCloseEditModal,
@@ -253,7 +251,6 @@ describe('Edit (Edit Quiz Modal)', () => {
     rerender(<Edit />);
     expect(screen.getByDisplayValue('First Quiz')).toBeInTheDocument();
 
-    // Update with new data
     mockQuizDetailStoreState = {
       isEditQuizModalOpen: true,
       closeEditQuizModal: mockCloseEditModal,

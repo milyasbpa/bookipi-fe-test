@@ -7,21 +7,10 @@ import { Button } from '@/core/components';
 
 interface QuestionCardProps {
   question: Question;
-  /**
-   * Display number for the question (e.g., 1, 2, 3...)
-   * If not provided, uses question.position from the API
-   */
   displayNumber?: number;
-  /**
-   * Show all MCQ options with correct answer highlighted
-   * If false, only shows the correct answer text
-   */
   showAllOptions?: boolean;
   onEdit: (question: Question) => void;
   onDelete: (questionId: number) => void;
-  /**
-   * Whether the delete/edit actions are disabled
-   */
   disabled?: boolean;
   translations: {
     answerLabel?: string;
@@ -31,18 +20,6 @@ interface QuestionCardProps {
   };
 }
 
-/**
- * QuestionCard Component
- *
- * Reusable question card component that displays a question with its details.
- * Can be used in both quiz-create and quiz-detail flows.
- *
- * Features:
- * - Displays question number, type, and prompt
- * - Shows MCQ options (all or just correct answer)
- * - Shows short answer with highlight
- * - Edit and delete actions
- */
 export function QuestionCard({
   question,
   displayNumber,
@@ -54,7 +31,6 @@ export function QuestionCard({
 }: QuestionCardProps) {
   const questionNumber = displayNumber ?? question.position ?? 0;
 
-  // Calculate correct answer index for MCQ
   const correctAnswerIndex =
     question.type === 'mcq' && typeof question.correctAnswer === 'number'
       ? question.correctAnswer
@@ -62,7 +38,6 @@ export function QuestionCard({
         ? parseInt(String(question.correctAnswer), 10)
         : -1;
 
-  // Calculate answer display for simple view
   let answerDisplay = '-';
   if (question.type === 'mcq' && question.options && correctAnswerIndex >= 0) {
     answerDisplay = question.options[correctAnswerIndex] || '-';
@@ -72,7 +47,6 @@ export function QuestionCard({
 
   return (
     <div className="rounded-lg border p-4">
-      {/* Header: Number + Type Badge */}
       <div className="mb-3 flex items-center gap-2">
         <span className="text-muted-foreground font-mono text-sm">#{questionNumber}</span>
         <span className="bg-muted rounded-full px-2 py-1 text-xs font-medium uppercase">
@@ -80,14 +54,11 @@ export function QuestionCard({
         </span>
       </div>
 
-      {/* Question Prompt */}
       <div className="mb-3">
         <p className="font-medium">{question.prompt}</p>
       </div>
 
-      {/* Answer Display */}
       {showAllOptions && question.type === 'mcq' && question.options ? (
-        /* Show all MCQ options with correct answer highlighted */
         <div className="mb-4 space-y-1">
           {question.options.map((opt, i) => (
             <div
@@ -106,20 +77,17 @@ export function QuestionCard({
           ))}
         </div>
       ) : question.type === 'short' && showAllOptions ? (
-        /* Show short answer with highlight */
         <div className="mb-4 border-l-2 border-green-500 pl-3 text-xs">
           <span className="text-muted-foreground">{translations.correctAnswer}:</span>{' '}
           <span className="font-medium text-green-700">{question.correctAnswer}</span>
         </div>
       ) : (
-        /* Simple view: Just show answer label and value */
         <div className="text-muted-foreground mb-4 text-sm">
           <span className="font-medium">{translations.answerLabel}:</span>{' '}
           <span className="line-clamp-2">{answerDisplay}</span>
         </div>
       )}
 
-      {/* Action Buttons */}
       <div className="flex gap-2">
         <Button
           variant="outline"

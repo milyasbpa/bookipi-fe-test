@@ -239,7 +239,6 @@ describe('QuestionList', () => {
     const deleteButtons = screen.getAllByRole('button', { name: /Delete/i });
     fireEvent.click(deleteButtons[0]);
 
-    // Find and click the confirm button in the dialog
     const confirmButton = screen.getByRole('button', { name: /^Delete$/i });
     fireEvent.click(confirmButton);
 
@@ -351,7 +350,6 @@ describe('QuestionList', () => {
     } as any);
 
     render(<QuestionList />);
-    // With showAllOptions=true, MCQ without correct answer shows all options instead of "-"
     expect(screen.getByText('A')).toBeInTheDocument();
     expect(screen.getByText('B')).toBeInTheDocument();
   });

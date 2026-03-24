@@ -3,7 +3,6 @@ import { describe, it, expect, vi } from 'vitest';
 
 import { AntiCheatSummaryPlayer } from './AntiCheatSummary.player';
 
-// Mock dependencies
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
 }));

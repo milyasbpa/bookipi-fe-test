@@ -23,7 +23,6 @@ export function EditQuestionModal() {
 
   const { mutate, isPending } = useUpdateQuestion(quizId);
 
-  // Prepare default values based on question type
   const getDefaultValues = useCallback((): QuestionFormValues | undefined => {
     if (!editingQuestion) return undefined;
 
@@ -67,7 +66,6 @@ export function EditQuestionModal() {
     editingQuestion?.type === 'mcq' ? (editingQuestion.correctAnswer as number) || 0 : 0,
   );
 
-  // Reset form when question changes
   useEffect(() => {
     if (editingQuestion) {
       const defaultValues = getDefaultValues();

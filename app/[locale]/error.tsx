@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react';
 
-// TODO: Integrate with Sentry in Step 11 — Sentry.captureException(error)
 export default function Error({
   error,
   reset,

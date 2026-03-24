@@ -22,16 +22,6 @@ interface SortableQuestionCardProps {
   };
 }
 
-/**
- * SortableQuestionCard Component
- *
- * Wrapper around core QuestionCard that adds drag-and-drop functionality
- * for quiz creation flow. This component:
- * - Enables question reordering via drag-and-drop
- * - Shows visual feedback during dragging
- * - Displays grip handle for drag interaction
- * - Adapts Question type from store to API schema
- */
 export function SortableQuestionCard({
   question,
   index,
@@ -70,7 +60,6 @@ export function SortableQuestionCard({
         <GripVertical className="text-muted-foreground size-5" />
       </button>
 
-      {/* Question Card */}
       <div className="flex-1">
         <QuestionCard
           question={apiQuestion}

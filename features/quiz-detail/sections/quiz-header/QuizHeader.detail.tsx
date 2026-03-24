@@ -52,7 +52,6 @@ export function QuizHeader() {
 
   return (
     <div className="space-y-4">
-      {/* Back Button */}
       <Button
         variant="ghost"
         size="sm"

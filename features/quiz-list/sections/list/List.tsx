@@ -17,11 +17,9 @@ export function List() {
   const router = useRouter();
   const { data, isLoading } = useGetQuizzes();
 
-  // Memoize filtered array to prevent unnecessary re-renders
   const quizzes = useMemo(() => (data || []).filter((quiz) => quiz.id !== undefined), [data]);
   const table = useQuizListTable(quizzes);
 
-  // Memoize navigation handlers
   const handleNavigateToDetail = useCallback(
     (quizId: number) => {
       router.push(ROUTES.QUIZ_DETAIL(quizId));
@@ -36,7 +34,6 @@ export function List() {
     [router],
   );
 
-  // Memoize translations for QuizCard
   const cardTranslations = useMemo(
     () => ({
       manageQuestions: t('manage-questions'),

@@ -49,7 +49,6 @@ export function Dialog({
             className,
           )}
         >
-          {/* Header */}
           <div className="flex items-start justify-between">
             <div className="flex-1">
               {title && (
@@ -69,7 +68,6 @@ export function Dialog({
             </DialogPrimitive.Close>
           </div>
 
-          {/* Body */}
           <div className="flex-1">{children}</div>
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>

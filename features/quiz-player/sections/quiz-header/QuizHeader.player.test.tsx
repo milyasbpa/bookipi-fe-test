@@ -3,7 +3,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import { QuizHeaderPlayer } from './QuizHeader.player';
 
-// Mock state
 let mockStore: any = {};
 let mockQuizData: any = null;
 let mockIsLoading = false;
@@ -12,7 +11,6 @@ const mockStartAttempt = vi.fn();
 const mockSubmitAttempt = vi.fn();
 let mockIsStartingAttempt = false;
 
-// Mock dependencies
 vi.mock('next/navigation', () => ({
   useParams: () => ({ id: '1' }),
 }));

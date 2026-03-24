@@ -68,7 +68,6 @@ export function QuestionList() {
     [questions, updateQuestion],
   );
 
-  // Memoize translations for QuestionCard
   const cardTranslations = useMemo(
     () => ({
       correctAnswer: t('correct-answer'),
@@ -90,7 +89,6 @@ export function QuestionList() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">
           {t('questions-list')} ({questions.length})

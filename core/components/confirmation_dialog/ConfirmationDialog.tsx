@@ -9,19 +9,12 @@ import { cn } from '@/core/lib/utils';
 export interface ConfirmationDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  /** Main confirmation message shown in the dialog body */
   message: string;
-  /** Label for the cancel button. Defaults to "Cancel" */
   cancelLabel?: string;
-  /** Label for the confirm button. Defaults to "Continue" */
   confirmLabel?: string;
-  /** Called when the user clicks the cancel button */
   onCancel?: () => void;
-  /** Called when the user clicks the confirm button */
   onConfirm?: () => void;
-  /** Disables the confirm button (e.g. while a mutation is in-flight) */
   confirmDisabled?: boolean;
-  /** Variant for the confirm button. Defaults to "primary" */
   confirmVariant?: ButtonProps['variant'];
   className?: string;
 }
@@ -60,12 +53,10 @@ export function ConfirmationDialog({
             className,
           )}
         >
-          {/* Message */}
           <p className="text-foreground text-center text-base leading-snug font-medium">
             {message}
           </p>
 
-          {/* Actions */}
           <div className="flex w-full gap-3">
             <Button
               variant="outline"

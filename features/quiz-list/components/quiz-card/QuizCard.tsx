@@ -16,12 +16,6 @@ interface QuizCardProps {
   };
 }
 
-/**
- * QuizCard Component (Mobile View)
- *
- * Renders a single quiz as a card for mobile (<768px)
- * Displays title, description, time limit, and action buttons
- */
 export function QuizCard({
   quiz,
   onNavigateToDetail,

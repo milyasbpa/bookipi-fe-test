@@ -4,7 +4,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import { ResultsFooter } from './ResultsFooter.player';
 
-// Mock dependencies
 const mockPush = vi.fn();
 const mockResetPlayer = vi.fn();
 

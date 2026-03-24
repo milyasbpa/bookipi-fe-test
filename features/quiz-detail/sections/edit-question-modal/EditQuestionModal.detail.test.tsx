@@ -59,7 +59,6 @@ describe('EditQuestionModal', () => {
       isPending: false,
     } as any);
 
-    // Reset to default state
     mockQuizDetailStoreState = {
       isEditQuestionModalOpen: false,
       editingQuestion: null,
@@ -171,19 +170,16 @@ describe('EditQuestionModal', () => {
 
     render(<EditQuestionModal />);
 
-    // Make a change to trigger submission
     const promptInput = screen.getByDisplayValue('Old prompt');
     fireEvent.change(promptInput, { target: { value: 'Updated prompt' } });
 
     const submitButton = screen.getByRole('button', { name: /Update Question/i });
     fireEvent.click(submitButton);
 
-    // Wait for mutate to be called
     await waitFor(() => {
       expect(mockMutate).toHaveBeenCalled();
     });
 
-    // Call the onSuccess callback that was passed to mutate
     const mutateCallArgs = mockMutate.mock.calls[0];
     const options = mutateCallArgs[1];
     if (options?.onSuccess) {

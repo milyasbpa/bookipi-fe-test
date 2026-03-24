@@ -2,10 +2,6 @@
 
 import { useEffect } from 'react';
 
-/**
- * NumberInputGuard — disables scroll-wheel behaviour on <input type="number"> globally.
- * Mounted once at the root layout level.
- */
 export function NumberInputGuard() {
   useEffect(() => {
     function handleWheel(e: Event) {

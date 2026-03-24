@@ -8,12 +8,6 @@ interface QuizTableProps {
   table: Table<QuizWithQuestions>;
 }
 
-/**
- * QuizTable Component (Desktop View)
- *
- * Renders quiz list as a table for desktop (≥768px)
- * Uses TanStack Table for state management
- */
 export function QuizTable({ table }: QuizTableProps) {
   return (
     <div className="bg-card hidden rounded-lg border md:block">

@@ -31,12 +31,6 @@ interface AddQuestionFormProps {
   addingLabel: string;
 }
 
-/**
- * AddQuestionForm Component (Stateless)
- *
- * Pure presentational component - accepts all data via props
- * NO API calls, NO translations, NO store
- */
 export function AddQuestionForm({
   onSubmit,
   isPending = false,

@@ -16,12 +16,6 @@ interface QuestionCardProps {
   };
 }
 
-/**
- * QuestionCard Component (Mobile View)
- *
- * Renders a single question as a card for mobile (<768px)
- * Displays position, type, prompt, answer, and action buttons
- */
 export function QuestionCard({ question, onEdit, onDelete, translations }: QuestionCardProps) {
   // Calculate answer display
   let answerDisplay = '-';

@@ -4,10 +4,6 @@ import { useRecordEvent as useRecordEventGenerated } from '@/core/api/generated/
 
 import { quizPlayerMutationKeys } from '../keys';
 
-/**
- * Anti-cheat: Record events like focus/blur, paste detection
- * Bonus feature for tracking suspicious behavior
- */
 export function useRecordEvent(attemptId: number) {
   const mutation = useRecordEventGenerated({
     mutation: {
