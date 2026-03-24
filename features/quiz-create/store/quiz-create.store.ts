@@ -23,7 +23,9 @@ interface QuizCreateStore {
   nextStep: (metadata: QuizMetadata) => void;
   prevStep: () => void;
   addQuestion: (question: Question) => void;
+  updateQuestion: (index: number, question: Question) => void;
   removeQuestion: (index: number) => void;
+  reorderQuestions: (fromIndex: number, toIndex: number) => void;
   reset: () => void;
 }
 
@@ -42,10 +44,21 @@ export const useQuizCreateStore = create<QuizCreateStore>((set) => ({
     set((state) => ({
       questions: [...state.questions, question],
     })),
+  updateQuestion: (index, question) =>
+    set((state) => ({
+      questions: state.questions.map((q, i) => (i === index ? question : q)),
+    })),
   removeQuestion: (index) =>
     set((state) => ({
       questions: state.questions.filter((_, i) => i !== index),
     })),
+  reorderQuestions: (fromIndex, toIndex) =>
+    set((state) => {
+      const result = Array.from(state.questions);
+      const [removed] = result.splice(fromIndex, 1);
+      result.splice(toIndex, 0, removed);
+      return { questions: result };
+    }),
   reset: () =>
     set({
       currentStep: 1,

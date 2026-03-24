@@ -6,7 +6,9 @@ import { AddQuestions } from './AddQuestions.create';
 
 const mockPrevStep = vi.fn();
 const mockAddQuestion = vi.fn();
+const mockUpdateQuestion = vi.fn();
 const mockRemoveQuestion = vi.fn();
+const mockReorderQuestions = vi.fn();
 const mockReset = vi.fn();
 const mockPush = vi.fn();
 const mockMutateAsync = vi.fn();
@@ -34,7 +36,9 @@ vi.mock('../../store/quiz-create.store', () => ({
     questions: mockQuestions,
     prevStep: mockPrevStep,
     addQuestion: mockAddQuestion,
+    updateQuestion: mockUpdateQuestion,
     removeQuestion: mockRemoveQuestion,
+    reorderQuestions: mockReorderQuestions,
     reset: mockReset,
   })),
 }));

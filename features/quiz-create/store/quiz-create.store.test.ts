@@ -300,4 +300,113 @@ describe('useQuizCreateStore', () => {
     expect(state.questions).toHaveLength(1);
     expect(state.questions[0]).toEqual(question);
   });
+
+  it('updates question by index correctly', () => {
+    const { addQuestion, updateQuestion } = useQuizCreateStore.getState();
+
+    const question1 = {
+      type: 'mcq' as const,
+      prompt: 'Original Question?',
+      options: ['A', 'B'],
+      correctAnswer: 0,
+    };
+
+    const question2 = {
+      type: 'short' as const,
+      prompt: 'Q2?',
+      correctAnswer: 'answer',
+    };
+
+    addQuestion(question1);
+    addQuestion(question2);
+
+    const updatedQuestion = {
+      type: 'mcq' as const,
+      prompt: 'Updated Question?',
+      options: ['X', 'Y', 'Z'],
+      correctAnswer: 2,
+    };
+
+    updateQuestion(0, updatedQuestion);
+
+    const state = useQuizCreateStore.getState();
+    expect(state.questions).toHaveLength(2);
+    expect(state.questions[0]).toEqual(updatedQuestion);
+    expect(state.questions[1]).toEqual(question2);
+  });
+
+  it('updates last question correctly', () => {
+    const { addQuestion, updateQuestion } = useQuizCreateStore.getState();
+
+    addQuestion({
+      type: 'mcq' as const,
+      prompt: 'Q1?',
+      options: ['A'],
+      correctAnswer: 0,
+    });
+
+    addQuestion({
+      type: 'short' as const,
+      prompt: 'Q2?',
+      correctAnswer: 'old',
+    });
+
+    const updated = {
+      type: 'short' as const,
+      prompt: 'Updated Q2?',
+      correctAnswer: 'new',
+    };
+
+    updateQuestion(1, updated);
+
+    const state = useQuizCreateStore.getState();
+    expect(state.questions[1]).toEqual(updated);
+  });
+
+  it('reorders questions from start to end', () => {
+    const { addQuestion, reorderQuestions } = useQuizCreateStore.getState();
+
+    addQuestion({ type: 'mcq' as const, prompt: 'Q1', options: ['A'], correctAnswer: 0 });
+    addQuestion({ type: 'mcq' as const, prompt: 'Q2', options: ['B'], correctAnswer: 0 });
+    addQuestion({ type: 'mcq' as const, prompt: 'Q3', options: ['C'], correctAnswer: 0 });
+
+    reorderQuestions(0, 2);
+
+    const state = useQuizCreateStore.getState();
+    expect(state.questions[0].prompt).toBe('Q2');
+    expect(state.questions[1].prompt).toBe('Q3');
+    expect(state.questions[2].prompt).toBe('Q1');
+  });
+
+  it('reorders questions from end to start', () => {
+    const { addQuestion, reorderQuestions } = useQuizCreateStore.getState();
+
+    addQuestion({ type: 'mcq' as const, prompt: 'Q1', options: ['A'], correctAnswer: 0 });
+    addQuestion({ type: 'mcq' as const, prompt: 'Q2', options: ['B'], correctAnswer: 0 });
+    addQuestion({ type: 'mcq' as const, prompt: 'Q3', options: ['C'], correctAnswer: 0 });
+
+    reorderQuestions(2, 0);
+
+    const state = useQuizCreateStore.getState();
+    expect(state.questions[0].prompt).toBe('Q3');
+    expect(state.questions[1].prompt).toBe('Q1');
+    expect(state.questions[2].prompt).toBe('Q2');
+  });
+
+  it('reorders questions in middle', () => {
+    const { addQuestion, reorderQuestions } = useQuizCreateStore.getState();
+
+    addQuestion({ type: 'mcq' as const, prompt: 'Q1', options: ['A'], correctAnswer: 0 });
+    addQuestion({ type: 'mcq' as const, prompt: 'Q2', options: ['B'], correctAnswer: 0 });
+    addQuestion({ type: 'mcq' as const, prompt: 'Q3', options: ['C'], correctAnswer: 0 });
+    addQuestion({ type: 'mcq' as const, prompt: 'Q4', options: ['D'], correctAnswer: 0 });
+
+    reorderQuestions(1, 2);
+
+    const state = useQuizCreateStore.getState();
+    expect(state.questions[0].prompt).toBe('Q1');
+    expect(state.questions[1].prompt).toBe('Q3');
+    expect(state.questions[2].prompt).toBe('Q2');
+    expect(state.questions[3].prompt).toBe('Q4');
+  });
 });

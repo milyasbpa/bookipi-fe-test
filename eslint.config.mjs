@@ -18,6 +18,8 @@ const eslintConfig = defineConfig([
     // Coverage reports
     "coverage/**",
     ".coverage/**",
+    // Generated API files
+    "core/api/generated/**",
   ]),
   ...storybook.configs["flat/recommended"],
   {
@@ -65,8 +67,12 @@ const eslintConfig = defineConfig([
     files: [
       "**/react-table/**/*.tsx",
       "**/react-table/**/*.ts",
+      "**/quiz-table/**/*.tsx",
+      "**/quiz-table/**/*.ts",
       "**/question-table/**/*.tsx",
       "**/question-table/**/*.ts",
+      "**/question-list/**/*.tsx",
+      "**/question-list/**/*.ts",
     ],
     rules: {
       "react-hooks/incompatible-library": "off",

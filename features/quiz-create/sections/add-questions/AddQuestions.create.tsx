@@ -1,6 +1,7 @@
 'use client';
 
-import { Trash2 } from 'lucide-react';
+import { DndContext, closestCenter, type DragEndEvent } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -10,22 +11,55 @@ import { useCreateQuestion as useCreateQuestionGenerated } from '@/core/api/gene
 import { Button } from '@/core/components';
 import { ROUTES } from '@/core/lib/routes';
 
+import { QuestionEditModal } from '../../components/question-edit-modal';
 import { QuestionForm } from '../../components/question-form';
+import { SortableQuestionItem } from '../../components/sortable-question-item';
 import { useCreateQuiz } from '../../react-query';
 import { useQuizCreateStore, type Question } from '../../store/quiz-create.store';
 
 export function AddQuestions() {
   const t = useTranslations('quiz-maker.builder');
   const router = useRouter();
-  const { quizMetadata, questions, prevStep, addQuestion, removeQuestion, reset } =
-    useQuizCreateStore();
+  const {
+    quizMetadata,
+    questions,
+    prevStep,
+    addQuestion,
+    updateQuestion,
+    removeQuestion,
+    reorderQuestions,
+    reset,
+  } = useQuizCreateStore();
   const createQuiz = useCreateQuiz();
   const createQuestion = useCreateQuestionGenerated();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [editingQuestion, setEditingQuestion] = useState<{
+    question: Question;
+    index: number;
+  } | null>(null);
 
   const handleAddQuestion = (question: Question) => {
     addQuestion(question);
     toast.success(t('question-added'));
+  };
+
+  const handleEditQuestion = (index: number, question: Question) => {
+    updateQuestion(index, question);
+    setEditingQuestion(null);
+    toast.success(t('question-updated'));
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      const oldIndex = questions.findIndex((_, i) => `question-${i}` === active.id);
+      const newIndex = questions.findIndex((_, i) => `question-${i}` === over.id);
+
+      if (oldIndex !== -1 && newIndex !== -1) {
+        reorderQuestions(oldIndex, newIndex);
+      }
+    }
   };
 
   const handleSubmitQuiz = async () => {
@@ -42,13 +76,13 @@ export function AddQuestions() {
       });
       const quizId = quiz.id!;
 
-      await Promise.all(questions.map((q) => createQuestion.mutateAsync({ id: quizId, data: q })));
-
-      toast.success(
-        t('quiz-created-successfully', {
-          id: quizId,
-          count: questions.length,
-        }),
+      await Promise.all(
+        questions.map((q, index) =>
+          createQuestion.mutateAsync({
+            id: quizId,
+            data: { ...q, position: index + 1 },
+          }),
+        ),
       );
 
       reset();
@@ -93,27 +127,30 @@ export function AddQuestions() {
             {t('no-questions-added')}
           </p>
         ) : (
-          <div className="space-y-2">
-            {questions.map((q, index) => (
-              <div key={index} className="flex items-start gap-2 rounded-lg border p-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold">#{index + 1}</span>
-                    <span className="text-muted-foreground text-xs uppercase">{q.type}</span>
-                  </div>
-                  <p className="mt-1 text-sm">{q.prompt}</p>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => removeQuestion(index)}
-                  disabled={isSubmitting}
-                >
-                  <Trash2 className="text-destructive size-4" />
-                </Button>
+          <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <SortableContext
+              items={questions.map((_, i) => `question-${i}`)}
+              strategy={verticalListSortingStrategy}
+            >
+              <div className="space-y-2">
+                {questions.map((q, index) => (
+                  <SortableQuestionItem
+                    key={`question-${index}`}
+                    question={q}
+                    index={index}
+                    onEdit={(question, idx) => setEditingQuestion({ question, index: idx })}
+                    onDelete={removeQuestion}
+                    isSubmitting={isSubmitting}
+                    translations={{
+                      correctAnswer: t('correct-answer'),
+                      edit: t('edit'),
+                      delete: t('delete'),
+                    }}
+                  />
+                ))}
               </div>
-            ))}
-          </div>
+            </SortableContext>
+          </DndContext>
         )}
       </div>
 
@@ -132,6 +169,30 @@ export function AddQuestions() {
           </Button>
         </div>
       </div>
+
+      <QuestionEditModal
+        isOpen={editingQuestion !== null}
+        question={editingQuestion?.question || null}
+        questionIndex={editingQuestion?.index || 0}
+        onClose={() => setEditingQuestion(null)}
+        onSave={handleEditQuestion}
+        translations={{
+          title: t('edit-question-title'),
+          questionTypeLabel: t('question-type'),
+          multipleChoiceLabel: t('multiple-choice'),
+          shortAnswerLabel: t('short-answer'),
+          questionPromptLabel: t('question-prompt'),
+          enterQuestionPlaceholder: t('enter-your-question'),
+          optionsLabel: t('options'),
+          correctAnswerLabel: t('correct-answer'),
+          correctAnswerPlaceholder: t('correct-answer-text'),
+          addOptionButton: t('add-option-button'),
+          optionPlaceholder: t('add-option-placeholder'),
+          selectCorrectHint: t('select-correct-hint'),
+          cancelButton: t('cancel'),
+          saveButton: t('save-changes'),
+        }}
+      />
     </div>
   );
 }
