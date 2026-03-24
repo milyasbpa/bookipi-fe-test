@@ -1,3 +1,5 @@
+'use no memo';
+
 import { useReactTable, getCoreRowModel, createColumnHelper } from '@tanstack/react-table';
 import { Play, Pencil, Settings } from 'lucide-react';
 import { useRouter } from 'next/navigation';

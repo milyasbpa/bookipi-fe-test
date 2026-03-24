@@ -1,10 +1,11 @@
 'use client';
+'use no memo';
 
 import { useReactTable, getCoreRowModel, ColumnDef, flexRender } from '@tanstack/react-table';
 import { Edit, Trash2, Plus } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 
 import type { Question } from '@/core/api/generated/quizMakerAPI.schemas';
 import { Button, ConfirmationDialog } from '@/core/components';
@@ -26,10 +27,10 @@ export function QuestionTable() {
 
   const questions = quiz?.questions || [];
 
-  const handleDeleteClick = (questionId: number) => {
+  const handleDeleteClick = useCallback((questionId: number) => {
     setQuestionToDelete(questionId);
     setDeleteConfirmOpen(true);
-  };
+  }, []);
 
   const handleConfirmDelete = () => {
     if (questionToDelete) {

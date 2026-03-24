@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { useEffect } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
 import { Button, Dialog, FormField, Input, MCQOptions } from '@/core/components';
@@ -24,7 +24,7 @@ export function EditQuestionModal() {
   const { mutate, isPending } = useUpdateQuestion(quizId);
 
   // Prepare default values based on question type
-  const getDefaultValues = (): QuestionFormValues | undefined => {
+  const getDefaultValues = useCallback((): QuestionFormValues | undefined => {
     if (!editingQuestion) return undefined;
 
     const base = {
@@ -53,21 +53,27 @@ export function EditQuestionModal() {
         correctAnswer: (editingQuestion.correctAnswer as string) || '',
       };
     }
-  };
+  }, [editingQuestion]);
 
-  const { control, handleSubmit, watch, reset, setValue } = useForm<QuestionFormValues>({
+  const { control, handleSubmit, reset, setValue } = useForm<QuestionFormValues>({
     resolver: zodResolver(questionSchema),
     defaultValues: getDefaultValues(),
   });
 
+  const [questionType, setQuestionType] = useState<'mcq' | 'short' | 'code'>(
+    (editingQuestion?.type as 'mcq' | 'short' | 'code') || 'mcq',
+  );
+  const [selectedCorrectIndex, setSelectedCorrectIndex] = useState<number>(
+    editingQuestion?.type === 'mcq' ? (editingQuestion.correctAnswer as number) || 0 : 0,
+  );
+
   // Reset form when question changes
   useEffect(() => {
     if (editingQuestion) {
-      reset(getDefaultValues());
+      const defaultValues = getDefaultValues();
+      reset(defaultValues);
     }
-  }, [editingQuestion]);
-
-  const questionType = watch('type');
+  }, [editingQuestion, getDefaultValues, reset]);
 
   const onSubmit = (values: QuestionFormValues) => {
     if (!editingQuestion) return;
@@ -108,6 +114,16 @@ export function EditQuestionModal() {
           render={({ field }) => (
             <select
               {...field}
+              onChange={(e) => {
+                const value = e.target.value as 'mcq' | 'short' | 'code';
+                field.onChange(e);
+                setQuestionType(value);
+                // Reset correct answer when changing to MCQ
+                if (value === 'mcq') {
+                  setSelectedCorrectIndex(0);
+                  setValue('correctAnswer', 0);
+                }
+              }}
               className="border-border focus-visible:border-ring w-full rounded-xl border bg-transparent p-3 text-sm shadow-xs transition-colors outline-none disabled:opacity-50"
               disabled={true} // Type cannot be changed when editing
             >
@@ -142,8 +158,9 @@ export function EditQuestionModal() {
               <MCQOptions
                 options={field.value || []}
                 onChange={field.onChange}
-                selectedCorrectIndex={watch('correctAnswer') as number}
+                selectedCorrectIndex={selectedCorrectIndex}
                 onSelectCorrect={(index) => {
+                  setSelectedCorrectIndex(index);
                   setValue('correctAnswer', index);
                 }}
                 disabled={isPending}

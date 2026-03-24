@@ -15,6 +15,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Coverage reports
+    "coverage/**",
+    ".coverage/**",
   ]),
   ...storybook.configs["flat/recommended"],
   {
@@ -54,6 +57,19 @@ const eslintConfig = defineConfig([
       "react-hooks/rules-of-hooks": "off",
       "@typescript-eslint/no-unused-vars": "off",
       "react/no-unescaped-entities": "off",
+    },
+  },
+  // Disable React Compiler warnings for files using TanStack Table
+  // These warnings are library-level incompatibilities that cannot be fixed in user code
+  {
+    files: [
+      "**/react-table/**/*.tsx",
+      "**/react-table/**/*.ts",
+      "**/question-table/**/*.tsx",
+      "**/question-table/**/*.ts",
+    ],
+    rules: {
+      "react-hooks/incompatible-library": "off",
     },
   },
 ]);

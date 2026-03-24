@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
 import { Button } from '@/core/components';
@@ -53,7 +54,7 @@ export function AddQuestionForm({
   addButtonLabel,
   addingLabel,
 }: AddQuestionFormProps) {
-  const { control, handleSubmit, watch, reset, setValue } = useForm<QuestionFormValues>({
+  const { control, handleSubmit, reset, setValue } = useForm<QuestionFormValues>({
     resolver: zodResolver(questionSchema),
     defaultValues: {
       type: 'mcq',
@@ -63,7 +64,8 @@ export function AddQuestionForm({
     },
   });
 
-  const questionType = watch('type');
+  const [questionType, setQuestionType] = useState<'mcq' | 'short' | 'code'>('mcq');
+  const [selectedCorrectIndex, setSelectedCorrectIndex] = useState<number>(0);
 
   const handleFormSubmit = (values: QuestionFormValues) => {
     onSubmit(values, reset);
@@ -78,6 +80,16 @@ export function AddQuestionForm({
         render={({ field }) => (
           <select
             {...field}
+            onChange={(e) => {
+              const value = e.target.value as 'mcq' | 'short' | 'code';
+              field.onChange(e);
+              setQuestionType(value);
+              // Reset correct answer when changing to MCQ
+              if (value === 'mcq') {
+                setSelectedCorrectIndex(0);
+                setValue('correctAnswer', 0);
+              }
+            }}
             className="border-border focus-visible:border-ring w-full rounded-xl border bg-transparent p-3 text-sm shadow-xs transition-colors outline-none disabled:opacity-50"
             disabled={isPending}
           >
@@ -112,8 +124,9 @@ export function AddQuestionForm({
             <MCQOptions
               options={field.value || []}
               onChange={field.onChange}
-              selectedCorrectIndex={watch('correctAnswer') as number}
+              selectedCorrectIndex={selectedCorrectIndex}
               onSelectCorrect={(index) => {
+                setSelectedCorrectIndex(index);
                 setValue('correctAnswer', index);
               }}
               disabled={isPending}

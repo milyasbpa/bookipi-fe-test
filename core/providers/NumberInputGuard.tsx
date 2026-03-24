@@ -8,8 +8,9 @@ import { useEffect } from 'react';
  */
 export function NumberInputGuard() {
   useEffect(() => {
-    function handleWheel(this: HTMLInputElement) {
-      this.blur();
+    function handleWheel(e: Event) {
+      const target = e.currentTarget as HTMLInputElement;
+      target.blur();
     }
 
     function onFocus(e: FocusEvent) {
