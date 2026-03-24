@@ -107,12 +107,7 @@ export function QuestionEditModal({
   };
 
   return (
-    <Dialog
-      open={isOpen}
-      onOpenChange={onClose}
-      title={translations.title.replace('{index}', String(questionIndex + 1))}
-      size="xl"
-    >
+    <Dialog open={isOpen} onOpenChange={onClose} title={translations.title} size="xl">
       <form onSubmit={handleSave} className="space-y-4">
         <div className="space-y-2">
           <label className="text-sm font-medium">{translations.questionTypeLabel}</label>

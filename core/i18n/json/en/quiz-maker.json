@@ -94,7 +94,7 @@
     "play-quiz": "Play Quiz",
     "edit-question-modal-title": "Edit Question",
     "edit-question-modal-description": "Update the question details",
-    "edit-question-title": "Edit Question #{index}",
+    "edit-question-title": "Edit Question {index}",
     "update-question": "Update Question",
     "save-changes": "Save Changes",
     "delete-question-title": "Delete Question",

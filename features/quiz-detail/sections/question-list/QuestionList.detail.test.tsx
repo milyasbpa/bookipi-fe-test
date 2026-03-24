@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 const mockDeleteMutate = vi.fn();
+const mockUpdateMutate = vi.fn();
 const mockOpenEditModal = vi.fn();
 const mockOpenAddModal = vi.fn();
 
@@ -31,13 +32,14 @@ vi.mock('next-intl', () => ({
 vi.mock('../../react-query', () => ({
   useGetQuizDetail: vi.fn(),
   useDeleteQuestion: vi.fn(),
+  useUpdateQuestion: vi.fn(),
 }));
 
 vi.mock('../../store/quiz-detail.store', () => ({
   useQuizDetailStore: vi.fn(),
 }));
 
-import { useGetQuizDetail, useDeleteQuestion } from '../../react-query';
+import { useGetQuizDetail, useDeleteQuestion, useUpdateQuestion } from '../../react-query';
 import { useQuizDetailStore } from '../../store/quiz-detail.store';
 
 import { QuestionList } from './QuestionList.detail';
@@ -51,6 +53,9 @@ describe('QuestionList', () => {
     } as any);
     vi.mocked(useDeleteQuestion).mockReturnValue({
       mutate: mockDeleteMutate,
+    } as any);
+    vi.mocked(useUpdateQuestion).mockReturnValue({
+      mutate: mockUpdateMutate,
     } as any);
   });
 
@@ -126,7 +131,7 @@ describe('QuestionList', () => {
     } as any);
 
     render(<QuestionList />);
-    expect(screen.getAllByText('Library')[0]).toBeInTheDocument();
+    expect(screen.getByText(/✓\s*Library/)).toBeInTheDocument();
   });
 
   it('displays short answer correct answer directly', () => {
@@ -305,8 +310,8 @@ describe('QuestionList', () => {
     } as any);
 
     render(<QuestionList />);
-    expect(screen.getByText('1')).toBeInTheDocument();
-    expect(screen.getByText('2')).toBeInTheDocument();
+    expect(screen.getByText(/#1/)).toBeInTheDocument();
+    expect(screen.getByText(/#2/)).toBeInTheDocument();
   });
 
   it('shows correct question count in header', () => {
@@ -345,6 +350,8 @@ describe('QuestionList', () => {
     } as any);
 
     render(<QuestionList />);
-    expect(screen.getAllByText('-')[0]).toBeInTheDocument();
+    // With showAllOptions=true, MCQ without correct answer shows all options instead of "-"
+    expect(screen.getByText('A')).toBeInTheDocument();
+    expect(screen.getByText('B')).toBeInTheDocument();
   });
 });

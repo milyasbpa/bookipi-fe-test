@@ -13,7 +13,7 @@ import { ROUTES } from '@/core/lib/routes';
 
 import { QuestionEditModal } from '../../components/question-edit-modal';
 import { QuestionForm } from '../../components/question-form';
-import { SortableQuestionItem } from '../../components/sortable-question-item';
+import { SortableQuestionCard } from '../../components/sortable-question-card';
 import { useCreateQuiz } from '../../react-query';
 import { useQuizCreateStore, type Question } from '../../store/quiz-create.store';
 
@@ -134,7 +134,7 @@ export function AddQuestions() {
             >
               <div className="space-y-2">
                 {questions.map((q, index) => (
-                  <SortableQuestionItem
+                  <SortableQuestionCard
                     key={`question-${index}`}
                     question={q}
                     index={index}
@@ -156,8 +156,8 @@ export function AddQuestions() {
 
       <div className="bg-background fixed right-0 bottom-0 left-0 border-t p-4">
         <div className="mx-auto flex max-w-4xl gap-2">
-          <Button variant="outline" onClick={prevStep} disabled={isSubmitting}>
-            ← {t('back')}
+          <Button variant="outline" className="flex-1" onClick={prevStep} disabled={isSubmitting}>
+            {t('back')}
           </Button>
           <Button
             variant="primary"
@@ -177,7 +177,7 @@ export function AddQuestions() {
         onClose={() => setEditingQuestion(null)}
         onSave={handleEditQuestion}
         translations={{
-          title: t('edit-question-title'),
+          title: t('edit-question-title', { index: (editingQuestion?.index || 0) + 1 }),
           questionTypeLabel: t('question-type'),
           multipleChoiceLabel: t('multiple-choice'),
           shortAnswerLabel: t('short-answer'),
