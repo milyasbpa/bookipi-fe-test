@@ -7,7 +7,7 @@
     "npm": ">=10.0.0"
   },
   "scripts": {
-    "dev": "npm run api:generate && next dev",
+    "dev": "npm run api:generate && next dev -p 8008",
     "build": "npm run api:generate && next build",
     "start": "next start",
     "lint": "eslint",
