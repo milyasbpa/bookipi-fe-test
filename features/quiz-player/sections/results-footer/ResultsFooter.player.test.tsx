@@ -1,6 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+
 import { ResultsFooter } from './ResultsFooter.player';
 
 // Mock dependencies
@@ -16,14 +17,12 @@ vi.mock('next-intl', () => ({
 }));
 
 vi.mock('@/core/components', () => ({
-  Button: ({ children, onClick }: any) => (
-    <button onClick={onClick}>{children}</button>
-  ),
+  Button: ({ children, onClick }: any) => <button onClick={onClick}>{children}</button>,
 }));
 
 vi.mock('@/core/lib/routes', () => ({
   ROUTES: {
-    QUIZ_LIST: '/quiz-maker/builder',
+    QUIZ_LIST: '/',
   },
 }));
 
@@ -45,20 +44,20 @@ describe('ResultsFooter', () => {
     render(<ResultsFooter />);
     const button = screen.getByText('back-to-quiz-list');
     await userEvent.click(button);
-    
+
     expect(mockResetPlayer).toHaveBeenCalledTimes(1);
-    expect(mockPush).toHaveBeenCalledWith('/quiz-maker/builder');
+    expect(mockPush).toHaveBeenCalledWith('/');
   });
 
   it('calls resetPlayer before navigation', async () => {
     const callOrder: string[] = [];
     mockResetPlayer.mockImplementation(() => callOrder.push('reset'));
     mockPush.mockImplementation(() => callOrder.push('push'));
-    
+
     render(<ResultsFooter />);
     const button = screen.getByText('back-to-quiz-list');
     await userEvent.click(button);
-    
+
     expect(callOrder).toEqual(['reset', 'push']);
   });
 });

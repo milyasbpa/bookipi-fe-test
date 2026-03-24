@@ -1,15 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
 
+import { MCQOptions } from '@/core/components';
 import { Button } from '@/core/components/button';
 import { Input } from '@/core/components/input';
-import { MCQOptions } from '@/core/components';
+
+import type { Question } from '../../store/quiz-create.store';
 
 interface QuestionFormProps {
-  onAdd: (question: any) => void;
-  
+  onAdd: (question: Question) => void;
+
   addQuestionTitle: string;
   questionTypeLabel: string;
   multipleChoiceLabel: string;
@@ -54,7 +55,7 @@ export function QuestionForm({
       return;
     }
 
-    const question: any = {
+    const question: Partial<Question> = {
       type: questionType,
       prompt: prompt.trim(),
     };

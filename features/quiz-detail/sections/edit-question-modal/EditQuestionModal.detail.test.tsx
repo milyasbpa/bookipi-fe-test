@@ -1,6 +1,8 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
+import { useUpdateQuestion } from '../../react-query';
+
 import { EditQuestionModal } from './EditQuestionModal.detail';
 
 const mockMutate = vi.fn();
@@ -33,9 +35,9 @@ vi.mock('next-intl', () => ({
       'add-option-button': 'Add Option',
       'add-option-placeholder': 'Option text',
       'select-correct-hint': 'Select correct answer',
-      'cancel': 'Cancel',
+      cancel: 'Cancel',
       'update-question': 'Update Question',
-      'updating': 'Updating...',
+      updating: 'Updating...',
     };
     return translations[key] || key;
   },
@@ -49,8 +51,6 @@ vi.mock('../../store/quiz-detail.store', () => ({
   useQuizDetailStore: (selector: any) => selector(mockQuizDetailStoreState),
 }));
 
-import { useUpdateQuestion } from '../../react-query';
-
 describe('EditQuestionModal', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -58,7 +58,7 @@ describe('EditQuestionModal', () => {
       mutate: mockMutate,
       isPending: false,
     } as any);
-    
+
     // Reset to default state
     mockQuizDetailStoreState = {
       isEditQuestionModalOpen: false,

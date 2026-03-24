@@ -1,12 +1,13 @@
-import { renderHook, waitFor } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { toast } from 'sonner';
+import { renderHook, waitFor } from '@testing-library/react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { toast } from 'sonner';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
+
+import { quizCreateMutationKeys } from '../keys';
 
 import { useCreateQuiz } from './useCreateQuiz';
-import { quizCreateMutationKeys } from '../keys';
 
 vi.mock('sonner', () => ({
   toast: {
@@ -44,7 +45,7 @@ vi.mock('@/core/api/generated/quizzes/quizzes', () => ({
   useCreateQuiz: vi.fn((options: any) => {
     mockOnSuccess = options?.mutation?.onSuccess;
     mockOnError = options?.mutation?.onError;
-    
+
     return {
       mutateAsync: mockMutateAsync,
       isPending: false,
@@ -70,7 +71,7 @@ describe('useCreateQuiz', () => {
     (useRouter as any).mockReturnValue({ push: mockPush });
     mockOnSuccess = null;
     mockOnError = null;
-    
+
     mockMutateAsync = vi.fn(async (data) => {
       const response = { id: 123 };
       if (mockOnSuccess) {

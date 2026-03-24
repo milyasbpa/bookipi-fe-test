@@ -1,6 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useQuizDetailStore } from './quiz-detail.store';
+
 import type { Question } from '@/core/api/generated/quizMakerAPI.schemas';
+
+import { useQuizDetailStore } from './quiz-detail.store';
 
 describe('useQuizDetailStore', () => {
   beforeEach(() => {

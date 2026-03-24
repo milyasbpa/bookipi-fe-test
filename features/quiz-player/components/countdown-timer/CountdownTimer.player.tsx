@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
 import { Clock } from 'lucide-react';
+import { useEffect } from 'react';
 
 interface CountdownTimerProps {
   remainingSeconds: number | null;
@@ -33,7 +33,6 @@ export function CountdownTimer({
     return () => clearInterval(interval);
   }, [remainingSeconds, onTick, onTimeUp]);
 
-
   if (remainingSeconds === null || remainingSeconds < 0) {
     return null;
   }
@@ -45,7 +44,7 @@ export function CountdownTimer({
   };
 
   return (
-    <div className="flex items-center gap-2 mt-4 text-sm">
+    <div className="mt-4 flex items-center gap-2 text-sm">
       <Clock className="size-4" />
       <span>
         {timeRemainingLabel}: <strong>{formatTime(remainingSeconds)}</strong>

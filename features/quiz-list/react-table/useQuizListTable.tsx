@@ -1,6 +1,3 @@
-import { useMemo } from 'react';
-import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
 import {
   useReactTable,
   getCoreRowModel,
@@ -8,10 +5,14 @@ import {
   type ColumnDef,
 } from '@tanstack/react-table';
 import { Play, Pencil, Settings } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useMemo } from 'react';
 
-import { Button } from '@/core/components';
 import type { QuizWithQuestions } from '@/core/api/generated/quizMakerAPI.schemas';
+import { Button } from '@/core/components';
 import { ROUTES } from '@/core/lib/routes';
+
 import { useQuizListStore } from '../store';
 
 const columnHelper = createColumnHelper<QuizWithQuestions>();
@@ -21,14 +22,14 @@ export function useQuizListTable(quizzes: QuizWithQuestions[]) {
   const router = useRouter();
   const openEditModal = useQuizListStore((s) => s.openEditModal);
 
-  const columns = useMemo<ColumnDef<QuizWithQuestions, any>[]>(
+  const columns = useMemo<ColumnDef<QuizWithQuestions, unknown>[]>(
     () => [
       columnHelper.accessor('title', {
         header: t('quiz-title'),
         cell: (info) => (
           <div className="min-w-50">
             <div className="font-semibold">{info.getValue()}</div>
-            <div className="text-muted-foreground mt-1 text-sm line-clamp-2">
+            <div className="text-muted-foreground mt-1 line-clamp-2 text-sm">
               {info.row.original.description}
             </div>
           </div>

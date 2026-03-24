@@ -1,4 +1,5 @@
 import { describe, expect, it, beforeEach } from 'vitest';
+
 import { usePlayerStore } from './player.store';
 
 describe('usePlayerStore', () => {
@@ -346,14 +347,8 @@ describe('usePlayerStore', () => {
 
   describe('complex scenarios', () => {
     it('handles complete quiz flow', () => {
-      const {
-        setAttemptId,
-        setQuizId,
-        setAnswer,
-        goToNext,
-        setPhaseCompleted,
-        resetPlayer,
-      } = usePlayerStore.getState();
+      const { setAttemptId, setQuizId, setAnswer, goToNext, setPhaseCompleted, resetPlayer } =
+        usePlayerStore.getState();
 
       // 1. Start quiz
       setAttemptId(1);

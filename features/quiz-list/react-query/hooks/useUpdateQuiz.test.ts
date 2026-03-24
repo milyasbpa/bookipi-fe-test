@@ -1,8 +1,8 @@
-import { renderHook, waitFor } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { toast } from 'sonner';
+import { renderHook, waitFor } from '@testing-library/react';
 import React from 'react';
+import { toast } from 'sonner';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 import { useUpdateQuiz } from './useUpdateQuiz';
 
@@ -26,7 +26,13 @@ vi.mock('../../store', () => ({
 vi.mock('@/core/api/generated/quizzes/quizzes', () => ({
   useUpdateQuiz: vi.fn((options) => ({
     mutate: vi.fn((data) => {
-      options?.mutation?.onSuccess?.({ id: 1, title: 'Test Quiz', description: 'Test', timeLimitSeconds: 300, isPublished: true });
+      options?.mutation?.onSuccess?.({
+        id: 1,
+        title: 'Test Quiz',
+        description: 'Test',
+        timeLimitSeconds: 300,
+        isPublished: true,
+      });
     }),
     isPending: false,
   })),
@@ -127,12 +133,15 @@ describe('useUpdateQuiz', () => {
 
   it('shows error toast on failure', async () => {
     const useUpdateQuizGenerated = await import('@/core/api/generated/quizzes/quizzes');
-    vi.mocked(useUpdateQuizGenerated.useUpdateQuiz).mockImplementationOnce((options: any) => ({
-      mutate: vi.fn((data) => {
-        options?.mutation?.onError?.(new Error('Update failed') as any);
-      }),
-      isPending: false,
-    } as any));
+    vi.mocked(useUpdateQuizGenerated.useUpdateQuiz).mockImplementationOnce(
+      (options: any) =>
+        ({
+          mutate: vi.fn((data) => {
+            options?.mutation?.onError?.(new Error('Update failed') as any);
+          }),
+          isPending: false,
+        }) as any,
+    );
 
     const { result } = renderHook(() => useUpdateQuiz(), {
       wrapper: createWrapper(),

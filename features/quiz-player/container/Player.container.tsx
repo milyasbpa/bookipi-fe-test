@@ -1,13 +1,13 @@
 'use client';
 
-import { usePlayerStore } from '../store/player.store';
-import { QuizHeaderPlayer } from '../sections/quiz-header/QuizHeader.player';
-import { QuestionViewPlayer } from '../sections/question-view/QuestionView.player';
 import { NavigationPlayer } from '../sections/navigation/Navigation.player';
-import { ScoreCardPlayer } from '../sections/results-score-card';
-import { QuestionBreakdownPlayer } from '../sections/results-question-breakdown';
+import { QuestionViewPlayer } from '../sections/question-view/QuestionView.player';
+import { QuizHeaderPlayer } from '../sections/quiz-header/QuizHeader.player';
 import { AntiCheatSummaryPlayer } from '../sections/results-anti-cheat-summary';
 import { ResultsFooter } from '../sections/results-footer';
+import { QuestionBreakdownPlayer } from '../sections/results-question-breakdown';
+import { ScoreCardPlayer } from '../sections/results-score-card';
+import { usePlayerStore } from '../store/player.store';
 
 export function PlayerContainer() {
   const phase = usePlayerStore((s) => s.phase);

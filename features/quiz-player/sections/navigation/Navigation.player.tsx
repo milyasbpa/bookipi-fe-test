@@ -1,17 +1,18 @@
 'use client';
 
-import { useParams } from 'next/navigation';
 import { ChevronLeft, ChevronRight, Send } from 'lucide-react';
+import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/core/components';
-import { usePlayerStore } from '../../store/player.store';
+
 import { useSubmitAttempt, useGetQuizPlayer } from '../../react-query';
+import { usePlayerStore } from '../../store/player.store';
 
 export function NavigationPlayer() {
   const t = useTranslations('quiz-maker.player');
   const params = useParams();
-  const quizId = Number(params?.quizId);
+  const quizId = Number(params?.id);
 
   const attemptId = usePlayerStore((s) => s.attemptId);
   const currentQuestionIndex = usePlayerStore((s) => s.currentQuestionIndex);
@@ -22,7 +23,10 @@ export function NavigationPlayer() {
     enabled: !!quizId && !isNaN(quizId) && !!attemptId,
   });
 
-  const { mutate: submitAttempt, isPending: isSubmitting } = useSubmitAttempt(attemptId || 0, quizId);
+  const { mutate: submitAttempt, isPending: isSubmitting } = useSubmitAttempt(
+    attemptId || 0,
+    quizId,
+  );
 
   if (!quiz || !attemptId || !quiz.questions) {
     return null;
@@ -39,7 +43,7 @@ export function NavigationPlayer() {
   };
 
   return (
-    <div className="flex items-center justify-between gap-4 pt-6 border-t">
+    <div className="flex items-center justify-between gap-4 border-t pt-6">
       <Button
         type="button"
         variant="outline"

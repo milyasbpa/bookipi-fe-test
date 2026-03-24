@@ -1,12 +1,13 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
+import { useForm } from 'react-hook-form';
 
 import { Button, FormField, Input } from '@/core/components';
-import { useQuizCreateStore } from '../../store/quiz-create.store';
 import { quizSchema, type QuizFormValues } from '@/core/schemas';
+
+import { useQuizCreateStore } from '../../store/quiz-create.store';
 
 export function QuizInfo() {
   const t = useTranslations('quiz-maker.builder');
@@ -29,9 +30,7 @@ export function QuizInfo() {
     <div className="mx-auto max-w-2xl space-y-6">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{t('create-quiz-wizard-title')}</h1>
-        <p className="text-muted-foreground">
-          {t('create-quiz-wizard-step-1-description')}
-        </p>
+        <p className="text-muted-foreground">{t('create-quiz-wizard-step-1-description')}</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -39,9 +38,7 @@ export function QuizInfo() {
           name="title"
           control={control}
           label={t('title-label')}
-          render={({ field }) => (
-            <Input {...field} placeholder={t('title-placeholder')} />
-          )}
+          render={({ field }) => <Input {...field} placeholder={t('title-placeholder')} />}
         />
 
         <FormField

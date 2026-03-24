@@ -1,8 +1,8 @@
-import { renderHook, waitFor } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { toast } from 'sonner';
+import { renderHook, waitFor } from '@testing-library/react';
 import React from 'react';
+import { toast } from 'sonner';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 import { useDeleteQuestion } from './useDeleteQuestion';
 
@@ -24,7 +24,9 @@ vi.mock('../../store', () => ({
   useQuizListStore: (selector: any) => {
     const state = {
       setQuestionCount: mockSetQuestionCount,
-      get questionCount() { return mockCurrentCount; },
+      get questionCount() {
+        return mockCurrentCount;
+      },
     };
     return selector(state);
   },
@@ -111,12 +113,15 @@ describe('useDeleteQuestion', () => {
 
   it('shows error toast on failure', async () => {
     const useDeleteQuestionGenerated = await import('@/core/api/generated/questions/questions');
-    vi.mocked(useDeleteQuestionGenerated.useDeleteQuestion).mockImplementationOnce((options: any) => ({
-      mutate: vi.fn((data) => {
-        options?.mutation?.onError?.(new Error('Deletion failed') as any);
-      }),
-      isPending: false,
-    } as any));
+    vi.mocked(useDeleteQuestionGenerated.useDeleteQuestion).mockImplementationOnce(
+      (options: any) =>
+        ({
+          mutate: vi.fn((data) => {
+            options?.mutation?.onError?.(new Error('Deletion failed') as any);
+          }),
+          isPending: false,
+        }) as any,
+    );
 
     const { result } = renderHook(() => useDeleteQuestion(1), {
       wrapper: createWrapper(),

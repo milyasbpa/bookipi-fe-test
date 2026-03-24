@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 
-interface QuizMetadata {
+export interface QuizMetadata {
   title: string;
   description: string;
   timeLimitSeconds?: number | null;
 }
 
-interface Question {
+export interface Question {
   type: 'mcq' | 'short' | 'code';
   prompt: string;
   options?: string[];

@@ -2,8 +2,6 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
-import { List } from './List';
-
 const mockQuizzes = [
   {
     id: 1,
@@ -46,6 +44,8 @@ vi.mock('../../react-table', () => ({
 
 import { useGetQuizzes } from '../../react-query/hooks';
 import { useQuizListTable } from '../../react-table';
+
+import { List } from './List';
 
 describe('List', () => {
   beforeEach(() => {
@@ -108,7 +108,7 @@ describe('List', () => {
     render(<List />);
     const createButton = screen.getAllByText('create-quiz')[0];
     await userEvent.click(createButton);
-    expect(mockPush).toHaveBeenCalledWith('/quiz-maker/create');
+    expect(mockPush).toHaveBeenCalledWith('/quiz/create');
   });
 
   it('renders quiz table when quizzes exist', () => {

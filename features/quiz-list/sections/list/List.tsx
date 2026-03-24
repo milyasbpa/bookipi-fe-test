@@ -1,12 +1,13 @@
 'use client';
 
-import { Plus, ListPlus } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
 import { flexRender } from '@tanstack/react-table';
+import { Plus, ListPlus } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 import { Button, EmptyState, LoadingState } from '@/core/components';
 import { ROUTES } from '@/core/lib/routes';
+
 import { useGetQuizzes } from '../../react-query/hooks';
 import { useQuizListTable } from '../../react-table';
 

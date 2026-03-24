@@ -1,6 +1,7 @@
 'use client';
 
 import { useGetQuizzes as useGetQuizzesGenerated } from '@/core/api/generated/quizzes/quizzes';
+
 import { quizListQueryKeys } from '../keys';
 
 export function useGetQuizzes() {

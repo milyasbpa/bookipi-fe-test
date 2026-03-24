@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+
 import { QuizHeader } from './QuizHeader.detail';
 
 const meta: Meta<typeof QuizHeader> = {

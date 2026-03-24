@@ -1,5 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+
 import { QuizHeaderPlayer } from './QuizHeader.player';
 
 // Mock state
@@ -13,7 +14,7 @@ let mockIsStartingAttempt = false;
 
 // Mock dependencies
 vi.mock('next/navigation', () => ({
-  useParams: () => ({ quizId: '1' }),
+  useParams: () => ({ id: '1' }),
 }));
 
 vi.mock('next-intl', () => ({
@@ -179,11 +180,11 @@ describe('QuizHeaderPlayer', () => {
     mockStore.attemptId = null;
     mockIsLoading = true;
     const { rerender } = render(<QuizHeaderPlayer />);
-    
+
     mockIsLoading = false;
     mockStore.attemptId = null;
     rerender(<QuizHeaderPlayer />);
-    
+
     await waitFor(() => {
       expect(mockStartAttempt).toHaveBeenCalledWith({ data: { quizId: 1 } });
     });
@@ -193,17 +194,20 @@ describe('QuizHeaderPlayer', () => {
     mockStore.attemptId = null;
     mockIsStartingAttempt = true;
     render(<QuizHeaderPlayer />);
-    
-    await waitFor(() => {
-      expect(mockStartAttempt).not.toHaveBeenCalled();
-    }, { timeout: 500 });
+
+    await waitFor(
+      () => {
+        expect(mockStartAttempt).not.toHaveBeenCalled();
+      },
+      { timeout: 500 },
+    );
   });
 
   it('initializes timer when phase is playing and remainingSeconds is null', async () => {
     mockStore.remainingSeconds = null;
     mockStore.phase = 'playing';
     render(<QuizHeaderPlayer />);
-    
+
     await waitFor(() => {
       expect(mockStore.setRemainingSeconds).toHaveBeenCalledWith(600);
     });
@@ -213,17 +217,20 @@ describe('QuizHeaderPlayer', () => {
     mockStore.remainingSeconds = null;
     mockStore.phase = 'completed';
     render(<QuizHeaderPlayer />);
-    
-    await waitFor(() => {
-      expect(mockStore.setRemainingSeconds).not.toHaveBeenCalled();
-    }, { timeout: 500 });
+
+    await waitFor(
+      () => {
+        expect(mockStore.setRemainingSeconds).not.toHaveBeenCalled();
+      },
+      { timeout: 500 },
+    );
   });
 
   it('calls setRemainingSeconds on tick', async () => {
     render(<QuizHeaderPlayer />);
     const tickButton = screen.getByText('Tick');
     tickButton.click();
-    
+
     await waitFor(() => {
       expect(mockStore.setRemainingSeconds).toHaveBeenCalledWith(599);
     });
@@ -234,7 +241,7 @@ describe('QuizHeaderPlayer', () => {
     render(<QuizHeaderPlayer />);
     const timeUpButton = screen.getByText('Time Up');
     timeUpButton.click();
-    
+
     await waitFor(() => {
       expect(toast.info).toHaveBeenCalledWith('time-up');
       expect(mockSubmitAttempt).toHaveBeenCalled();

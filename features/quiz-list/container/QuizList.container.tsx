@@ -2,8 +2,8 @@
 
 import { useTranslations } from 'next-intl';
 
-import { List } from '../sections/list';
 import { Edit } from '../sections/edit-quiz';
+import { List } from '../sections/list';
 
 export function QuizListContainer() {
   const t = useTranslations('quiz-maker.builder');

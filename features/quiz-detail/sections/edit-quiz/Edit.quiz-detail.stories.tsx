@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+
 import { Edit } from './Edit.quiz-detail';
 
 const meta: Meta<typeof Edit> = {

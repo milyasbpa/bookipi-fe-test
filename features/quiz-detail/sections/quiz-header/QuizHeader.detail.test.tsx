@@ -1,6 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
+import { useGetQuizDetail } from '../../react-query';
+
 import { QuizHeader } from './QuizHeader.detail';
 
 const mockQuiz = {
@@ -24,7 +26,7 @@ vi.mock('next-intl', () => ({
     if (key === 'questions-count') return `${values?.count} questions`;
     if (key === 'time-limit-minutes') return `${values?.minutes} minutes`;
     if (key === 'quiz-not-found') return 'Quiz not found';
-    
+
     const translations: Record<string, string> = {
       'back-to-list': 'Back to List',
       'edit-quiz': 'Edit Quiz',
@@ -39,11 +41,8 @@ vi.mock('../../react-query', () => ({
 }));
 
 vi.mock('../../store/quiz-detail.store', () => ({
-  useQuizDetailStore: (selector: any) =>
-    selector({ openEditQuizModal: mockOpenEditModal }),
+  useQuizDetailStore: (selector: any) => selector({ openEditQuizModal: mockOpenEditModal }),
 }));
-
-import { useGetQuizDetail } from '../../react-query';
 
 describe('QuizHeader', () => {
   beforeEach(() => {

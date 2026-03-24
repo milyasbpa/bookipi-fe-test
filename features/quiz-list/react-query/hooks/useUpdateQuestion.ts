@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { useUpdateQuestion as useUpdateQuestionGenerated } from '@/core/api/generated/questions/questions';
+
 import { quizListQueryKeys, quizListMutationKeys } from '../keys';
 
 export function useUpdateQuestion(quizId: number) {

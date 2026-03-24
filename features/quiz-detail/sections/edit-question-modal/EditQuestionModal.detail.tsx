@@ -1,12 +1,13 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, Controller } from 'react-hook-form';
 import { useEffect } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 
 import { Button, Dialog, FormField, Input, MCQOptions } from '@/core/components';
+
 import { useUpdateQuestion } from '../../react-query';
 import { questionSchema, type QuestionFormValues } from '../../schemas/add-question-form.schema';
 import { useQuizDetailStore } from '../../store/quiz-detail.store';
@@ -107,7 +108,7 @@ export function EditQuestionModal() {
           render={({ field }) => (
             <select
               {...field}
-              className="w-full rounded-xl border border-border bg-transparent p-3 text-sm shadow-xs transition-colors outline-none focus-visible:border-ring disabled:opacity-50"
+              className="border-border focus-visible:border-ring w-full rounded-xl border bg-transparent p-3 text-sm shadow-xs transition-colors outline-none disabled:opacity-50"
               disabled={true} // Type cannot be changed when editing
             >
               <option value="mcq">{t('question-type-mcq')}</option>
@@ -125,7 +126,7 @@ export function EditQuestionModal() {
             <textarea
               {...field}
               placeholder={t('prompt-placeholder')}
-              className="w-full rounded-xl border border-border bg-transparent p-4 text-sm shadow-xs transition-colors outline-none focus-visible:border-ring disabled:opacity-50"
+              className="border-border focus-visible:border-ring w-full rounded-xl border bg-transparent p-4 text-sm shadow-xs transition-colors outline-none disabled:opacity-50"
               rows={2}
               disabled={isPending}
               aria-invalid={!!fieldState.error}
@@ -181,12 +182,7 @@ export function EditQuestionModal() {
           >
             {t('cancel')}
           </Button>
-          <Button
-            type="submit"
-            variant="primary"
-            disabled={isPending}
-            className="flex-1"
-          >
+          <Button type="submit" variant="primary" disabled={isPending} className="flex-1">
             {isPending ? t('updating') : t('update-question')}
           </Button>
         </div>

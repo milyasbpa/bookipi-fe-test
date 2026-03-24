@@ -1,7 +1,7 @@
-import { renderHook, waitFor } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { renderHook, waitFor } from '@testing-library/react';
 import React from 'react';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 import { useStartAttempt } from './useStartAttempt';
 
@@ -14,8 +14,7 @@ vi.mock('next/navigation', () => ({
 }));
 
 vi.mock('../../store/player.store', () => ({
-  usePlayerStore: (selector: any) =>
-    selector({ setAttemptId: mockSetAttemptId }),
+  usePlayerStore: (selector: any) => selector({ setAttemptId: mockSetAttemptId }),
 }));
 
 let mockOnSuccess: any = null;
@@ -88,7 +87,7 @@ describe('useStartAttempt', () => {
     }
 
     await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith('/quiz-maker/builder');
+      expect(mockPush).toHaveBeenCalledWith('/');
     });
   });
 

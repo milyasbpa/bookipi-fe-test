@@ -1,4 +1,5 @@
 import { useGetQuizById } from '@/core/api/generated/quizzes/quizzes';
+
 import { quizPlayerQueryKeys } from '../keys';
 
 export function useGetQuizPlayer(quizId: number, options?: { enabled?: boolean }) {

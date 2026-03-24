@@ -1,8 +1,8 @@
-import { renderHook, waitFor } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { toast } from 'sonner';
+import { renderHook, waitFor } from '@testing-library/react';
 import React from 'react';
+import { toast } from 'sonner';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 import { useCreateQuestion } from './useCreateQuestion';
 
@@ -134,12 +134,15 @@ describe('useCreateQuestion', () => {
       isPending: false,
     } as any);
 
-    vi.mocked(useCreateQuestionGenerated.useCreateQuestion).mockImplementationOnce((options: any) => ({
-      mutate: vi.fn((data) => {
-        options?.mutation?.onError?.(new Error('Creation failed') as any);
-      }),
-      isPending: false,
-    } as any));
+    vi.mocked(useCreateQuestionGenerated.useCreateQuestion).mockImplementationOnce(
+      (options: any) =>
+        ({
+          mutate: vi.fn((data) => {
+            options?.mutation?.onError?.(new Error('Creation failed') as any);
+          }),
+          isPending: false,
+        }) as any,
+    );
 
     const { result } = renderHook(() => useCreateQuestion(1), {
       wrapper: createWrapper(),

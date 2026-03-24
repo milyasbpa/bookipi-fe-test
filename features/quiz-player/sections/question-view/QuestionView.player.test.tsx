@@ -1,6 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+
 import { QuestionViewPlayer } from './QuestionView.player';
 
 // Mock state
@@ -9,7 +10,7 @@ let mockQuizData: any = null;
 
 // Mock dependencies
 vi.mock('next/navigation', () => ({
-  useParams: () => ({ quizId: '1' }),
+  useParams: () => ({ id: '1' }),
 }));
 
 vi.mock('next-intl', () => ({

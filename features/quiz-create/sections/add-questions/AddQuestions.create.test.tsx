@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { toast } from 'sonner';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 import { AddQuestions } from './AddQuestions.create';
 
@@ -134,9 +134,7 @@ describe('AddQuestions', () => {
     render(<AddQuestions />);
 
     const deleteButtons = screen.getAllByRole('button');
-    const trashButtons = deleteButtons.filter(btn => 
-      btn.querySelector('svg')
-    );
+    const trashButtons = deleteButtons.filter((btn) => btn.querySelector('svg'));
     expect(trashButtons.length).toBeGreaterThan(0);
   });
 
@@ -153,11 +151,13 @@ describe('AddQuestions', () => {
 
   it('disables submit button when loading', async () => {
     mockQuestions = [{ type: 'mcq', prompt: 'Test?', options: ['A', 'B'], correctAnswer: 0 }];
-    
+
     let resolvePromise: any;
-    mockMutateAsync.mockReturnValue(new Promise((resolve) => {
-      resolvePromise = resolve;
-    }));
+    mockMutateAsync.mockReturnValue(
+      new Promise((resolve) => {
+        resolvePromise = resolve;
+      }),
+    );
 
     render(<AddQuestions />);
 

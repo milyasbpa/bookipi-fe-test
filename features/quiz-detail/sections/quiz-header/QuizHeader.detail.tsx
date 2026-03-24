@@ -1,12 +1,13 @@
 'use client';
 
+import { ArrowLeft, Play } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { ArrowLeft, Play } from 'lucide-react';
 
 import { Button } from '@/core/components';
-import { useGetQuizDetail } from '../../react-query';
 import { ROUTES } from '@/core/lib/routes';
+
+import { useGetQuizDetail } from '../../react-query';
 import { useQuizDetailStore } from '../../store/quiz-detail.store';
 
 export function QuizHeader() {
@@ -34,16 +35,16 @@ export function QuizHeader() {
   if (isLoading) {
     return (
       <div className="animate-pulse space-y-3">
-        <div className="h-10 w-32 rounded bg-muted" />
-        <div className="h-8 w-64 rounded bg-muted" />
-        <div className="h-6 w-96 rounded bg-muted" />
+        <div className="bg-muted h-10 w-32 rounded" />
+        <div className="bg-muted h-8 w-64 rounded" />
+        <div className="bg-muted h-6 w-96 rounded" />
       </div>
     );
   }
 
   if (!quiz) {
     return (
-      <div className="rounded-lg border border-destructive bg-destructive/10 p-4">
+      <div className="border-destructive bg-destructive/10 rounded-lg border p-4">
         <p className="text-destructive">{t('quiz-not-found')}</p>
       </div>
     );
@@ -67,10 +68,8 @@ export function QuizHeader() {
         <div className="flex-1 space-y-2">
           <h1 className="text-3xl font-bold">{quiz.title}</h1>
           <p className="text-muted-foreground">{quiz.description}</p>
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <span>
-              {t('questions-count', { count: quiz.questions?.length || 0 })}
-            </span>
+          <div className="text-muted-foreground flex items-center gap-4 text-sm">
+            <span>{t('questions-count', { count: quiz.questions?.length || 0 })}</span>
             <span>•</span>
             <span>
               {quiz.timeLimitSeconds

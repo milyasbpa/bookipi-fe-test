@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
+
 import { Button } from '../button';
 
 import { Dialog } from './Dialog';
@@ -137,14 +138,14 @@ export const WithForm: Story = {
               <label className="text-sm font-medium">Name</label>
               <input
                 type="text"
-                className="w-full rounded-xl border border-border bg-transparent p-3 text-sm"
+                className="border-border w-full rounded-xl border bg-transparent p-3 text-sm"
                 placeholder="Enter name"
               />
             </div>
             <div>
               <label className="text-sm font-medium">Description</label>
               <textarea
-                className="w-full rounded-xl border border-border bg-transparent p-3 text-sm"
+                className="border-border w-full rounded-xl border bg-transparent p-3 text-sm"
                 rows={3}
                 placeholder="Enter description"
               />

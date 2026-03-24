@@ -1,19 +1,19 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { useEffect } from 'react';
 import { toast } from 'sonner';
 
-import { usePlayerStore } from '../../store/player.store';
-import { useGetQuizPlayer, useStartAttempt, useSubmitAttempt } from '../../react-query';
-import { ProgressBar } from '../../components/progress-bar';
 import { CountdownTimer } from '../../components/countdown-timer';
+import { ProgressBar } from '../../components/progress-bar';
+import { useGetQuizPlayer, useStartAttempt, useSubmitAttempt } from '../../react-query';
+import { usePlayerStore } from '../../store/player.store';
 
 export function QuizHeaderPlayer() {
   const t = useTranslations('quiz-maker.player');
   const params = useParams();
-  const quizId = Number(params?.quizId);
+  const quizId = Number(params?.id);
 
   const attemptId = usePlayerStore((s) => s.attemptId);
   const currentQuestionIndex = usePlayerStore((s) => s.currentQuestionIndex);
@@ -24,7 +24,11 @@ export function QuizHeaderPlayer() {
 
   const { mutate: submitAttempt } = useSubmitAttempt(attemptId!, quizId);
 
-  const { data: quiz, isLoading, error } = useGetQuizPlayer(quizId, {
+  const {
+    data: quiz,
+    isLoading,
+    error,
+  } = useGetQuizPlayer(quizId, {
     enabled: !!quizId && !isNaN(quizId),
   });
 
@@ -58,27 +62,15 @@ export function QuizHeaderPlayer() {
   };
 
   if (isLoading || !quiz || !attemptId) {
-    return (
-      <div className="text-center text-muted-foreground">
-        {t('loading-quiz')}
-      </div>
-    );
+    return <div className="text-muted-foreground text-center">{t('loading-quiz')}</div>;
   }
 
   if (error) {
-    return (
-      <div className="text-center text-destructive">
-        {t('quiz-load-error')}
-      </div>
-    );
+    return <div className="text-destructive text-center">{t('quiz-load-error')}</div>;
   }
 
   if (!quiz.questions || quiz.questions.length === 0) {
-    return (
-      <div className="text-center text-muted-foreground">
-        {t('no-questions-yet')}
-      </div>
-    );
+    return <div className="text-muted-foreground text-center">{t('no-questions-yet')}</div>;
   }
 
   const totalQuestions = quiz.questions.length;
@@ -93,12 +85,8 @@ export function QuizHeaderPlayer() {
       />
 
       <div>
-        <h1 className="text-3xl font-bold text-foreground">
-          {quiz.title || t('untitled-quiz')}
-        </h1>
-        <p className="text-muted-foreground mt-2">
-          {quiz.description || t('no-description')}
-        </p>
+        <h1 className="text-foreground text-3xl font-bold">{quiz.title || t('untitled-quiz')}</h1>
+        <p className="text-muted-foreground mt-2">{quiz.description || t('no-description')}</p>
         {quiz.timeLimitSeconds && (
           <CountdownTimer
             remainingSeconds={remainingSeconds}

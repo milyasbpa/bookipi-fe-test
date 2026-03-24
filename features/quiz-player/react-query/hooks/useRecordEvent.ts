@@ -1,6 +1,7 @@
 'use client';
 
 import { useRecordEvent as useRecordEventGenerated } from '@/core/api/generated/attempts/attempts';
+
 import { quizPlayerMutationKeys } from '../keys';
 
 /**

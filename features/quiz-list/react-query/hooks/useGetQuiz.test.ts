@@ -1,10 +1,11 @@
-import { renderHook, waitFor } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { renderHook, waitFor } from '@testing-library/react';
 import React from 'react';
+import { describe, expect, it, vi } from 'vitest';
+
+import { quizListQueryKeys } from '../keys';
 
 import { useGetQuiz } from './useGetQuiz';
-import { quizListQueryKeys } from '../keys';
 
 vi.mock('@/core/api/generated/quizzes/quizzes', () => ({
   useGetQuizById: vi.fn(() => ({

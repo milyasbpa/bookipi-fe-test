@@ -1,10 +1,11 @@
-import { renderHook, waitFor } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { renderHook, waitFor } from '@testing-library/react';
 import React from 'react';
+import { describe, expect, it, vi } from 'vitest';
+
+import { quizPlayerQueryKeys } from '../keys';
 
 import { useGetQuizPlayer } from './useGetQuizPlayer';
-import { quizPlayerQueryKeys } from '../keys';
 
 vi.mock('@/core/api/generated/quizzes/quizzes', () => ({
   useGetQuizById: vi.fn(() => ({
@@ -89,7 +90,7 @@ describe('useGetQuizPlayer', () => {
     });
 
     expect(result.current).toBeDefined();
-    // Note: staleTime and gcTime are internal to react-query, 
+    // Note: staleTime and gcTime are internal to react-query,
     // this test verifies the hook doesn't crash with these options
   });
 });

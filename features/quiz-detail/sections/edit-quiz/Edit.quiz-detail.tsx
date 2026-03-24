@@ -1,21 +1,22 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslations } from 'next-intl';
-import { useForm } from 'react-hook-form';
-import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
 import { Button, Dialog, FormField, Input } from '@/core/components';
+import { quizSchema, type QuizFormValues } from '@/core/schemas';
+
 import { useUpdateQuiz } from '../../react-query';
 import { useQuizDetailStore } from '../../store/quiz-detail.store';
-import { quizSchema, type QuizFormValues } from '@/core/schemas';
 
 export function Edit() {
   const params = useParams();
   const quizId = Number(params.id);
   const t = useTranslations('quiz-maker.builder');
-  
+
   // Store integration
   const isOpen = useQuizDetailStore((s) => s.isEditQuizModalOpen);
   const closeModal = useQuizDetailStore((s) => s.closeEditQuizModal);
@@ -83,7 +84,7 @@ export function Edit() {
               {...field}
               placeholder={t('description-placeholder')}
               disabled={isPending}
-              className="w-full rounded-xl border border-border bg-transparent p-4 text-sm shadow-xs transition-colors outline-none focus-visible:border-ring disabled:opacity-50"
+              className="border-border focus-visible:border-ring w-full rounded-xl border bg-transparent p-4 text-sm shadow-xs transition-colors outline-none disabled:opacity-50"
               rows={3}
               aria-invalid={!!fieldState.error}
             />
@@ -108,13 +109,7 @@ export function Edit() {
           )}
         />
 
-        <Button
-          type="submit"
-          variant="primary"
-          size="lg"
-          disabled={isPending}
-          className="w-full"
-        >
+        <Button type="submit" variant="primary" size="lg" disabled={isPending} className="w-full">
           {isPending ? t('updating') : t('update-quiz')}
         </Button>
       </form>

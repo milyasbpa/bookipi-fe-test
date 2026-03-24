@@ -3,6 +3,8 @@
 import { useRouter } from 'next/navigation';
 
 import { useStartAttempt as useStartAttemptGenerated } from '@/core/api/generated/attempts/attempts';
+import { ROUTES } from '@/core/lib/routes';
+
 import { usePlayerStore } from '../../store/player.store';
 import { quizPlayerMutationKeys } from '../keys';
 
@@ -20,7 +22,7 @@ export function useStartAttempt(quizId: number) {
         }
       },
       onError: () => {
-        router.push('/quiz-maker/builder');
+        router.push(ROUTES.QUIZ_LIST);
       },
     },
   });

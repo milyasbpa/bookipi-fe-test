@@ -2,17 +2,18 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
-import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
 import { Button, Dialog, FormField, Input } from '@/core/components';
+import { quizSchema, type QuizFormValues } from '@/core/schemas';
+
 import { useUpdateQuiz } from '../../react-query/hooks/useUpdateQuiz';
 import { useQuizListStore } from '../../store';
-import { quizSchema, type QuizFormValues } from '@/core/schemas';
 
 export function Edit() {
   const t = useTranslations('quiz-maker.builder');
-  
+
   const isOpen = useQuizListStore((s) => s.isEditModalOpen);
   const closeModal = useQuizListStore((s) => s.closeEditModal);
   const editQuizId = useQuizListStore((s) => s.editQuizId);
@@ -78,7 +79,7 @@ export function Edit() {
               {...field}
               placeholder={t('description-placeholder')}
               disabled={isPending}
-              className="w-full rounded-xl border border-border bg-transparent p-4 text-sm shadow-xs transition-colors outline-none focus-visible:border-ring disabled:opacity-50"
+              className="border-border focus-visible:border-ring w-full rounded-xl border bg-transparent p-4 text-sm shadow-xs transition-colors outline-none disabled:opacity-50"
               rows={3}
               aria-invalid={!!fieldState.error}
             />
@@ -103,13 +104,7 @@ export function Edit() {
           )}
         />
 
-        <Button
-          type="submit"
-          variant="primary"
-          size="lg"
-          disabled={isPending}
-          className="w-full"
-        >
+        <Button type="submit" variant="primary" size="lg" disabled={isPending} className="w-full">
           {isPending ? t('updating') : t('update-quiz')}
         </Button>
       </form>

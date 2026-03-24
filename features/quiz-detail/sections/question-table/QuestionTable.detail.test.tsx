@@ -1,8 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
-import { QuestionTable } from './QuestionTable.detail';
-
 const mockDeleteMutate = vi.fn();
 const mockOpenEditModal = vi.fn();
 const mockOpenAddModal = vi.fn();
@@ -16,15 +14,15 @@ vi.mock('next-intl', () => ({
     const translations: Record<string, string> = {
       'questions-list': 'Questions',
       'add-question': 'Add Question',
-      'type': 'Type',
-      'question': 'Question',
+      type: 'Type',
+      question: 'Question',
       'answer-label': 'Answer',
-      'edit': 'Edit',
-      'delete': 'Delete',
+      edit: 'Edit',
+      delete: 'Delete',
       'no-questions': 'No questions yet',
       'add-first-question': 'Add your first question',
       'delete-confirm': 'Are you sure you want to delete this question?',
-      'cancel': 'Cancel',
+      cancel: 'Cancel',
     };
     return translations[key] || key;
   },
@@ -41,6 +39,8 @@ vi.mock('../../store/quiz-detail.store', () => ({
 
 import { useGetQuizDetail, useDeleteQuestion } from '../../react-query';
 import { useQuizDetailStore } from '../../store/quiz-detail.store';
+
+import { QuestionTable } from './QuestionTable.detail';
 
 describe('QuestionTable', () => {
   beforeEach(() => {
@@ -229,7 +229,7 @@ describe('QuestionTable', () => {
     } as any);
 
     render(<QuestionTable />);
-    
+
     const deleteButton = screen.getByRole('button', { name: /Delete/i });
     fireEvent.click(deleteButton);
 

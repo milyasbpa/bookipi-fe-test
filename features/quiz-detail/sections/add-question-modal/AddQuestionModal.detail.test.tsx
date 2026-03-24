@@ -1,6 +1,8 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
+import { useCreateQuestion } from '../../react-query';
+
 import { AddQuestionModal } from './AddQuestionModal.detail';
 
 const mockMutate = vi.fn();
@@ -28,7 +30,7 @@ vi.mock('next-intl', () => ({
       'add-option-placeholder': 'Option text',
       'select-correct-hint': 'Select correct answer',
       'add-question': 'Add Question',
-      'adding': 'Adding...',
+      adding: 'Adding...',
     };
     return translations[key] || key;
   },
@@ -49,8 +51,6 @@ vi.mock('../../store/quiz-detail.store', () => ({
   useQuizDetailStore: (selector: any) => selector(mockQuizDetailStoreState),
 }));
 
-import { useCreateQuestion } from '../../react-query';
-
 describe('AddQuestionModal', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -58,7 +58,7 @@ describe('AddQuestionModal', () => {
       mutate: mockMutate,
       isPending: false,
     } as any);
-    
+
     // Reset to default state
     mockQuizDetailStoreState = {
       isAddQuestionModalOpen: false,
@@ -105,7 +105,7 @@ describe('AddQuestionModal', () => {
     };
 
     render(<AddQuestionModal />);
-    
+
     // Select short answer type
     const typeSelect = screen.getByRole('combobox');
     fireEvent.change(typeSelect, { target: { value: 'short' } });
@@ -145,7 +145,7 @@ describe('AddQuestionModal', () => {
     });
 
     render(<AddQuestionModal />);
-    
+
     // Select short answer type
     const typeSelect = screen.getByRole('combobox');
     fireEvent.change(typeSelect, { target: { value: 'short' } });

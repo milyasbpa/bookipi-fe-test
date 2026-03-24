@@ -1,6 +1,7 @@
 'use client';
 
 import { useGetQuizById } from '@/core/api/generated/quizzes/quizzes';
+
 import { quizDetailQueryKeys } from '../keys';
 
 export function useGetQuizDetail(quizId: number, options?: { enabled?: boolean }) {

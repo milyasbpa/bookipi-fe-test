@@ -1,11 +1,11 @@
-import { renderHook, waitFor } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { renderHook, waitFor } from '@testing-library/react';
 import React from 'react';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 import { useRecordEvent } from './useRecordEvent';
 
-let mockMutate = vi.fn();
+const mockMutate = vi.fn();
 let mockOnSuccess: any = null;
 let mockOnError: any = null;
 

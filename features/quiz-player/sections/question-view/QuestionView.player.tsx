@@ -5,13 +5,13 @@ import { useTranslations } from 'next-intl';
 
 import { MCQAnswer } from '../../components/mcq-answer';
 import { ShortAnswer } from '../../components/short-answer';
-import { usePlayerStore } from '../../store/player.store';
 import { useGetQuizPlayer } from '../../react-query';
+import { usePlayerStore } from '../../store/player.store';
 
 export function QuestionViewPlayer() {
   const t = useTranslations('quiz-maker.player');
   const params = useParams();
-  const quizId = Number(params?.quizId);
+  const quizId = Number(params?.id);
 
   const attemptId = usePlayerStore((s) => s.attemptId);
   const currentQuestionIndex = usePlayerStore((s) => s.currentQuestionIndex);
@@ -46,16 +46,16 @@ export function QuestionViewPlayer() {
   return (
     <div className="space-y-6">
       <div>
-        <div className="flex items-start justify-between gap-4 mb-4">
-          <h2 className="text-xl font-semibold text-foreground">
+        <div className="mb-4 flex items-start justify-between gap-4">
+          <h2 className="text-foreground text-xl font-semibold">
             {t('question')} {currentQuestionIndex + 1} {t('of')} {totalQuestions}
           </h2>
-          <span className="text-sm text-muted-foreground px-3 py-1 rounded-full bg-accent">
+          <span className="text-muted-foreground bg-accent rounded-full px-3 py-1 text-sm">
             {currentQuestion.type?.toUpperCase() || t('type-na')}
           </span>
         </div>
 
-        <p className="text-lg text-foreground">{currentQuestion.prompt}</p>
+        <p className="text-foreground text-lg">{currentQuestion.prompt}</p>
       </div>
 
       <div>

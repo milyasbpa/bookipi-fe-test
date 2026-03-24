@@ -1,9 +1,9 @@
 // For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
-import storybook from "eslint-plugin-storybook";
 
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
+import storybook from "eslint-plugin-storybook";
 
 const eslintConfig = defineConfig([
   ...nextVitals,
@@ -36,6 +36,24 @@ const eslintConfig = defineConfig([
           alphabetize: { order: "asc" },
         },
       ],
+    },
+  },
+  // Allow `any` type in test files for flexibility with mocks
+  {
+    files: ["**/*.test.ts", "**/*.test.tsx"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+    },
+  },
+  // Relax rules for Storybook files
+  {
+    files: ["**/*.stories.tsx", "**/*.stories.ts"],
+    rules: {
+      "storybook/no-renderer-packages": "off",
+      "react-hooks/rules-of-hooks": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "react/no-unescaped-entities": "off",
     },
   },
 ]);
