@@ -2,7 +2,7 @@
 
 A modern, full-featured quiz creation and management platform built with React and Next.js. This application allows users to create coding-related quizzes, take quizzes with real-time tracking, and view detailed result summaries with optional anti-cheat monitoring.
 
-> **Note**: This project was built as a take-home technical assessment demonstrating modern React development practices, clean architecture, and comprehensive testing.
+> Note: This project was built as a take-home technical assessment demonstrating modern React development practices, clean architecture, and comprehensive testing.
 
 ---
 
@@ -31,42 +31,42 @@ A modern, full-featured quiz creation and management platform built with React a
 
 ### Quiz Builder
 
-- ✅ Create quizzes with title, description, and time limits
-- ✅ Support for multiple question types:
+- Create quizzes with title, description, and time limits
+- Support for multiple question types:
   - Multiple Choice Questions (MCQ) with single correct answer
   - Short Answer questions with case-insensitive string matching
   - Code snippet display (optional for each question)
-- ✅ Real-time validation and error handling
-- ✅ Drag-and-drop question reordering with visual feedback
-- ✅ Automatic position synchronization to backend
+- Real-time validation and error handling
+- Drag-and-drop question reordering with visual feedback
+- Automatic position synchronization to backend
 
 ### Quiz Player
 
-- ✅ Load quiz by ID with full question details
-- ✅ Navigate between questions with Previous/Next controls
-- ✅ Live countdown timer with auto-submit on timeout
-- ✅ Answer persistence (saved to backend on each change)
-- ✅ Submit quiz and view detailed results:
+- Load quiz by ID with full question details
+- Navigate between questions with Previous/Next controls
+- Live countdown timer with auto-submit on timeout
+- Answer persistence (saved to backend on each change)
+- Submit quiz and view detailed results:
   - Overall score and percentage
   - Per-question correctness breakdown
   - Correct vs. submitted answers comparison
 
 ### Quiz Management
 
-- ✅ Browse all available quizzes with pagination
-- ✅ Search and filter functionality
-- ✅ Edit existing quizzes with full detail view
-- ✅ Drag-and-drop question reordering in edit mode
-- ✅ Real-time position updates saved to backend
-- ✅ Unified question card UI across all views
+- Browse all available quizzes with pagination
+- Search and filter functionality
+- Edit existing quizzes with full detail view
+- Drag-and-drop question reordering in edit mode
+- Real-time position updates saved to backend
+- Unified question card UI across all views
 
 ### Anti-Cheat System (Bonus)
 
-- ✅ Focus/blur event tracking with timestamps
-- ✅ Paste detection in answer inputs
-- ✅ Event logging sent to backend
-- ✅ Compact anti-cheat summary on results page
-- ✅ Privacy-conscious implementation
+- Focus/blur event tracking with timestamps
+- Paste detection in answer inputs
+- Event logging sent to backend
+- Compact anti-cheat summary on results page
+- Privacy-conscious implementation
 
 ---
 
@@ -137,20 +137,13 @@ bookipi-fe-test/
 └── ... (config files)
 ```
 
-**Key Architecture Principles:**
-
-- **Feature-based structure**: Each feature is self-contained with its own components, state, and API hooks
-- **Container-Section-Component pattern**: Complex features use container → sections → components hierarchy
-- **Separation of concerns**: Clear boundaries between UI, state, and data fetching
-- **Centralized API keys**: All React Query keys are defined in `keys/` folder for cache invalidation
-
----
+The project follows a feature-based structure where each feature is self-contained with its own components, state, and API hooks. Complex features use a container → sections → components hierarchy with clear separation between UI, state, and data fetching.
 
 ## Prerequisites
 
-- **Node.js**: `>=22.0.0` (LTS recommended)
-- **npm**: `>=10.0.0`
-- **Backend**: Quiz Maker API running on `http://localhost:4000`
+- Node.js: `>=22.0.0` (LTS recommended)
+- npm: `>=10.0.0`
+- Backend: Quiz Maker API running on `http://localhost:4000`
 
 Check your versions:
 
@@ -165,27 +158,27 @@ npm --version   # Should be v10.x or higher
 
 ### Backend Setup
 
-1. **Clone and setup the backend repository:**
+1. Clone and setup the backend repository:
 
    ```bash
    cd /path/to/backend
    npm install
    ```
 
-2. **Configure backend environment variables:**
+2. Configure backend environment variables:
 
    ```bash
    cp .env.example .env
    # Edit .env and set API_TOKEN (default: dev-token)
    ```
 
-3. **Initialize database with schema and seed data:**
+3. Initialize database with schema and seed data:
 
    ```bash
    npm run seed
    ```
 
-4. **Start the backend server:**
+4. Start the backend server:
    ```bash
    npm run dev
    ```
@@ -193,13 +186,13 @@ npm --version   # Should be v10.x or higher
 
 ### Frontend Setup
 
-1. **Install dependencies:**
+1. Install dependencies:
 
    ```bash
    npm install
    ```
 
-2. **Configure environment variables:**
+2. Configure environment variables:
 
    ```bash
    cp .env.example .env
@@ -213,7 +206,7 @@ npm --version   # Should be v10.x or higher
    NEXT_PUBLIC_APP_URL=http://localhost:3000
    ```
 
-3. **Generate API client from backend:**
+3. Generate API client from backend:
 
    ```bash
    npm run api:generate
@@ -221,7 +214,7 @@ npm --version   # Should be v10.x or higher
 
    This uses Orval to generate TypeScript types and React Query hooks from the backend API.
 
-4. **Initialize Git hooks (for development):**
+4. Initialize Git hooks (for development):
    ```bash
    npm run prepare
    ```
@@ -238,8 +231,8 @@ npm run dev
 
 The application will be available at:
 
-- **Frontend**: `http://localhost:3000`
-- **Storybook**: Run `npm run storybook` for component documentation
+- Frontend: `http://localhost:3000`
+- Storybook: Run `npm run storybook` for component documentation
 
 ### Production Build
 
@@ -287,9 +280,9 @@ Access Storybook at `http://localhost:6006` to browse all components with intera
 
 ### Unit & Component Tests
 
-The project uses **Vitest** with **React Testing Library** for comprehensive test coverage.
+The project uses Vitest with React Testing Library for comprehensive test coverage.
 
-**Run tests:**
+Run tests:
 
 ```bash
 npm test              # Run all tests once
@@ -297,15 +290,15 @@ npm run test:watch    # Run tests in watch mode
 npm run test:coverage # Generate coverage report
 ```
 
-**Test Coverage:**
+Test Coverage:
 
-- **538 passing tests** across 68 test files
-- **Features**: quiz-create, quiz-detail, quiz-list, quiz-player
-- **Core components**: All core components fully tested
-- **Stores**: Zustand stores with 100% coverage
-- **Hooks**: React Query hooks tested
+- 538 passing tests across 68 test files
+- Features: quiz-create, quiz-detail, quiz-list, quiz-player
+- Core components: All core components fully tested
+- Stores: Zustand stores with 100% coverage
+- Hooks: React Query hooks tested
 
-**Coverage breakdown:**
+Coverage breakdown:
 
 - Components: ~100% (31 component tests)
 - Hooks: ~100% (26 hook tests)
@@ -337,9 +330,9 @@ features/quiz-player/
 
 ### ESLint Configuration
 
-- **Config**: ESLint v9 flat config format
-- **Rules**: Next.js recommended + TypeScript strict
-- **Custom rules**:
+- Config: ESLint v9 flat config format
+- Rules: Next.js recommended + TypeScript strict
+- Custom rules:
   - No explicit `any` types
   - Unused vars with `_` prefix allowed
   - Import ordering enforced
@@ -347,30 +340,30 @@ features/quiz-player/
 
 ### Prettier
 
-- **Config**: `.prettierrc` with Tailwind plugin
-- **Features**: Auto-sort Tailwind classes, consistent formatting
+- Config: `.prettierrc` with Tailwind plugin
+- Features: Auto-sort Tailwind classes, consistent formatting
 
 ### Git Hooks (Husky)
 
-**Pre-commit hook:**
+Pre-commit hook:
 
 - Runs `lint-staged` on staged files:
   - ESLint with auto-fix
   - Prettier formatting
-- **Blocks commit** if errors can't be fixed
+- Blocks commit if errors can't be fixed
 
-**Commit-msg hook:**
+Commit-msg hook:
 
 - Validates commit messages using Commitlint
-- **Required format**: `type: description`
-- **Allowed types**: feat, fix, docs, style, refactor, perf, test, chore, revert, ci, build
-- **Example**: `feat: add quiz timer component`
+- Required format: `type: description`
+- Allowed types: feat, fix, docs, style, refactor, perf, test, chore, revert, ci, build
+- Example: `feat: add quiz timer component`
 
-**Pre-push hook:**
+Pre-push hook:
 
 - Runs TypeScript type checking (`tsc --noEmit`)
 - Runs full test suite with coverage
-- **Blocks push** if type errors or test failures
+- Blocks push if type errors or test failures
 
 ### Commit Conventions
 
@@ -391,7 +384,7 @@ chore: maintenance tasks
 
 ### Feature-Based Architecture
 
-This project follows a **feature-first** approach inspired by Feature-Sliced Design (FSD):
+This project follows a feature-first approach inspired by Feature-Sliced Design (FSD):
 
 ```
 features/[feature-name]/
@@ -403,13 +396,7 @@ features/[feature-name]/
 └── utils/           # Feature-specific helper functions
 ```
 
-**Key principles:**
-
-1. **`app/` routes contain minimal code**: Pages only import and render feature containers
-2. **Container = Layout only**: Arranges sections, passes no props, holds no state
-3. **Sections are independent**: Each section manages its own state, API calls, and validation
-4. **Cross-section communication via Zustand**: No prop drilling between sections
-5. **API hooks are wrapped**: Raw Orval-generated hooks never imported directly
+Routes in `app/` contain minimal code and only import feature containers. Containers arrange sections without holding state. Sections are independent and manage their own state, API calls, and validation. Cross-section communication happens via Zustand stores to avoid prop drilling.
 
 ### State Management Strategy
 
@@ -421,16 +408,11 @@ features/[feature-name]/
 | Form state              | React Hook Form + Zod | Local to component            |
 | Local UI state          | React `useState`      | Local to component            |
 
-**Why Zustand for player state?**
-
-- Timer needs to be accessible from multiple sections (header, navigation, results)
-- Current question index drives answer input rendering
-- Anti-cheat events need to be logged across sections
-- Store is reset on quiz start/end to prevent state leaks
+Zustand is used for player and builder state because the timer, current question index, and anti-cheat events need to be accessible from multiple sections. The store is reset on quiz start/end to prevent state leaks.
 
 ### API Integration Pattern
 
-**1. Backend Connection:**
+Backend connection:
 
 ```typescript
 // core/lib/axios.ts
@@ -440,7 +422,7 @@ const api = axios.create({
 });
 ```
 
-**2. Code Generation (Orval):**
+Code generation with Orval:
 
 ```bash
 npm run api:generate  # Reads openapi.json → generates hooks
@@ -452,7 +434,7 @@ Generated files:
 - `core/api/quiz-maker.zod.ts`: Zod schemas for all entities
 - `core/api/quiz-maker.msw.ts`: MSW handlers for testing
 
-**3. Wrapper Hooks (Anti-corruption layer):**
+Wrapper hooks provide an anti-corruption layer:
 
 ```typescript
 // features/quiz-player/react-query/hooks/useSubmitAttempt.ts
@@ -472,15 +454,11 @@ export const useSubmitAttemptPlayer = () => {
 };
 ```
 
-**Benefits:**
-
-- Business logic (toasts, cache invalidation) in one place
-- Orval regeneration doesn't break features
-- Easy to mock for testing
+This pattern keeps business logic (toasts, cache invalidation) in one place and prevents Orval regeneration from breaking features.
 
 ### Centralized Query Keys
 
-All React Query keys are defined in `keys/` folders:
+All React Query keys are defined in `keys/` folders for type-safe references and consistent cache invalidation:
 
 ```typescript
 // features/quiz-player/react-query/keys/attempts.keys.ts
@@ -491,15 +469,9 @@ export const attemptsKeys = {
 };
 ```
 
-**Benefits:**
-
-- Type-safe key references across features
-- Consistent cache invalidation
-- Easier debugging with React Query DevTools
-
 ### Component Reusability Pattern
 
-This project implements a **Core → Feature Wrapper** pattern for maximum code reuse:
+This project implements a Core → Feature Wrapper pattern:
 
 ```mermaid
 graph TD
@@ -517,21 +489,11 @@ graph TD
     style F fill:#9C27B0,stroke:#6A1B9A,color:#fff
 ```
 
-**Architecture:**
+Core components (`core/components/question-card/QuestionCard.tsx`) are pure presentational components that accept all data via props with no API calls, translations, or store dependencies. This makes them easy to test in isolation.
 
-1. **Core Component** (`core/components/question-card/QuestionCard.tsx`):
-   - Pure presentational component
-   - Accepts all data via props (no API calls, no translations, no store)
-   - Defines base UI and props interface
-   - Fully tested in isolation
+Feature wrappers (`features/*/components/sortable-question-card/`) add feature-specific behavior like drag-and-drop using `@dnd-kit/sortable`, connect to Zustand stores, and handle API integration for position updates.
 
-2. **Feature Wrappers** (`features/*/components/sortable-question-card/`):
-   - Wraps core component with feature-specific behavior
-   - Adds drag-and-drop using `@dnd-kit/sortable`
-   - Connects to feature stores (Zustand)
-   - Handles API integration (position updates)
-
-**Code Example:**
+Code example:
 
 ```typescript
 // Core component - pure UI
@@ -557,20 +519,7 @@ export function SortableQuestionCard({ questionId }: { questionId: string }) {
 }
 ```
 
-**Benefits:**
-
-- ✅ Single source of truth for UI components
-- ✅ Core components easy to test in isolation (no mocking stores/API)
-- ✅ Features can augment behavior without modifying core
-- ✅ Consistent UI across different contexts (create/edit/view)
-- ✅ Changes to core component automatically propagate to all features
-
-**Drag-and-Drop Implementation:**
-
-- Uses `@dnd-kit/core` + `@dnd-kit/sortable` for keyboard-accessible drag-and-drop
-- Position updates sent to backend via `PATCH /questions/:id/position`
-- Optimistic UI updates with automatic rollback on API error
-- Visual feedback: dragging item becomes semi-transparent, drop zones highlighted
+Drag-and-drop uses `@dnd-kit/core` + `@dnd-kit/sortable` for keyboard accessibility. Position updates are sent to the backend via `PATCH /questions/:id/position` with optimistic UI updates and automatic rollback on error.
 
 ---
 
@@ -580,7 +529,7 @@ export function SortableQuestionCard({ questionId }: { questionId: string }) {
 
 The backend runs on `http://localhost:4000` and requires a Bearer token for authentication.
 
-**Authentication:**
+Authentication:
 
 ```bash
 Authorization: Bearer dev-token
@@ -664,9 +613,9 @@ Authorization: Bearer dev-token
 
 The backend automatically grades:
 
-- **MCQ**: Exact string match with `correctAnswer`
-- **Short answer**: Case-insensitive string match
-- **Code questions**: Manual grading only (not auto-graded)
+- MCQ: Exact string match with `correctAnswer`
+- Short answer: Case-insensitive string match
+- Code questions: Manual grading only (not auto-graded)
 
 ---
 
@@ -735,19 +684,19 @@ git push origin feat/add-quiz-timer
 
 The git hooks will automatically:
 
-- ✅ Lint and format code (pre-commit)
-- ✅ Validate commit message format (commit-msg)
-- ✅ Run TypeScript checks and tests (pre-push)
+- Lint and format code (pre-commit)
+- Validate commit message format (commit-msg)
+- Run TypeScript checks and tests (pre-push)
 
 ### Adding a New Feature
 
-**1. Create feature folder:**
+1. Create feature folder:
 
 ```bash
 mkdir -p features/my-feature/{container,sections,components,react-query,store}
 ```
 
-**2. Create container:**
+2. Create container:
 
 ```typescript
 // features/my-feature/container/MyFeature.container.tsx
@@ -761,20 +710,20 @@ export const MyFeatureContainer = () => {
 };
 ```
 
-**3. Create sections with tests:**
+3. Create sections with tests:
 
 ```typescript
 // features/my-feature/sections/header/Header.section.tsx
 // features/my-feature/sections/header/Header.section.test.tsx
 ```
 
-**4. Add Storybook stories:**
+4. Add Storybook stories:
 
 ```typescript
 // features/my-feature/sections/header/Header.section.stories.tsx
 ```
 
-**5. Create API hooks if needed:**
+5. Create API hooks if needed:
 
 ```typescript
 // features/my-feature/react-query/hooks/useMyData.ts
@@ -800,18 +749,18 @@ npm test
 
 ### Scope Constraints
 
-- **No authentication**: Assumes direct API access with Bearer token
-- **Single user mode**: No user sessions or multi-user quiz attempts
-- **Code question grading**: Code questions are stored but not auto-graded
-- **Limited anti-cheat**: Only focus/blur/paste events tracked, no advanced detection
+- No authentication: Assumes direct API access with Bearer token
+- Single user mode: No user sessions or multi-user quiz attempts
+- Code question grading: Code questions are stored but not auto-graded
+- Limited anti-cheat: Only focus/blur/paste events tracked, no advanced detection
 
 ### Technical Limitations
 
-- **Client-side timer**: Timer runs in browser, can be manipulated (use backend timer for production)
-- **No offline support**: Requires active internet connection
-- **No real-time updates**: Quiz changes don't sync live to active attempts
-- **No retry logic**: Failed API calls require manual retry
-- **Drag-and-drop limitations**:
+- Client-side timer: Timer runs in browser, can be manipulated (use backend timer for production)
+- No offline support: Requires active internet connection
+- No real-time updates: Quiz changes don't sync live to active attempts
+- No retry logic: Failed API calls require manual retry
+- Drag-and-drop limitations:
   - Requires JavaScript enabled
   - Not optimized for touch devices (works but not ideal UX)
   - No undo/redo for position changes
@@ -819,16 +768,16 @@ npm test
 
 ### Future Improvements
 
-- [ ] Add authentication with user sessions
-- [ ] Implement server-side timer verification
-- [ ] Add code question auto-grading with test cases
-- [ ] Add rich text editor for questions
-- [ ] Add image/media upload support
-- [ ] Add quiz analytics dashboard
-- [ ] Add attempt history and review mode
-- [ ] Add collaborative quiz editing
-- [ ] Add quiz templates and duplication
-- [ ] Add export/import quiz functionality
+- Add authentication with user sessions
+- Implement server-side timer verification
+- Add code question auto-grading with test cases
+- Add rich text editor for questions
+- Add image/media upload support
+- Add quiz analytics dashboard
+- Add attempt history and review mode
+- Add collaborative quiz editing
+- Add quiz templates and duplication
+- Add export/import quiz functionality
 
 ---
 
@@ -836,9 +785,9 @@ npm test
 
 ### Common Issues
 
-**❌ Error: "Cannot find module 'core/api/quiz-maker'"**
+Error: "Cannot find module 'core/api/quiz-maker'"
 
-**Solution:** Generate the API client:
+Solution: Generate the API client:
 
 ```bash
 npm run api:generate
@@ -846,9 +795,9 @@ npm run api:generate
 
 ---
 
-**❌ Backend connection refused**
+Backend connection refused
 
-**Solution:** Ensure backend is running:
+Solution: Ensure backend is running:
 
 ```bash
 cd backend-folder
@@ -859,9 +808,9 @@ Check `NEXT_PUBLIC_API_URL` in `.env` matches backend URL.
 
 ---
 
-**❌ Tests failing with "Cannot find module"**
+Tests failing with "Cannot find module"
 
-**Solution:** Clear Vitest cache:
+Solution: Clear Vitest cache:
 
 ```bash
 npx vitest --clearCache
@@ -870,9 +819,9 @@ npm test
 
 ---
 
-**❌ Git hooks not running**
+Git hooks not running
 
-**Solution:** Initialize Husky:
+Solution: Initialize Husky:
 
 ```bash
 npm run prepare
@@ -886,18 +835,18 @@ ls -la .husky/_/
 
 ---
 
-**❌ TypeScript errors after API regeneration**
+TypeScript errors after API regeneration
 
-**Solution:** Restart TypeScript server in VS Code:
+Solution: Restart TypeScript server in VS Code:
 
 1. Open Command Palette (`Cmd+Shift+P`)
 2. Run "TypeScript: Restart TS Server"
 
 ---
 
-**❌ Port 3000 already in use**
+Port 3000 already in use
 
-**Solution:** Kill existing process:
+Solution: Kill existing process:
 
 ```bash
 lsof -ti:3000 | xargs kill -9
@@ -911,9 +860,9 @@ PORT=3001 npm run dev
 
 ---
 
-**❌ Storybook not showing components**
+Storybook not showing components
 
-**Solution:** Rebuild Storybook cache:
+Solution: Rebuild Storybook cache:
 
 ```bash
 rm -rf node_modules/.cache/storybook
@@ -937,12 +886,10 @@ If you encounter issues not covered here:
 
 MIT License - see LICENSE file for details.
 
----
-
 ## Contact / Author
 
-**Project**: Quiz Maker Application (Take-Home Assessment)  
-**Year**: 2024  
-**Framework**: Next.js 16 + React 19 + TypeScript 5
+Project: Quiz Maker Application (Take-Home Assessment)  
+Year: 2024  
+Framework: Next.js 16 + React 19 + TypeScript 5
 
 For questions about this implementation, please refer to the codebase documentation and test files which provide extensive examples of usage patterns.
