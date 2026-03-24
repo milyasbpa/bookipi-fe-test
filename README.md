@@ -36,9 +36,7 @@ A modern, full-featured quiz creation and management platform built with React a
   - Multiple Choice Questions (MCQ) with single correct answer
   - Short Answer questions with case-insensitive string matching
   - Code snippet display (optional for each question)
-- ✅ Drag-and-drop question reordering
 - ✅ Real-time validation and error handling
-- ✅ Auto-save functionality
 
 ### Quiz Player
 
@@ -606,7 +604,6 @@ The backend automatically grades:
 | **axios**                     | HTTP client for API requests            |
 | **zod**                       | Runtime schema validation               |
 | **react-hook-form**           | Form state and validation               |
-| **@dnd-kit/core**             | Drag-and-drop for question reordering   |
 | **@radix-ui/\***              | Headless accessible UI primitives       |
 | **lucide-react**              | Icon library                            |
 | **next-intl**                 | Internationalization (i18n)             |
