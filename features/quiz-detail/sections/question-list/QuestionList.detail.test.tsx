@@ -40,9 +40,9 @@ vi.mock('../../store/quiz-detail.store', () => ({
 import { useGetQuizDetail, useDeleteQuestion } from '../../react-query';
 import { useQuizDetailStore } from '../../store/quiz-detail.store';
 
-import { QuestionTable } from './QuestionTable.detail';
+import { QuestionList } from './QuestionList.detail';
 
-describe('QuestionTable', () => {
+describe('QuestionList', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(useQuizDetailStore).mockReturnValue({
@@ -60,7 +60,7 @@ describe('QuestionTable', () => {
       isLoading: true,
     } as any);
 
-    render(<QuestionTable />);
+    render(<QuestionList />);
     const skeletons = document.querySelectorAll('.animate-pulse');
     expect(skeletons.length).toBeGreaterThan(0);
   });
@@ -71,7 +71,7 @@ describe('QuestionTable', () => {
       isLoading: false,
     } as any);
 
-    render(<QuestionTable />);
+    render(<QuestionList />);
     expect(screen.getByText('No questions yet')).toBeInTheDocument();
     expect(screen.getByText('Add your first question')).toBeInTheDocument();
   });
@@ -101,7 +101,7 @@ describe('QuestionTable', () => {
       isLoading: false,
     } as any);
 
-    render(<QuestionTable />);
+    render(<QuestionList />);
     expect(screen.getByText('Questions (2)')).toBeInTheDocument();
     expect(screen.getAllByText('What is React?')[0]).toBeInTheDocument();
     expect(screen.getAllByText('What is JSX?')[0]).toBeInTheDocument();
@@ -125,7 +125,7 @@ describe('QuestionTable', () => {
       isLoading: false,
     } as any);
 
-    render(<QuestionTable />);
+    render(<QuestionList />);
     expect(screen.getAllByText('Library')[0]).toBeInTheDocument();
   });
 
@@ -146,7 +146,7 @@ describe('QuestionTable', () => {
       isLoading: false,
     } as any);
 
-    render(<QuestionTable />);
+    render(<QuestionList />);
     expect(screen.getAllByText('JavaScript XML')[0]).toBeInTheDocument();
   });
 
@@ -156,7 +156,7 @@ describe('QuestionTable', () => {
       isLoading: false,
     } as any);
 
-    render(<QuestionTable />);
+    render(<QuestionList />);
     const addButton = screen.getByRole('button', { name: /Add Question/i });
     fireEvent.click(addButton);
 
@@ -180,7 +180,7 @@ describe('QuestionTable', () => {
       isLoading: false,
     } as any);
 
-    render(<QuestionTable />);
+    render(<QuestionList />);
     const editButtons = screen.getAllByRole('button', { name: /Edit/i });
     fireEvent.click(editButtons[0]);
 
@@ -204,7 +204,7 @@ describe('QuestionTable', () => {
       isLoading: false,
     } as any);
 
-    render(<QuestionTable />);
+    render(<QuestionList />);
     const deleteButtons = screen.getAllByRole('button', { name: /Delete/i });
     fireEvent.click(deleteButtons[0]);
 
@@ -228,7 +228,7 @@ describe('QuestionTable', () => {
       isLoading: false,
     } as any);
 
-    render(<QuestionTable />);
+    render(<QuestionList />);
 
     const deleteButtons = screen.getAllByRole('button', { name: /Delete/i });
     fireEvent.click(deleteButtons[0]);
@@ -274,7 +274,7 @@ describe('QuestionTable', () => {
       isLoading: false,
     } as any);
 
-    render(<QuestionTable />);
+    render(<QuestionList />);
     expect(screen.getAllByText('mcq')[0]).toBeInTheDocument();
     expect(screen.getAllByText('short')[0]).toBeInTheDocument();
     expect(screen.getAllByText('code')[0]).toBeInTheDocument();
@@ -304,7 +304,7 @@ describe('QuestionTable', () => {
       isLoading: false,
     } as any);
 
-    render(<QuestionTable />);
+    render(<QuestionList />);
     expect(screen.getByText('1')).toBeInTheDocument();
     expect(screen.getByText('2')).toBeInTheDocument();
   });
@@ -322,7 +322,7 @@ describe('QuestionTable', () => {
       isLoading: false,
     } as any);
 
-    render(<QuestionTable />);
+    render(<QuestionList />);
     expect(screen.getByText('Questions (3)')).toBeInTheDocument();
   });
 
@@ -344,7 +344,7 @@ describe('QuestionTable', () => {
       isLoading: false,
     } as any);
 
-    render(<QuestionTable />);
+    render(<QuestionList />);
     expect(screen.getAllByText('-')[0]).toBeInTheDocument();
   });
 });

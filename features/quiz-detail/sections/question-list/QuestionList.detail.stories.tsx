@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { QuestionTable } from './QuestionTable.detail';
+import { QuestionList } from './QuestionList.detail';
 
-const meta: Meta<typeof QuestionTable> = {
-  title: 'Features/QuizDetail/Sections/QuestionTable',
-  component: QuestionTable,
+const meta: Meta<typeof QuestionList> = {
+  title: 'Features/QuizDetail/Sections/QuestionList',
+  component: QuestionList,
   parameters: {
     layout: 'padded',
   },
@@ -12,7 +12,7 @@ const meta: Meta<typeof QuestionTable> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof QuestionTable>;
+type Story = StoryObj<typeof QuestionList>;
 
 export const Default: Story = {};
 

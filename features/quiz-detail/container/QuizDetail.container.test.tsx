@@ -7,8 +7,8 @@ vi.mock('../sections/quiz-header', () => ({
   QuizHeader: () => <div data-testid="quiz-header">Quiz Header</div>,
 }));
 
-vi.mock('../sections/question-table', () => ({
-  QuestionTable: () => <div data-testid="question-table">Question Table</div>,
+vi.mock('../sections/question-list', () => ({
+  QuestionList: () => <div data-testid="question-list">Question List</div>,
 }));
 
 vi.mock('../sections/add-question-modal', () => ({
@@ -31,7 +31,7 @@ describe('QuizDetailContainer', () => {
 
   it('renders question table section', () => {
     render(<QuizDetailContainer />);
-    expect(screen.getByTestId('question-table')).toBeInTheDocument();
+    expect(screen.getByTestId('question-list')).toBeInTheDocument();
   });
 
   it('renders add question modal', () => {
