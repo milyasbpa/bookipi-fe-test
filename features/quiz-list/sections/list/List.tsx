@@ -25,7 +25,7 @@ export function List() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-end">
         <Button onClick={() => router.push(ROUTES.QUIZ_CREATE)} variant="primary" size="lg">
           <Plus className="mr-2 size-4" />
           {t('create-quiz')}

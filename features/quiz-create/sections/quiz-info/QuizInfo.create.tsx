@@ -72,7 +72,7 @@ export function QuizInfo() {
         />
 
         <Button type="submit" variant="primary" size="lg" className="w-full">
-          {t('next-add-questions')} →
+          {t('next-add-questions')}
         </Button>
       </form>
     </div>
