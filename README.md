@@ -469,57 +469,57 @@ export const attemptsKeys = {
 };
 ```
 
-### Component Reusability Pattern
+### Data Flow Architecture
 
-This project implements a Core → Feature Wrapper pattern:
+This diagram shows how data flows from the backend through code generation, state management, and into components:
 
 ```mermaid
-graph TD
-    A[core/components/question-card] -->|reused by| B[quiz-create/SortableQuestionCard]
-    A -->|reused by| C[quiz-detail/SortableQuestionCardDetail]
-    B -->|adds| D[Drag & Drop Behavior]
-    C -->|adds| E[Drag & Drop + API Integration]
-    A -->|provides| F[Base UI & Props Interface]
+graph TB
+    A[Backend API<br/>localhost:4000] -->|OpenAPI Spec| B[openapi.json]
+    B -->|npm run api:generate| C[Orval Code Generator]
+    C -->|generates| D[quiz-maker.ts<br/>Type-safe client]
+    C -->|generates| E[quiz-maker.zod.ts<br/>Zod schemas]
+    C -->|generates| F[quiz-maker.msw.ts<br/>MSW mocks]
 
-    style A fill:#4CAF50,stroke:#2E7D32,color:#fff
-    style B fill:#2196F3,stroke:#1565C0,color:#fff
-    style C fill:#2196F3,stroke:#1565C0,color:#fff
-    style D fill:#FF9800,stroke:#E65100,color:#fff
-    style E fill:#FF9800,stroke:#E65100,color:#fff
-    style F fill:#9C27B0,stroke:#6A1B9A,color:#fff
+    D -->|used by| G[Wrapper Hooks<br/>features/*/react-query/]
+    G -->|server state| H[TanStack Query<br/>Cache & Sync]
+
+    H -->|data| I[Sections<br/>Self-contained UI]
+    I -->|render| J[Components<br/>Pure UI]
+
+    K[Zustand Stores<br/>features/*/store/] -->|client state| I
+    I -->|events| K
+
+    L[Form State<br/>React Hook Form] -->|local state| J
+
+    style A fill:#FF6B6B,stroke:#C92A2A,color:#fff
+    style C fill:#4DABF7,stroke:#1971C2,color:#fff
+    style D fill:#51CF66,stroke:#2F9E44,color:#fff
+    style E fill:#51CF66,stroke:#2F9E44,color:#fff
+    style F fill:#51CF66,stroke:#2F9E44,color:#fff
+    style G fill:#FCC419,stroke:#F59F00,color:#000
+    style H fill:#FF922B,stroke:#E8590C,color:#fff
+    style K fill:#FF922B,stroke:#E8590C,color:#fff
+    style I fill:#9775FA,stroke:#7048E8,color:#fff
+    style J fill:#E599F7,stroke:#AE3EC9,color:#fff
+    style L fill:#74C0FC,stroke:#1C7ED6,color:#fff
 ```
 
-Core components (`core/components/question-card/QuestionCard.tsx`) are pure presentational components that accept all data via props with no API calls, translations, or store dependencies. This makes them easy to test in isolation.
+Data flow explained:
 
-Feature wrappers (`features/*/components/sortable-question-card/`) add feature-specific behavior like drag-and-drop using `@dnd-kit/sortable`, connect to Zustand stores, and handle API integration for position updates.
+1. Backend provides OpenAPI specification
+2. Orval generates type-safe client, Zod schemas, and MSW mocks
+3. Feature-specific wrapper hooks add business logic (toasts, cache invalidation)
+4. React Query manages server state with automatic caching and revalidation
+5. Zustand stores handle cross-section client state (timer, current question, anti-cheat)
+6. Sections consume both server and client state
+7. Components receive data via props and remain pure for easy testing
 
-Code example:
+### Component Reusability Pattern
 
-```typescript
-// Core component - pure UI
-export function QuestionCard({ question, onEdit, onDelete, translations }: QuestionCardProps) {
-  return (
-    <div className="card">
-      <h3>{question.prompt}</h3>
-      {/* UI only, no business logic */}
-    </div>
-  );
-}
+Core components in `core/components/` are pure presentational components that accept all data via props with no API calls, translations, or store dependencies. This makes them easy to test in isolation and reuse across features.
 
-// Feature wrapper - adds behavior
-export function SortableQuestionCard({ questionId }: { questionId: string }) {
-  const { attributes, listeners, setNodeRef } = useSortable({ id: questionId });
-  const question = useQuizCreateStore((s) => s.questions.find(q => q.id === questionId));
-
-  return (
-    <div ref={setNodeRef} {...attributes} {...listeners}>
-      <QuestionCard question={question} {...handlers} translations={t} />
-    </div>
-  );
-}
-```
-
-Drag-and-drop uses `@dnd-kit/core` + `@dnd-kit/sortable` for keyboard accessibility. Position updates are sent to the backend via `PATCH /questions/:id/position` with optimistic UI updates and automatic rollback on error.
+Feature wrappers in `features/*/components/` add feature-specific behavior like drag-and-drop using `@dnd-kit/sortable`, connect to Zustand stores, and handle API integration. For example, `SortableQuestionCard` wraps the core `QuestionCard` component and adds drag-and-drop functionality with optimistic UI updates.
 
 ---
 
