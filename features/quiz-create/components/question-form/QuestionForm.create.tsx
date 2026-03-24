@@ -55,28 +55,36 @@ export function QuestionForm({
       return;
     }
 
-    const question: Partial<Question> = {
-      type: questionType,
-      prompt: prompt.trim(),
-    };
-
     if (questionType === 'mcq') {
-      if (options.filter((opt) => opt.trim()).length < 2) {
+      const filteredOptions = options.filter((opt) => opt.trim());
+      if (filteredOptions.length < 2) {
         return;
       }
       if (correctIndex === -1) {
         return;
       }
-      question.options = options.filter((opt) => opt.trim());
-      question.correctAnswer = correctIndex;
+
+      const question: Question = {
+        type: questionType,
+        prompt: prompt.trim(),
+        options: filteredOptions,
+        correctAnswer: correctIndex,
+      };
+
+      onAdd(question);
     } else {
       if (!shortAnswer.trim()) {
         return;
       }
-      question.correctAnswer = shortAnswer.trim();
-    }
 
-    onAdd(question);
+      const question: Question = {
+        type: questionType,
+        prompt: prompt.trim(),
+        correctAnswer: shortAnswer.trim(),
+      };
+
+      onAdd(question);
+    }
 
     setPrompt('');
     setOptions(['', '']);

@@ -1,9 +1,4 @@
-import {
-  useReactTable,
-  getCoreRowModel,
-  createColumnHelper,
-  type ColumnDef,
-} from '@tanstack/react-table';
+import { useReactTable, getCoreRowModel, createColumnHelper } from '@tanstack/react-table';
 import { Play, Pencil, Settings } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
@@ -22,7 +17,7 @@ export function useQuizListTable(quizzes: QuizWithQuestions[]) {
   const router = useRouter();
   const openEditModal = useQuizListStore((s) => s.openEditModal);
 
-  const columns = useMemo<ColumnDef<QuizWithQuestions, unknown>[]>(
+  const columns = useMemo(
     () => [
       columnHelper.accessor('title', {
         header: t('quiz-title'),
