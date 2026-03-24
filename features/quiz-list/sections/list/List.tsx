@@ -4,6 +4,7 @@ import { flexRender } from '@tanstack/react-table';
 import { Plus, ListPlus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { useMemo } from 'react';
 
 import { Button, EmptyState, LoadingState } from '@/core/components';
 import { ROUTES } from '@/core/lib/routes';
@@ -16,7 +17,8 @@ export function List() {
   const router = useRouter();
   const { data, isLoading } = useGetQuizzes();
 
-  const quizzes = (data || []).filter((quiz) => quiz.id !== undefined);
+  // Memoize filtered array to prevent unnecessary re-renders
+  const quizzes = useMemo(() => (data || []).filter((quiz) => quiz.id !== undefined), [data]);
   const table = useQuizListTable(quizzes);
 
   if (isLoading) {

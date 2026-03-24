@@ -13,6 +13,11 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
             staleTime: 60 * 1000, // 1 minute
             retry: 1,
             refetchOnWindowFocus: false,
+            // Cancel queries on component unmount to prevent memory leaks
+            gcTime: 5 * 60 * 1000, // 5 minutes
+          },
+          mutations: {
+            retry: 1,
           },
         },
       }),

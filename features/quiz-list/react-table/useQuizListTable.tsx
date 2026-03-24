@@ -4,7 +4,7 @@ import { useReactTable, getCoreRowModel, createColumnHelper } from '@tanstack/re
 import { Play, Pencil, Settings } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 
 import type { QuizWithQuestions } from '@/core/api/generated/quizMakerAPI.schemas';
 import { Button } from '@/core/components';
@@ -18,6 +18,21 @@ export function useQuizListTable(quizzes: QuizWithQuestions[]) {
   const t = useTranslations('quiz-maker.builder');
   const router = useRouter();
   const openEditModal = useQuizListStore((s) => s.openEditModal);
+
+  // Memoize navigation handlers to prevent re-renders
+  const handleNavigateToDetail = useCallback(
+    (quizId: number) => {
+      router.push(ROUTES.QUIZ_DETAIL(quizId));
+    },
+    [router],
+  );
+
+  const handleNavigateToPlayer = useCallback(
+    (quizId: number) => {
+      router.push(ROUTES.QUIZ_PLAYER(quizId));
+    },
+    [router],
+  );
 
   const columns = useMemo(
     () => [
@@ -53,7 +68,7 @@ export function useQuizListTable(quizzes: QuizWithQuestions[]) {
           return (
             <div className="flex gap-2">
               <Button
-                onClick={() => router.push(ROUTES.QUIZ_DETAIL(quiz.id!))}
+                onClick={() => handleNavigateToDetail(quiz.id!)}
                 variant="outline"
                 size="sm"
                 title={t('manage-questions')}
@@ -75,7 +90,7 @@ export function useQuizListTable(quizzes: QuizWithQuestions[]) {
                 <Pencil className="size-4" />
               </Button>
               <Button
-                onClick={() => router.push(ROUTES.QUIZ_PLAYER(quiz.id!))}
+                onClick={() => handleNavigateToPlayer(quiz.id!)}
                 variant="primary"
                 size="sm"
                 title={t('start-quiz')}
@@ -87,7 +102,7 @@ export function useQuizListTable(quizzes: QuizWithQuestions[]) {
         },
       }),
     ],
-    [t, openEditModal, router],
+    [t, openEditModal, handleNavigateToDetail, handleNavigateToPlayer],
   );
 
   const table = useReactTable({

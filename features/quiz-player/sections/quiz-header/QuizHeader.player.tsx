@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 
 import { CountdownTimer } from '../../components/countdown-timer';
@@ -40,11 +40,17 @@ export function QuizHeaderPlayer() {
 
   const { mutate: startAttempt, isPending: isStartingAttempt } = useStartAttempt(quizId);
 
+  // Use ref to track if attempt has been started to prevent duplicate calls
+  const hasStartedAttempt = useRef(false);
+
   useEffect(() => {
-    if (quiz && !attemptId && !isStartingAttempt) {
+    if (quiz && !attemptId && !isStartingAttempt && !hasStartedAttempt.current) {
+      hasStartedAttempt.current = true;
       startAttempt({ data: { quizId } });
     }
-  }, [quiz, attemptId, quizId, startAttempt, isStartingAttempt]);
+    // Intentionally omitting startAttempt from deps to prevent infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quiz, attemptId, quizId, isStartingAttempt]);
 
   useEffect(() => {
     if (phase === 'playing' && remainingSeconds === null && quiz?.timeLimitSeconds) {

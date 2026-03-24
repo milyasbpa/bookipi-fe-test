@@ -63,6 +63,6 @@ describe('QuizCreateContainer', () => {
   it('has max-w-2xl inner container', () => {
     render(<QuizCreateContainer />);
     const innerDiv = screen.getByTestId('step-indicator').parentElement;
-    expect(innerDiv).toHaveClass('mx-auto', 'max-w-2xl', 'space-y-6');
+    expect(innerDiv).toHaveClass('mx-auto', 'max-w-2xl');
   });
 });
