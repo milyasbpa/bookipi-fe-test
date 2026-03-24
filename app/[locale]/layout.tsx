@@ -22,15 +22,15 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | TUG Wellness Admin',
-    default: 'TUG Wellness Admin',
+    template: '%s | Quiz Maker',
+    default: 'Quiz Maker',
   },
-  description: 'Admin portal for managing TUG Wellness Packages.',
+  description: 'Create, manage, and play interactive quizzes with our Quiz Maker platform.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'),
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'TUG Wellness Admin',
+    siteName: 'Quiz Maker',
   },
   twitter: {
     card: 'summary_large_image',

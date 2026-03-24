@@ -18,25 +18,25 @@ type Story = StoryObj<typeof EmptyState>;
 
 export const Default: Story = {
   args: {
-    title: 'No packages found',
-    description: 'Create your first wellness package to get started.',
+    title: 'No quizzes found',
+    description: 'Create your first quiz to get started.',
   },
 };
 
 export const WithIcon: Story = {
   args: {
     icon: <Package />,
-    title: 'No packages found',
-    description: 'Create your first wellness package to get started.',
+    title: 'No quizzes found',
+    description: 'Create your first quiz to get started.',
   },
 };
 
 export const WithAction: Story = {
   args: {
     icon: <Package />,
-    title: 'No packages found',
-    description: 'Create your first wellness package to get started.',
-    action: <Button variant="primary">Create package</Button>,
+    title: 'No quizzes found',
+    description: 'Create your first quiz to get started.',
+    action: <Button variant="primary">Create quiz</Button>,
   },
 };
 
