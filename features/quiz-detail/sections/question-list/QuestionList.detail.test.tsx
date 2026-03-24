@@ -131,7 +131,8 @@ describe('QuestionList', () => {
     } as any);
 
     render(<QuestionList />);
-    expect(screen.getByText(/✓\s*Library/)).toBeInTheDocument();
+    expect(screen.getByText('correct-answer:')).toBeInTheDocument();
+    expect(screen.getByText('Library')).toBeInTheDocument();
   });
 
   it('displays short answer correct answer directly', () => {

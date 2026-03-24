@@ -14,7 +14,7 @@ const meta: Meta<typeof QuizInfo> = {
   },
   decorators: [
     (Story) => (
-      <div className="max-w-4xl">
+      <div className="max-w-6xl">
         <Story />
       </div>
     ),

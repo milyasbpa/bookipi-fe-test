@@ -14,7 +14,7 @@ export function PlayerContainer() {
 
   if (phase === 'playing') {
     return (
-      <div className="container mx-auto max-w-4xl space-y-8 p-6">
+      <div className="container mx-auto max-w-6xl space-y-8 p-6">
         <QuizHeaderPlayer />
         <QuestionViewPlayer />
         <NavigationPlayer />
@@ -23,7 +23,7 @@ export function PlayerContainer() {
   }
 
   return (
-    <div className="container mx-auto max-w-4xl space-y-8 p-6">
+    <div className="container mx-auto max-w-6xl space-y-8 p-6">
       <ScoreCardPlayer />
       <QuestionBreakdownPlayer />
       <AntiCheatSummaryPlayer />

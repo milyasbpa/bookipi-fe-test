@@ -95,7 +95,7 @@ export function AddQuestions() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6 pb-24">
+    <div className="mx-auto max-w-6xl space-y-6 pb-24">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{t('add-questions')}</h1>
         <p className="text-muted-foreground">{t('create-quiz-wizard-step-2-description')}</p>
@@ -155,7 +155,7 @@ export function AddQuestions() {
       </div>
 
       <div className="bg-background fixed right-0 bottom-0 left-0 border-t p-4">
-        <div className="mx-auto flex max-w-4xl gap-2">
+        <div className="mx-auto flex max-w-6xl gap-2">
           <Button variant="outline" className="flex-1" onClick={prevStep} disabled={isSubmitting}>
             {t('back')}
           </Button>

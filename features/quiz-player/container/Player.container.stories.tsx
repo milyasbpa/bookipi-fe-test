@@ -18,7 +18,7 @@ export const Default: Story = {
   decorators: [
     (Story) => (
       <div className="p-6">
-        <div className="mx-auto max-w-4xl rounded-lg border p-6">
+        <div className="mx-auto max-w-6xl rounded-lg border p-6">
           <p className="text-muted-foreground mb-4 text-sm">
             Note: This container orchestrates the entire quiz player experience. It requires full
             app context with Next.js routing, Zustand store, React Query, and translations. The

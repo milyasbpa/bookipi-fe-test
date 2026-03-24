@@ -68,7 +68,8 @@ describe('QuestionCard', () => {
     );
 
     expect(screen.getByText('#1')).toBeInTheDocument();
-    expect(screen.getByText('✓ A library')).toBeInTheDocument();
+    expect(screen.getByText('Correct Answer:')).toBeInTheDocument();
+    expect(screen.getByText('A library')).toBeInTheDocument();
     expect(screen.getByText('A framework')).toBeInTheDocument();
     expect(screen.getByText('An IDE')).toBeInTheDocument();
   });
