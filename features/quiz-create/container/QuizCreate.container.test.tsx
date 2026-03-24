@@ -22,8 +22,8 @@ vi.mock('@/core/components', () => ({
 let mockCurrentStep = 1;
 
 vi.mock('../store/quiz-create.store', () => ({
-  useQuizCreateStore: vi.fn((selector) => 
-    selector ? selector({ currentStep: mockCurrentStep }) : { currentStep: mockCurrentStep }
+  useQuizCreateStore: vi.fn((selector) =>
+    selector ? selector({ currentStep: mockCurrentStep }) : { currentStep: mockCurrentStep },
   ),
 }));
 
@@ -60,9 +60,9 @@ describe('QuizCreateContainer', () => {
     expect(mainDiv).toHaveClass('min-h-screen', 'bg-background', 'p-6');
   });
 
-  it('has max-w-4xl inner container', () => {
+  it('has max-w-2xl inner container', () => {
     render(<QuizCreateContainer />);
     const innerDiv = screen.getByTestId('step-indicator').parentElement;
-    expect(innerDiv).toHaveClass('mx-auto', 'max-w-4xl', 'space-y-6');
+    expect(innerDiv).toHaveClass('mx-auto', 'max-w-2xl', 'space-y-6');
   });
 });
