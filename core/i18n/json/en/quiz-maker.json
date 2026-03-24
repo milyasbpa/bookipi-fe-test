@@ -148,6 +148,7 @@
     "correct-answer-label": "Correct answer:",
     "loading-events": "Loading activity log...",
     "no-suspicious-activity": "✓ No suspicious activity detected",
+    "activity-detected": "⚠️ Activity Log",
     "activity-log-title": "Activity Log",
     "time-unknown": "Time unknown",
     "event-focus_lost": "Lost focus (tab/window switch)",

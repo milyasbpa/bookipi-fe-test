@@ -5,6 +5,11 @@ import type { SubmitResult } from '@/core/api/generated/quizMakerAPI.schemas';
 
 type PlayerPhase = 'playing' | 'completed';
 
+interface AntiCheatEvent {
+  type: 'blur' | 'focus' | 'paste';
+  timestamp: string;
+}
+
 interface PlayerStore {
   // Quiz state
   attemptId: number | null;
@@ -18,6 +23,9 @@ interface PlayerStore {
 
   // Timer state
   remainingSeconds: number | null;
+
+  // Anti-cheat
+  antiCheatEvents: AntiCheatEvent[];
 
   // Actions
   setAttemptId: (id: number | null) => void;
@@ -34,6 +42,9 @@ interface PlayerStore {
 
   setRemainingSeconds: (seconds: number | null) => void;
 
+  addAntiCheatEvent: (event: AntiCheatEvent) => void;
+  clearAntiCheatEvents: () => void;
+
   resetPlayer: () => void;
 }
 
@@ -47,6 +58,7 @@ export const usePlayerStore = create<PlayerStore>()(
       phase: 'playing',
       submitResult: null,
       remainingSeconds: null,
+      antiCheatEvents: [],
 
       setAttemptId: (id) => set({ attemptId: id }),
       setQuizId: (id) => set({ quizId: id }),
@@ -72,6 +84,13 @@ export const usePlayerStore = create<PlayerStore>()(
 
       setRemainingSeconds: (seconds) => set({ remainingSeconds: seconds }),
 
+      addAntiCheatEvent: (event) =>
+        set((state) => ({
+          antiCheatEvents: [...state.antiCheatEvents, event],
+        })),
+
+      clearAntiCheatEvents: () => set({ antiCheatEvents: [] }),
+
       resetPlayer: () =>
         set({
           attemptId: null,
@@ -81,6 +100,7 @@ export const usePlayerStore = create<PlayerStore>()(
           phase: 'playing',
           submitResult: null,
           remainingSeconds: null,
+          antiCheatEvents: [],
         }),
     }),
     { name: 'QuizPlayerStore' },
