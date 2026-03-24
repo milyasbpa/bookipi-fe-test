@@ -37,6 +37,8 @@ A modern, full-featured quiz creation and management platform built with React a
   - Short Answer questions with case-insensitive string matching
   - Code snippet display (optional for each question)
 - ✅ Real-time validation and error handling
+- ✅ Drag-and-drop question reordering with visual feedback
+- ✅ Automatic position synchronization to backend
 
 ### Quiz Player
 
@@ -49,12 +51,14 @@ A modern, full-featured quiz creation and management platform built with React a
   - Per-question correctness breakdown
   - Correct vs. submitted answers comparison
 
-### Quiz List
+### Quiz Management
 
-- ✅ Browse all available quizzes
-- ✅ Pagination support
+- ✅ Browse all available quizzes with pagination
 - ✅ Search and filter functionality
-- ✅ Quick quiz preview and stats
+- ✅ Edit existing quizzes with full detail view
+- ✅ Drag-and-drop question reordering in edit mode
+- ✅ Real-time position updates saved to backend
+- ✅ Unified question card UI across all views
 
 ### Anti-Cheat System (Bonus)
 
@@ -295,9 +299,9 @@ npm run test:coverage # Generate coverage report
 
 **Test Coverage:**
 
-- **506 passing tests** across 63 test files
+- **538 passing tests** across 68 test files
 - **Features**: quiz-create, quiz-detail, quiz-list, quiz-player
-- **Core components**: All 14 components fully tested
+- **Core components**: All core components fully tested
 - **Stores**: Zustand stores with 100% coverage
 - **Hooks**: React Query hooks tested
 
@@ -492,6 +496,81 @@ export const attemptsKeys = {
 - Type-safe key references across features
 - Consistent cache invalidation
 - Easier debugging with React Query DevTools
+
+### Component Reusability Pattern
+
+This project implements a **Core → Feature Wrapper** pattern for maximum code reuse:
+
+```mermaid
+graph TD
+    A[core/components/question-card] -->|reused by| B[quiz-create/SortableQuestionCard]
+    A -->|reused by| C[quiz-detail/SortableQuestionCardDetail]
+    B -->|adds| D[Drag & Drop Behavior]
+    C -->|adds| E[Drag & Drop + API Integration]
+    A -->|provides| F[Base UI & Props Interface]
+
+    style A fill:#4CAF50,stroke:#2E7D32,color:#fff
+    style B fill:#2196F3,stroke:#1565C0,color:#fff
+    style C fill:#2196F3,stroke:#1565C0,color:#fff
+    style D fill:#FF9800,stroke:#E65100,color:#fff
+    style E fill:#FF9800,stroke:#E65100,color:#fff
+    style F fill:#9C27B0,stroke:#6A1B9A,color:#fff
+```
+
+**Architecture:**
+
+1. **Core Component** (`core/components/question-card/QuestionCard.tsx`):
+   - Pure presentational component
+   - Accepts all data via props (no API calls, no translations, no store)
+   - Defines base UI and props interface
+   - Fully tested in isolation
+
+2. **Feature Wrappers** (`features/*/components/sortable-question-card/`):
+   - Wraps core component with feature-specific behavior
+   - Adds drag-and-drop using `@dnd-kit/sortable`
+   - Connects to feature stores (Zustand)
+   - Handles API integration (position updates)
+
+**Code Example:**
+
+```typescript
+// Core component - pure UI
+export function QuestionCard({ question, onEdit, onDelete, translations }: QuestionCardProps) {
+  return (
+    <div className="card">
+      <h3>{question.prompt}</h3>
+      {/* UI only, no business logic */}
+    </div>
+  );
+}
+
+// Feature wrapper - adds behavior
+export function SortableQuestionCard({ questionId }: { questionId: string }) {
+  const { attributes, listeners, setNodeRef } = useSortable({ id: questionId });
+  const question = useQuizCreateStore((s) => s.questions.find(q => q.id === questionId));
+
+  return (
+    <div ref={setNodeRef} {...attributes} {...listeners}>
+      <QuestionCard question={question} {...handlers} translations={t} />
+    </div>
+  );
+}
+```
+
+**Benefits:**
+
+- ✅ Single source of truth for UI components
+- ✅ Core components easy to test in isolation (no mocking stores/API)
+- ✅ Features can augment behavior without modifying core
+- ✅ Consistent UI across different contexts (create/edit/view)
+- ✅ Changes to core component automatically propagate to all features
+
+**Drag-and-Drop Implementation:**
+
+- Uses `@dnd-kit/core` + `@dnd-kit/sortable` for keyboard-accessible drag-and-drop
+- Position updates sent to backend via `PATCH /questions/:id/position`
+- Optimistic UI updates with automatic rollback on API error
+- Visual feedback: dragging item becomes semi-transparent, drop zones highlighted
 
 ---
 
@@ -732,6 +811,11 @@ npm test
 - **No offline support**: Requires active internet connection
 - **No real-time updates**: Quiz changes don't sync live to active attempts
 - **No retry logic**: Failed API calls require manual retry
+- **Drag-and-drop limitations**:
+  - Requires JavaScript enabled
+  - Not optimized for touch devices (works but not ideal UX)
+  - No undo/redo for position changes
+  - Network latency may cause brief UI delays on position updates
 
 ### Future Improvements
 
