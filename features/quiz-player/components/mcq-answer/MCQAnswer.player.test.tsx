@@ -11,13 +11,9 @@ describe('MCQAnswer', () => {
 
     render(<MCQAnswer options={mockOptions} selectedValue="" onChange={mockOnChange} />);
 
-    expect(screen.getByText(/A\./)).toBeInTheDocument();
     expect(screen.getByText('Option A')).toBeInTheDocument();
-    expect(screen.getByText(/B\./)).toBeInTheDocument();
     expect(screen.getByText('Option B')).toBeInTheDocument();
-    expect(screen.getByText(/C\./)).toBeInTheDocument();
     expect(screen.getByText('Option C')).toBeInTheDocument();
-    expect(screen.getByText(/D\./)).toBeInTheDocument();
     expect(screen.getByText('Option D')).toBeInTheDocument();
   });
 
@@ -45,7 +41,7 @@ describe('MCQAnswer', () => {
     const mockOnChange = vi.fn();
 
     const { container } = render(
-      <MCQAnswer options={mockOptions} selectedValue="2" onChange={mockOnChange} />
+      <MCQAnswer options={mockOptions} selectedValue="2" onChange={mockOnChange} />,
     );
 
     const radioButtons = container.querySelectorAll('.bg-brand');

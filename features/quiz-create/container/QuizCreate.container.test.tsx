@@ -60,9 +60,9 @@ describe('QuizCreateContainer', () => {
     expect(mainDiv).toHaveClass('min-h-screen', 'bg-background', 'p-6');
   });
 
-  it('has max-w-2xl inner container', () => {
+  it('has max-w-6xl inner container', () => {
     render(<QuizCreateContainer />);
     const innerDiv = screen.getByTestId('step-indicator').parentElement;
-    expect(innerDiv).toHaveClass('mx-auto', 'max-w-2xl');
+    expect(innerDiv).toHaveClass('mx-auto', 'max-w-6xl');
   });
 });
