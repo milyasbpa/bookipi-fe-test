@@ -560,7 +560,7 @@ Authorization: Bearer dev-token
 {
   id: string;
   quizId: string;
-  type: 'mcq' | 'short' | 'code';
+  type: 'mcq' | 'short';
   prompt: string;
   codeSnippet?: string;
   options?: string[];      // For MCQ only

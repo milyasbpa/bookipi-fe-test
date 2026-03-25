@@ -14,11 +14,6 @@ const mockQuestions = [
     prompt: 'What is 2 + 2?',
     correctAnswer: '4',
   },
-  {
-    type: 'code' as const,
-    prompt: 'Write a function to reverse a string',
-    correctAnswer: 'function reverse(str) { return str.split("").reverse().join(""); }',
-  },
 ];
 
 const meta: Meta<typeof AddQuestions> = {

@@ -27,7 +27,7 @@ export function EditQuestionModal() {
     if (!editingQuestion) return undefined;
 
     const base = {
-      type: editingQuestion.type as 'mcq' | 'short' | 'code',
+      type: editingQuestion.type as 'mcq' | 'short',
       prompt: editingQuestion.prompt || '',
       position: editingQuestion.position,
     };
@@ -39,16 +39,10 @@ export function EditQuestionModal() {
         options: editingQuestion.options || ['', ''],
         correctAnswer: editingQuestion.correctAnswer || 0,
       };
-    } else if (editingQuestion.type === 'short') {
-      return {
-        ...base,
-        type: 'short',
-        correctAnswer: (editingQuestion.correctAnswer as string) || '',
-      };
     } else {
       return {
         ...base,
-        type: 'code',
+        type: 'short',
         correctAnswer: (editingQuestion.correctAnswer as string) || '',
       };
     }
@@ -59,8 +53,8 @@ export function EditQuestionModal() {
     defaultValues: getDefaultValues(),
   });
 
-  const [questionType, setQuestionType] = useState<'mcq' | 'short' | 'code'>(
-    (editingQuestion?.type as 'mcq' | 'short' | 'code') || 'mcq',
+  const [questionType, setQuestionType] = useState<'mcq' | 'short'>(
+    (editingQuestion?.type as 'mcq' | 'short') || 'mcq',
   );
   const [selectedCorrectIndex, setSelectedCorrectIndex] = useState<number>(
     editingQuestion?.type === 'mcq' ? (editingQuestion.correctAnswer as number) || 0 : 0,
@@ -113,7 +107,7 @@ export function EditQuestionModal() {
             <select
               {...field}
               onChange={(e) => {
-                const value = e.target.value as 'mcq' | 'short' | 'code';
+                const value = e.target.value as 'mcq' | 'short';
                 field.onChange(e);
                 setQuestionType(value);
                 // Reset correct answer when changing to MCQ
@@ -127,7 +121,6 @@ export function EditQuestionModal() {
             >
               <option value="mcq">{t('question-type-mcq')}</option>
               <option value="short">{t('question-type-short')}</option>
-              <option value="code">{t('question-type-code')}</option>
             </select>
           )}
         />

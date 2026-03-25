@@ -39,7 +39,7 @@ export function QuestionEditModal({
   onSave,
   translations,
 }: QuestionEditModalProps) {
-  const [questionType, setQuestionType] = useState<'mcq' | 'short' | 'code'>('mcq');
+  const [questionType, setQuestionType] = useState<'mcq' | 'short'>('mcq');
   const [prompt, setPrompt] = useState('');
   const [options, setOptions] = useState<string[]>(['', '']);
   const [correctIndex, setCorrectIndex] = useState(-1);

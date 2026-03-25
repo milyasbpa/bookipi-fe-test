@@ -65,11 +65,6 @@ describe('QuestionViewPlayer', () => {
         prompt: 'Explain the answer',
         type: 'short',
       },
-      {
-        id: 3,
-        prompt: 'Write a function',
-        type: 'code',
-      },
     ],
   };
 
@@ -131,13 +126,6 @@ describe('QuestionViewPlayer', () => {
     render(<QuestionViewPlayer />);
     expect(screen.getByTestId('short-answer')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('answer-placeholder')).toBeInTheDocument();
-  });
-
-  it('renders ShortAnswer component for code type question', () => {
-    mockStore.currentQuestionIndex = 2;
-    render(<QuestionViewPlayer />);
-    expect(screen.getByTestId('short-answer')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('code-placeholder')).toBeInTheDocument();
   });
 
   it('calls setAnswer when MCQ option is selected', async () => {

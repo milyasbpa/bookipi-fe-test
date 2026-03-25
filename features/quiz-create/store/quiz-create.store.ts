@@ -7,7 +7,7 @@ export interface QuizMetadata {
 }
 
 export interface Question {
-  type: 'mcq' | 'short' | 'code';
+  type: 'mcq' | 'short';
   prompt: string;
   options?: string[];
   correctAnswer: string | number;

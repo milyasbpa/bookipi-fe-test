@@ -19,7 +19,6 @@ interface AddQuestionFormProps {
   questionTypeLabel: string;
   questionTypeMcq: string;
   questionTypeShort: string;
-  questionTypeCode: string;
   questionPromptLabel: string;
   promptPlaceholder: string;
   correctAnswerLabel: string;
@@ -37,7 +36,6 @@ export function AddQuestionForm({
   questionTypeLabel,
   questionTypeMcq,
   questionTypeShort,
-  questionTypeCode,
   questionPromptLabel,
   promptPlaceholder,
   correctAnswerLabel,
@@ -58,7 +56,7 @@ export function AddQuestionForm({
     },
   });
 
-  const [questionType, setQuestionType] = useState<'mcq' | 'short' | 'code'>('mcq');
+  const [questionType, setQuestionType] = useState<'mcq' | 'short'>('mcq');
   const [selectedCorrectIndex, setSelectedCorrectIndex] = useState<number>(0);
 
   const handleFormSubmit = (values: QuestionFormValues) => {
@@ -75,7 +73,7 @@ export function AddQuestionForm({
           <select
             {...field}
             onChange={(e) => {
-              const value = e.target.value as 'mcq' | 'short' | 'code';
+              const value = e.target.value as 'mcq' | 'short';
               field.onChange(e);
               setQuestionType(value);
               // Reset correct answer when changing to MCQ
@@ -89,7 +87,6 @@ export function AddQuestionForm({
           >
             <option value="mcq">{questionTypeMcq}</option>
             <option value="short">{questionTypeShort}</option>
-            <option value="code">{questionTypeCode}</option>
           </select>
         )}
       />

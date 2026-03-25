@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const baseQuestionSchema = z.object({
-  type: z.enum(['mcq', 'short', 'code']),
+  type: z.enum(['mcq', 'short']),
   prompt: z.string().min(5, 'Prompt must be at least 5 characters'),
   position: z.number().int().nonnegative().optional(),
 });
@@ -20,15 +20,9 @@ export const shortQuestionSchema = baseQuestionSchema.extend({
   correctAnswer: z.string().min(1, 'Correct answer is required'),
 });
 
-export const codeQuestionSchema = baseQuestionSchema.extend({
-  type: z.literal('code'),
-  correctAnswer: z.string().optional(),
-});
-
 export const questionSchema = z.discriminatedUnion('type', [
   mcqQuestionSchema,
   shortQuestionSchema,
-  codeQuestionSchema,
 ]);
 
 export type QuestionFormValues = z.infer<typeof questionSchema>;

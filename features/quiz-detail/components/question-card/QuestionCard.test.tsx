@@ -126,7 +126,7 @@ describe('QuestionCard', () => {
     const question: Question = {
       id: 5,
       position: 5,
-      type: 'code',
+      type: 'short',
       prompt: 'Write code',
       correctAnswer: 'console.log("Hello")',
     };

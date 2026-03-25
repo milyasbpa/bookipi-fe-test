@@ -74,14 +74,6 @@ export function QuestionViewPlayer() {
             placeholder={t('answer-placeholder')}
           />
         )}
-
-        {currentQuestion.type === 'code' && (
-          <ShortAnswer
-            value={currentAnswer}
-            onChange={handleAnswerChange}
-            placeholder={t('code-placeholder')}
-          />
-        )}
       </div>
     </div>
   );

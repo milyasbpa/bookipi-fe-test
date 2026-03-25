@@ -267,13 +267,6 @@ describe('QuestionList', () => {
             prompt: 'Short Question',
             correctAnswer: 'Answer',
           },
-          {
-            id: 3,
-            position: 3,
-            type: 'code',
-            prompt: 'Code Question',
-            correctAnswer: 'console.log()',
-          },
         ],
       },
       isLoading: false,
@@ -282,7 +275,6 @@ describe('QuestionList', () => {
     render(<QuestionList />);
     expect(screen.getAllByText('mcq')[0]).toBeInTheDocument();
     expect(screen.getAllByText('short')[0]).toBeInTheDocument();
-    expect(screen.getAllByText('code')[0]).toBeInTheDocument();
   });
 
   it('displays question position numbers', () => {

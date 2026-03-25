@@ -27,7 +27,6 @@ vi.mock('next-intl', () => ({
       'question-type': 'Question Type',
       'question-type-mcq': 'Multiple Choice',
       'question-type-short': 'Short Answer',
-      'question-type-code': 'Code',
       'question-prompt': 'Question Prompt',
       'prompt-placeholder': 'Enter your question',
       'correct-answer': 'Correct Answer',

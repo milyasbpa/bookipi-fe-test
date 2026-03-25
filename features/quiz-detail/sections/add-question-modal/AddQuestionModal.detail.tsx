@@ -46,7 +46,6 @@ export function AddQuestionModal() {
         questionTypeLabel={t('question-type')}
         questionTypeMcq={t('question-type-mcq')}
         questionTypeShort={t('question-type-short')}
-        questionTypeCode={t('question-type-code')}
         questionPromptLabel={t('question-prompt')}
         promptPlaceholder={t('prompt-placeholder')}
         correctAnswerLabel={t('correct-answer')}

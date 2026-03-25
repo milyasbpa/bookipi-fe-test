@@ -89,13 +89,6 @@ export const Default: Story = {
         prompt: 'What does JSX stand for?',
         correctAnswer: 'JavaScript XML',
       },
-      {
-        id: 3,
-        position: 3,
-        type: 'code',
-        prompt: 'Write a function to add two numbers',
-        correctAnswer: 'function add(a, b) { return a + b; }',
-      },
     ],
   },
 };

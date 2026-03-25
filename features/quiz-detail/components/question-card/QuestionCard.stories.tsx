@@ -55,18 +55,6 @@ export const ShortAnswerQuestion: Story = {
   },
 };
 
-export const CodeQuestion: Story = {
-  args: {
-    question: {
-      id: 3,
-      position: 3,
-      type: 'code',
-      prompt: 'Write a function to add two numbers',
-      correctAnswer: 'function add(a, b) { return a + b; }',
-    } as Question,
-  },
-};
-
 export const LongPrompt: Story = {
   args: {
     question: {

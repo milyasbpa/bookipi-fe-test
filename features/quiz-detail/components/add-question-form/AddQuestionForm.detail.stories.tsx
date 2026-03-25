@@ -13,7 +13,6 @@ const meta: Meta<typeof AddQuestionForm> = {
     questionTypeLabel: 'Question Type',
     questionTypeMcq: 'Multiple Choice',
     questionTypeShort: 'Short Answer',
-    questionTypeCode: 'Code',
     questionPromptLabel: 'Question',
     promptPlaceholder: 'Enter your question...',
     correctAnswerLabel: 'Correct Answer',
