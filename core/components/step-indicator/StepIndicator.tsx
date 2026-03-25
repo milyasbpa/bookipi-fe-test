@@ -19,7 +19,7 @@ export function StepIndicator({ currentStep, totalSteps = 2 }: StepIndicatorProp
           >
             {step}
           </div>
-          {index < totalSteps - 1 && <div className="bg-muted h-px w-24" />}
+          {index < totalSteps - 1 && <div className="bg-muted h-px w-48" />}
         </div>
       ))}
     </div>

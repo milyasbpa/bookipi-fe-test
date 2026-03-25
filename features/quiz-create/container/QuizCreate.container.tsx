@@ -12,7 +12,7 @@ export function QuizCreateContainer() {
   return (
     <div className="bg-background min-h-screen p-6">
       <div className="mx-auto max-w-6xl space-y-6">
-        <div className="mx-auto max-w-2xl">
+        <div className="mx-auto max-w-6xl">
           <StepIndicator currentStep={currentStep} totalSteps={2} />
         </div>
 

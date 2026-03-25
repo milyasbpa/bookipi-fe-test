@@ -26,6 +26,7 @@ export function AddQuestionModal() {
       {
         onSuccess: () => {
           reset();
+          closeModal();
         },
       },
     );
