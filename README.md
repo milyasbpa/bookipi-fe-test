@@ -21,6 +21,7 @@ A modern, full-featured quiz creation and management platform built with React a
 - [API Integration](#api-integration)
 - [Key Libraries](#key-libraries)
 - [Development Workflow](#development-workflow)
+- [Screenshots](#screenshots)
 - [Known Limitations](#known-limitations)
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
@@ -746,6 +747,66 @@ npm run api:generate
 # 4. Run tests to catch breaking changes
 npm test
 ```
+
+---
+
+## Screenshots
+
+Below are screenshots demonstrating the key features and functionality of the Quiz Maker application:
+
+### 1. Quiz List Page
+
+The main dashboard showing all available quizzes with management options.
+
+![Quiz List](docs/1_quiz_list.png)
+
+### 2. Create Quiz
+
+Quiz creation form with title, description, and time limit configuration.
+
+![Create Quiz](docs/2_create_quiz.png)
+
+### 3. Error Handling on Create Quiz
+
+Real-time validation with error messages for input fields.
+
+![Error Handling](docs/3_example_error_handle_on_create_quiz.png)
+
+### 4. Add Questions to Quiz
+
+Question creation interface supporting MCQ, short answer, and code snippet questions.
+
+![Create Questions](docs/4_create_question_on_create_quiz.png)
+
+### 5. Edit Quiz from List
+
+Edit quiz modal accessible from the quiz list page.
+
+![Edit Quiz](docs/5_edit_quiz_on_quiz_list.png)
+
+### 6. Quiz Detail Page
+
+Detailed view of a quiz showing all questions with drag-and-drop reordering.
+
+![Quiz Detail](docs/6_quiz_detail.png)
+
+### 7. Quiz Player - Taking Quiz
+
+Live quiz interface with countdown timer, navigation, and answer inputs.
+
+![Quiz Player](docs/7_quiz_player_simulation.png)
+
+### 8. Quiz Player - Results
+
+Results page showing score, question breakdown, and correct answers.
+
+![Quiz Results](docs/8_quiz_player_simulation.png)
+
+### 9. Anti-Cheat Detection
+
+Anti-cheat summary displaying detected events (tab switches, paste actions) with timestamps.
+
+![Anti-Cheat](docs/9_anti_cheat_simulation.png)
 
 ---
 
